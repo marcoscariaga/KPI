@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using SigProc.Aplicacao.Modelos;
 using SigProc.Aplicacao.Modelos.ModeloEntrada;
 using SigProc.Domain.Entidades;
+using SigProc.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,10 @@ namespace SigProc.Aplicacao.Mapeamentos
                 entity.Id = 0;
             });
             CreateMap<AutenticacaoModelo, Usuario>();
+            CreateMap<GerenciaModelo, Gerencia>();
+            CreateMap<TipoContratacaoModelo, TipoContratacao>();
+            CreateMap<TipoProcessoModelo, TipoProcesso>();
+            
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Servicos;
 
+
 namespace SigProc.Servico.Configuracao
 {
     public static class AplicacaoConfig
@@ -8,7 +9,10 @@ namespace SigProc.Servico.Configuracao
         public static void AddApplicationConfig(WebApplicationBuilder builder)
         {
             builder.Services.AddTransient<IUsuarioServico, UsuarioServico>();
-  
+            builder.Services.AddTransient<IGerenciaServico, GerenciaServico>();
+            builder.Services.AddTransient<ITipoContratacaoServico, TipoContratacaoServico>();
+            builder.Services.AddTransient<ITipoProcessoServico, TipoProcessoServico>();
+
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
