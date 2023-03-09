@@ -11,12 +11,14 @@ namespace SigProc.Servico.Controladores
     public class SicopController : ControllerBase
     {
         private readonly IDadosDoProcessoSicopServico _appSicopProcesso;
+        private readonly IDadosDeTramitacaoSicopServico _appSicopTramitacao;
         private IMapper _mapper;
 
-        public SicopController(IDadosDoProcessoSicopServico appSicopProcesso, IMapper mapper)
+        public SicopController(IDadosDoProcessoSicopServico appSicopProcesso, IMapper mapper, IDadosDeTramitacaoSicopServico appSicopTramitacao)
         {
             _appSicopProcesso = appSicopProcesso;
             _mapper = mapper;
+            _appSicopTramitacao = appSicopTramitacao;
         }
         /// <summary>
         /// Serviço de Controle de Processos
@@ -31,8 +33,6 @@ namespace SigProc.Servico.Controladores
 
 
             return NoContent();
-
-
         }
 
         [HttpPut("EditarProcesso")]
@@ -134,6 +134,122 @@ namespace SigProc.Servico.Controladores
             {
 
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar processo!" });
+            }
+        }
+
+        /// <summary>
+        /// Serviço de Controle de Tramitações Processos
+        /// </summary>
+
+        [HttpPost("ConsultarTramitacaoSicop")]
+        public IActionResult ConsultarTramitacaoSicop(string numeroProcesso)
+        {
+            var tramitacao = _appSicopTramitacao.ConsultarProcesso(numeroProcesso);
+            if (tramitacao.StatusLine == "Consulta efetuada. Tecle (ENTER) p/mais Informacoes.") ;
+            return Ok(_appSicopTramitacao.Inserir(tramitacao));
+
+            return NoContent();
+        }
+
+        [HttpPut("EditarTramitacao")]
+        public IActionResult EditarTramitacao([FromBody] DadosDeTramitacaoSicop tramitacao)
+        {
+            try
+            {
+                _appSicopTramitacao.Atualizar(tramitacao);
+                return StatusCode(200, new { tramitacao, mensagem = "Tramitação alterads com sucesso!" });
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar tramitação!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar tramitação!" });
+            }
+        }
+
+        [HttpDelete("ExcluirTramitacao/{id}")]
+        public IActionResult ExcluirTramitacao(int id)
+        {
+            try
+            {
+                var tramitacao = _appSicopTramitacao.Excluir(id);
+                return StatusCode(200, new { tramitacao, mensagem = "Usuário inativado com sucesso!" });
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
+            }
+        }
+
+        [HttpGet("ConsultarTodasTramitacoes")]
+        public IActionResult ConsultarTodasTramitacoes()
+        {
+            try
+            {
+                var tramitacoes = _appSicopTramitacao.ListarTudo();
+                if (tramitacoes.Count == 0)
+                    return NoContent();
+
+                return StatusCode(200, tramitacoes);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
+            }
+        }
+
+        [HttpGet("BuscarTramitacaoPorID/{id}")]
+        public IActionResult BuscarTramitacaoPorID(int id)
+        {
+            try
+            {
+                var tramitacao = _appSicopTramitacao.RetornaPorId(id);
+                if (tramitacao == null)
+                    return NoContent();
+
+                return StatusCode(200, tramitacao);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
+            }
+        }
+
+        [HttpGet("BuscarTramitacaoPorNumeroDeProcesso")]
+        public IActionResult BuscarTramitacaoPorNumeroDeProcesso(string numeroProcesso)
+        {
+            try
+            {
+                var tramitacao = _appSicopTramitacao.ListarTudo().Where(x => x.NumeroDoProcesso.Equals(numeroProcesso)).FirstOrDefault();
+                if (tramitacao == null)
+                    return NoContent();
+
+                return StatusCode(200, tramitacao);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
             }
         }
     }
