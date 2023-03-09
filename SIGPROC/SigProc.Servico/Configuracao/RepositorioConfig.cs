@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SigProc.Domain.Contratos.Dados;
+using SigProc.Domimio.Contratos.Dados;
+using SigProc.Domimio.Entidades;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.infra.dados.Contextos;
 using SigProc.infra.dados.Repositorios;
@@ -12,8 +14,9 @@ namespace SigProc.Servico.Configuracao
         {
             builder.Services.AddTransient<IUsuarioRepositorio, UsuarioRepositorio>();
             builder.Services.AddTransient<IGerenciaRepositorio, GerenciaRepositorio>();
-            builder.Services.AddTransient<ITipoContratacaoRepositorio, TipoContratacaoRepositorio>();
+            builder.Services.AddTransient<ITipoContratacaoRepositorio, TipoContratacaoRepositorio>(); 
             builder.Services.AddTransient<ITipoProcessoRepositorio, TipoProcessoRepositorio>();
+            builder.Services.AddTransient<IDadosDoProcessoSicopRepositorio, DadosDoProcessoSicopRepositorio>();
 
             var connectionString = builder.Configuration.GetConnectionString("SIGPROC");
             builder.Services.AddDbContext<SqlServidorContexto>

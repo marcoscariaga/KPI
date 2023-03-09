@@ -1,5 +1,8 @@
 ﻿using SigProc.Domain.Contratos.Servicos;
 using SigProc.Domain.Servicos;
+using SigProc.Domimio.Contratos.Servicos;
+using SigProc.Domimio.Entidades;
+using SigProc.Domimio.Servicos;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Servicos;
 
@@ -11,8 +14,9 @@ namespace SigProc.Servico.Configuracao
         {
             builder.Services.AddTransient<IUsuarioDominioServico, UsuarioDominioServico>();
             builder.Services.AddTransient<IGerenciaDominioServico, GerenciaDominioServico>();
-            builder.Services.AddTransient<ITipoContratacaoDominioServico, TipoContratacaoDominioServico>();
+            builder.Services.AddTransient<ITipoContratacaoDominioServico, TipoContratacaoDominioServico>(); 
             builder.Services.AddTransient<ITipoProcessoDominioServico, TipoProcessoDominioServico>();
+            builder.Services.AddTransient<IDadosDoProcessoSicopDominioServico, DadosDoProcessoSicopDominioServico>();
         }
     }
 }
