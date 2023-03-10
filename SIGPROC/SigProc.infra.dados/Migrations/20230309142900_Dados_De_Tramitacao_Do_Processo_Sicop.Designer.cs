@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SigProc.infra.dados.Contextos;
 
@@ -11,9 +12,11 @@ using SigProc.infra.dados.Contextos;
 namespace SigProc.infra.dados.Migrations
 {
     [DbContext(typeof(SqlServidorContexto))]
-    partial class SqlServidorContextoModelSnapshot : ModelSnapshot
+    [Migration("20230309142900_Dados_De_Tramitacao_Do_Processo_Sicop")]
+    partial class DadosDeTramitacaoDoProcessoSicop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -825,7 +828,7 @@ namespace SigProc.infra.dados.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdUsuarioResp")
+                    b.Property<int>("Id_Responsavel")
                         .HasColumnType("int");
 
                     b.Property<int>("Prazo")
@@ -842,109 +845,9 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdUsuarioResp");
-
-                    b.ToTable("Gerencia");
-                });
-
-            modelBuilder.Entity("SigProc.Dominio.Entidades.Processo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Assunto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DataCadastroProc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DataCriacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataEdicao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataExclusao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DataUltimaTramProc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IdTipoContratacao")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdTipoProcesso")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUsuarioCadastro")
-                        .HasColumnType("int");
-
-                    b.Property<string>("InfComplementar")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumDoc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumProcesso")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Observacao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrgaoCadastro")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrgaoDestino")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrgaoOrigem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Prioridade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Requerente")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("TipoContratacaoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TipoDoc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TipoProcessoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TipoContratacaoId");
-
-                    b.HasIndex("TipoProcessoId");
-
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Processo");
+                    b.ToTable("Gerencia");
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.TipoContratacao", b =>
@@ -1009,36 +912,9 @@ namespace SigProc.infra.dados.Migrations
                 {
                     b.HasOne("SigProc.Domain.Entidades.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("IdUsuarioResp")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("SigProc.Dominio.Entidades.Processo", b =>
-                {
-                    b.HasOne("SigProc.Dominio.Entidades.TipoContratacao", "TipoContratacao")
-                        .WithMany()
-                        .HasForeignKey("TipoContratacaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SigProc.Dominio.Entidades.TipoProcesso", "TipoProcesso")
-                        .WithMany()
-                        .HasForeignKey("TipoProcessoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SigProc.Domain.Entidades.Usuario", "Usuario")
-                        .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("TipoContratacao");
-
-                    b.Navigation("TipoProcesso");
 
                     b.Navigation("Usuario");
                 });

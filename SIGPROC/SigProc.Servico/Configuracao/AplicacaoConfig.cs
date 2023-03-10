@@ -13,7 +13,8 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<IProcessoServico, ProcessoServico>();
             builder.Services.AddTransient<ITipoContratacaoServico, TipoContratacaoServico>();
             builder.Services.AddTransient<ITipoProcessoServico, TipoProcessoServico>();
-
+            builder.Services.AddTransient<IDadosDoProcessoSicopServico, DadosDoProcessoSicopServico>();
+            builder.Services.AddTransient<IDadosDeTramitacaoSicopServico, DadosDeTramitacaoSicopServico>();
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

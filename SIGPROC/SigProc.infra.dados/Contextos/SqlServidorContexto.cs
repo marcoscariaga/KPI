@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SigProc.Domain.Entidades;
+using SigProc.Domimio.Entidades;
 using SigProc.Dominio.Entidades;
 using SigProc.infra.dados.Mapeamentos;
 using System;
@@ -20,6 +21,8 @@ namespace SigProc.infra.dados.Contextos
         public DbSet<Processo> Processo { get; set; }
         public DbSet<TipoContratacao> TipoContratacao { get; set; }
         public DbSet<TipoProcesso> TipoProcesso { get; set; }
+        public DbSet<DadosDoProcessoSicop> DadosDoProcessoSicop { get; set; }
+        public DbSet<DadosDeTramitacaoSicop> DadosDeTramitacaoSicop { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,7 +31,8 @@ namespace SigProc.infra.dados.Contextos
             modelBuilder.ApplyConfiguration(new GerenciaMap());
             modelBuilder.ApplyConfiguration(new TipoContratacaoMap());
             modelBuilder.ApplyConfiguration(new TipoProcessoMap());
-
+            modelBuilder.ApplyConfiguration(new DadosDoProcessoSicopMap());
+            modelBuilder.ApplyConfiguration(new DadosDeTramitacaoSicopMap());
         }
     }
 }

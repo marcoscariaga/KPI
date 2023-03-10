@@ -2,6 +2,7 @@
 using SigProc.Aplicacao.Modelos;
 using SigProc.Aplicacao.Modelos.ModeloEntrada;
 using SigProc.Domain.Entidades;
+using SigProc.Domimio.Entidades;
 using SigProc.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,10 @@ namespace SigProc.Aplicacao.Mapeamentos
             CreateMap<GerenciaModelo, Gerencia>();
             CreateMap<TipoContratacaoModelo, TipoContratacao>();
             CreateMap<TipoProcessoModelo, TipoProcesso>();
-            
+            CreateMap<DadosDoProcessoSicopModelo, DadosDoProcessoSicop>().AfterMap((command, entity) =>
+            {
+                entity.Id = 0;
+            });
         }
     }
 }
