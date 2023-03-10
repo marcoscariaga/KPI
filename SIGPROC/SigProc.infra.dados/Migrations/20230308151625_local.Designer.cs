@@ -12,8 +12,8 @@ using SigProc.infra.dados.Contextos;
 namespace SigProc.infra.dados.Migrations
 {
     [DbContext(typeof(SqlServidorContexto))]
-    [Migration("20230215150742_initial")]
-    partial class initial
+    [Migration("20230308151625_local")]
+    partial class local
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,13 +100,24 @@ namespace SigProc.infra.dados.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Id_Responsavel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prazo")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("Telefone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Gerencia");
                 });
@@ -167,6 +178,17 @@ namespace SigProc.infra.dados.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TipoProcesso");
+                });
+
+            modelBuilder.Entity("SigProc.Dominio.Entidades.Gerencia", b =>
+                {
+                    b.HasOne("SigProc.Domain.Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

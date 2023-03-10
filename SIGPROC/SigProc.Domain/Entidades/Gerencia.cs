@@ -11,9 +11,9 @@ namespace SigProc.Dominio.Entidades
     {
         public string Descricao { get; set; }
         public int Prazo { get; set; }
-        public int Id_Responsavel { get; set; }
         public string? Email { get; set; }
         public string? Telefone { get; set; }
+        public int IdUsuarioResp { get; set; }
         public bool Status { get; set; }
 
         public virtual Usuario Usuario { get; set; }

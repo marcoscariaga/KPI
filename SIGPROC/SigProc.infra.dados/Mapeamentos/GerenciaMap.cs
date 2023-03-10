@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SigProc.Domain.Entidades;
 using SigProc.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,10 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.Property(c => c.Descricao).IsRequired();
             builder.Property(c => c.Email);
             builder.Property(c => c.Telefone);
+            builder.Property(c => c.Prazo);
+            builder.HasOne<Usuario>(c => c.Usuario)
+               .WithMany()
+               .HasForeignKey(c => c.IdUsuarioResp);
             builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.DataCriacao);
             builder.Property(c => c.DataExclusao);

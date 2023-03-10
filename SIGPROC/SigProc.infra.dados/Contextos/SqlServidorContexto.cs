@@ -17,6 +17,7 @@ namespace SigProc.infra.dados.Contextos
         }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Gerencia> Gerencia { get; set; }
+        public DbSet<Processo> Processo { get; set; }
         public DbSet<TipoContratacao> TipoContratacao { get; set; }
         public DbSet<TipoProcesso> TipoProcesso { get; set; }
 

@@ -12,6 +12,7 @@ namespace SigProc.Servico.Configuracao
         {
             builder.Services.AddTransient<IUsuarioRepositorio, UsuarioRepositorio>();
             builder.Services.AddTransient<IGerenciaRepositorio, GerenciaRepositorio>();
+            builder.Services.AddTransient<IProcessoRepositorio, ProcessoRepositorio>();
             builder.Services.AddTransient<ITipoContratacaoRepositorio, TipoContratacaoRepositorio>();
             builder.Services.AddTransient<ITipoProcessoRepositorio, TipoProcessoRepositorio>();
 
