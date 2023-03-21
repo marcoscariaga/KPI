@@ -25,7 +25,7 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.Property(c => c.OrgaoCadastro);
             builder.Property(c => c.OrgaoOrigem);
             builder.Property(c => c.OrgaoDestino);
-            builder.Property(c => c.InfComplementar);
+            builder.Property(c => c.InfoComplementar);
             builder.Property(c => c.Prioridade);
             builder.Property(c => c.Observacao);
             builder.HasOne<TipoContratacao>(c => c.TipoContratacao)

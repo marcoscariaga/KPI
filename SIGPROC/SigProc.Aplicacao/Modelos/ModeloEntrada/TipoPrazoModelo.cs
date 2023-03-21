@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace SigProc.Aplicacao.Modelos
 {
-    public class GerenciaModelo
+    public class TipoPrazoModelo
     {
         public string Descricao { get; set; }
-        public string Sigla { get; set; }
-        public int Prazo { get; set; }
-        public string? Email { get; set; }
-        public string? Telefone { get; set; }
-        public int IdUsuarioResp { get; set; }
         public bool Status { get; set; }
     }
 }

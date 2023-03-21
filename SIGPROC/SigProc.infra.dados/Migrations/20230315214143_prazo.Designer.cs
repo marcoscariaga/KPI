@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SigProc.infra.dados.Contextos;
 
@@ -11,9 +12,11 @@ using SigProc.infra.dados.Contextos;
 namespace SigProc.infra.dados.Migrations
 {
     [DbContext(typeof(SqlServidorContexto))]
-    partial class SqlServidorContextoModelSnapshot : ModelSnapshot
+    [Migration("20230315214143_prazo")]
+    partial class prazo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -896,6 +899,8 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasIndex("IdTipoProcesso");
 
+                    b.HasIndex("IdUsuarioCadastro");
+
                     b.ToTable("GerenciaPrazo");
                 });
 
@@ -1115,6 +1120,12 @@ namespace SigProc.infra.dados.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SigProc.Domain.Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IdUsuarioCadastro")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Gerencia");
 
                     b.Navigation("TipoContratacao");
@@ -1122,6 +1133,8 @@ namespace SigProc.infra.dados.Migrations
                     b.Navigation("TipoPrazo");
 
                     b.Navigation("TipoProcesso");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.Processo", b =>

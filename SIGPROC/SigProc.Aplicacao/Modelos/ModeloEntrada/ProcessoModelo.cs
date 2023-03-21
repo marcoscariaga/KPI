@@ -1,15 +1,13 @@
-﻿using SigProc.Domain.Entidades;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SigProc.Dominio.Entidades
+namespace SigProc.Aplicacao.Modelos
 {
-    public class Processo : Base
+    public class ProcessoModelo
     {
-        
         public string NumProcesso { get; set; }
         public string Requerente { get; set; }
         public string Assunto { get; set; }
@@ -27,10 +25,5 @@ namespace SigProc.Dominio.Entidades
         public string Observacao { get; set; }
         public int IdUsuarioCadastro { get; set; }
         public bool Status { get; set; }
-
-        public virtual Usuario Usuario { get; set; }
-        public virtual TipoContratacao TipoContratacao { get; set; }
-        public virtual TipoProcesso TipoProcesso { get; set; }
-
     }
 }

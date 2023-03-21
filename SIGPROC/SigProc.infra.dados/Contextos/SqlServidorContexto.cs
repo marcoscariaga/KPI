@@ -18,9 +18,11 @@ namespace SigProc.infra.dados.Contextos
         }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Gerencia> Gerencia { get; set; }
+        public DbSet<GerenciaPrazo> GerenciaPrazo { get; set; }
         public DbSet<Processo> Processo { get; set; }
         public DbSet<TipoContratacao> TipoContratacao { get; set; }
         public DbSet<TipoProcesso> TipoProcesso { get; set; }
+        public DbSet<TipoPrazo> TipoPrazo { get; set; }
         public DbSet<DadosDoProcessoSicop> DadosDoProcessoSicop { get; set; }
         public DbSet<DadosDeTramitacaoSicop> DadosDeTramitacaoSicop { get; set; }
 
@@ -29,8 +31,11 @@ namespace SigProc.infra.dados.Contextos
         {
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new GerenciaMap());
+            modelBuilder.ApplyConfiguration(new GerenciaPrazoMap());
+            modelBuilder.ApplyConfiguration(new ProcessoMap());
             modelBuilder.ApplyConfiguration(new TipoContratacaoMap());
             modelBuilder.ApplyConfiguration(new TipoProcessoMap());
+            modelBuilder.ApplyConfiguration(new TipoPrazoMap());
             modelBuilder.ApplyConfiguration(new DadosDoProcessoSicopMap());
             modelBuilder.ApplyConfiguration(new DadosDeTramitacaoSicopMap());
         }

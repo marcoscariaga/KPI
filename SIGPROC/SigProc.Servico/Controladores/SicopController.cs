@@ -35,6 +35,17 @@ namespace SigProc.Servico.Controladores
             return NoContent();
         }
 
+        [HttpGet("ConsultarProcessoSicopPorNum/{numProcesso}")]
+        public IActionResult ConsultarProcessoSicopPorNum(string numProcesso)
+        {
+            var processo = _appSicopProcesso.ConsultarProcesso(numProcesso);
+            if (processo.StatusLine == "Consulta Efetuada")
+                return Ok(_appSicopProcesso.Inserir(processo));
+
+
+            return Ok(processo);
+        }
+
         [HttpPut("EditarProcesso")]
         public IActionResult EditarProcesso([FromBody] DadosDoProcessoSicop processo)
         {

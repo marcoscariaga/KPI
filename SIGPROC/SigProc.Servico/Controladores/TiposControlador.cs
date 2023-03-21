@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos;
 using SigProc.Dominio.Entidades;
+using SigProc.Aplicacao.Servicos;
 
 namespace SisAgenda.Servico.Controladores
 
@@ -17,11 +18,13 @@ namespace SisAgenda.Servico.Controladores
         {
             private readonly ITipoContratacaoServico _tipoContratacaoServico;
             private readonly ITipoProcessoServico _tipoProcessoServico;
+            private readonly ITipoPrazoServico _tipoPrazoServico;
             private IMapper _mapper;
-            public TiposController(ITipoContratacaoServico tipoContratacaoServico, ITipoProcessoServico tipoProcessoServico, IMapper mapper)
+            public TiposController(ITipoContratacaoServico tipoContratacaoServico, ITipoProcessoServico tipoProcessoServico, ITipoPrazoServico tipoPrazoServico, IMapper mapper)
             {
                 _tipoContratacaoServico = tipoContratacaoServico;
                 _tipoProcessoServico = tipoProcessoServico;
+                _tipoPrazoServico = tipoPrazoServico;
                 _mapper = mapper;
             }
 
@@ -234,6 +237,49 @@ namespace SisAgenda.Servico.Controladores
             }
         }
 
+
+        // ***************** TIPO PRAZO *****************
+
+        [HttpGet("ConsultarTipoPrazo")]
+        public IActionResult ListarTudoTipoPrazo()
+        {
+            try
+            {
+                var tipoPrazo = _tipoPrazoServico.ListarTudo();
+                if (tipoPrazo.Count == 0)
+                    return NoContent();
+                return StatusCode(200, tipoPrazo);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar o Tipo de Prazo!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar o Tipo de Prazo!" });
+            }
+        }
+
+        [HttpGet("BuscarTipoPrazoPorID/{id}")]
+        public IActionResult GetTipoPrazoById(int id)
+        {
+            try
+            {
+                var buscar = _tipoPrazoServico.RetornaPorId(id);
+                if (buscar == null)
+                    return NoContent();
+                return StatusCode(200, buscar);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar Tipo de Prazo!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar Tipo de Prazo!" });
+            }
+        }
+
     }
-    }
+}
 
