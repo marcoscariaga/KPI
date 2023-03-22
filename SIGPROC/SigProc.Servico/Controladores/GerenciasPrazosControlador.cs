@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using SigProc.Dominio.Entidades;
 using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos;
+using Microsoft.EntityFrameworkCore;
 
 namespace SisAgenda.Servico.Controladores
 {
@@ -27,19 +28,24 @@ namespace SisAgenda.Servico.Controladores
         public IActionResult Post([FromBody] GerenciaPrazoModelo gerenciaPrazo)
         {
             //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
+
             try
             {
+                if (gerenciaPrazo.Prazo <= 0)
+                    return StatusCode(400, new { mensagem = "Informe o prazo da gerência!" });
 
                 var cadastro = _gerenciaPrazoServico.Inserir(_mapper.Map<GerenciaPrazo>(gerenciaPrazo));
 
                 //Log.ForContext("Action", $"CadastrarU").Information($"O usuário: {sUsuario}, cadastrou o usuário: {usuario.Nome}.");
-                return StatusCode(201,new { cadastro, mensagem = "Prazo cadastrado com sucesso!" } );
+                return StatusCode(201, new { cadastro, mensagem = "Prazo cadastrado com sucesso!" });
+
             }
             catch (ValidationException ex)
             {
                 //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
                 return StatusCode(400, new { ex.Errors, mensagem = "Erro ao cadastrar Prazo!" });
             }
+
             catch (ArgumentException ex)
             {
                 //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
@@ -57,6 +63,9 @@ namespace SisAgenda.Servico.Controladores
         {
             try
             {
+                if (gerenciaPrazo.Prazo <= 0)
+                    return StatusCode(400, new { mensagem = "Informe o prazo da gerência!" });
+
                 var prazo = _gerenciaPrazoServico.Atualizar(_mapper.Map<GerenciaPrazo>(gerenciaPrazo));
                 return StatusCode(200, new { prazo, mensagem = "Prazo editada com sucesso!" });
             }
@@ -76,7 +85,7 @@ namespace SisAgenda.Servico.Controladores
             try
             {
                 var contato = _gerenciaPrazoServico.Excluir(id);
-                return StatusCode(200, new{ contato, mensagem = "Prazo inativado com sucesso!" });
+                return StatusCode(200, new { contato, mensagem = "Prazo inativado com sucesso!" });
             }
             catch (ArgumentException ex)
             {

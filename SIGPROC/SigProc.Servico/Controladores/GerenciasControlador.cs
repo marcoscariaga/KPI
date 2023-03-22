@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using SigProc.Dominio.Entidades;
 using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos;
+using System;
 
 namespace SisAgenda.Servico.Controladores
 {
@@ -29,7 +30,6 @@ namespace SisAgenda.Servico.Controladores
             //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
             try
             {
-
                 var cadastro = _gerenciaServico.Inserir(_mapper.Map<Gerencia>(gerencia));
 
                 //Log.ForContext("Action", $"CadastrarU").Information($"O usuário: {sUsuario}, cadastrou o usuário: {usuario.Nome}.");
@@ -57,6 +57,9 @@ namespace SisAgenda.Servico.Controladores
         {
             try
             {
+                if (gerencia.Prazo <= 0)
+                    return StatusCode(400, new { mensagem = "Informe o prazo da gerência!" });
+
                 var contato = _gerenciaServico.Atualizar(_mapper.Map<Gerencia>(gerencia));
                 return StatusCode(200, new { contato, mensagem = "Gerência editada com sucesso!" });
             }
