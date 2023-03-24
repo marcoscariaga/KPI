@@ -59,13 +59,14 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpPut("Editar")]
-        public IActionResult Editar([FromBody] GerenciaPrazo gerenciaPrazo)
+        public IActionResult Editar([FromBody] GerenciaPrazoUpdateModelo gerenciaPrazo)
         {
             try
             {
                 if (gerenciaPrazo.Prazo <= 0)
                     return StatusCode(400, new { mensagem = "Informe o prazo da gerência!" });
 
+                // Aqui você pode incluir o id na instância de GerenciaPrazo
                 var prazo = _gerenciaPrazoServico.Atualizar(_mapper.Map<GerenciaPrazo>(gerenciaPrazo));
                 return StatusCode(200, new { prazo, mensagem = "Prazo editada com sucesso!" });
             }

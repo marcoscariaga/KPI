@@ -16,5 +16,6 @@ namespace SigProc.Aplicacao.Modelos
         public int Prazo { get; set; }
         public int IdUsuarioCadastro { get; set; }
         public bool Status { get; set; }
+
     }
 }
