@@ -26,7 +26,6 @@ namespace SigProc.Dominio.Entidades
         public int IdTipoProcesso { get; set; }
         public string Observacao { get; set; }
         public int IdUsuarioCadastro { get; set; }
-        public bool Status { get; set; }
 
         public virtual Usuario Usuario { get; set; }
         public virtual TipoContratacao TipoContratacao { get; set; }

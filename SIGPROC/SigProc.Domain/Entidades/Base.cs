@@ -12,5 +12,6 @@ namespace SigProc.Domain.Entidades
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataEdicao { get; set; }
         public DateTime? DataExclusao { get; set; }
+        public bool Status { get; set; }
     }
 }

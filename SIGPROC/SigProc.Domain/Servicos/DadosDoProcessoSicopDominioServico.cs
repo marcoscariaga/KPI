@@ -98,7 +98,7 @@ namespace SigProc.Domimio.Servicos
                 verificaCadatro.DespachoProcessoTramitacao = processo.DespachoProcessoTramitacao;
                 verificaCadatro.DataEdicao = new DateTime();
                 verificaCadatro.StatusLine = "";
-
+                verificaCadatro.Status = true;
                 return _repository.Atualizar(verificaCadatro);
             }
             else

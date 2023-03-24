@@ -10,6 +10,5 @@ namespace SigProc.Dominio.Entidades
     public class TipoProcesso : Base
     {
         public  string Descricao { get; set; }
-        public bool Status { get; set; }
     }
 }

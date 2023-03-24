@@ -29,5 +29,31 @@ namespace SigProc.infra.dados.Repositorios
         {
             return contexto.GerenciaPrazo.Include(a => a.Gerencia).Include(a => a.TipoPrazo).Include(a => a.TipoContratacao).Include(a => a.TipoProcesso).Where(x => x.IdGerencia == id_gerencia).ToList();
         }
+        public GerenciaPrazo Inserir(GerenciaPrazo objeto)
+        {
+            var tipoContratacao = contexto.GerenciaPrazo.AsNoTracking().Where(x=>x.Status == true).FirstOrDefault(x => x.IdTipoContratacao.Equals(objeto.IdTipoContratacao) && x.IdGerencia.Equals(objeto.IdGerencia));
+            if (tipoContratacao != null)
+                throw new ArgumentException("Tipo de contratação já cadastrada nessa gerência!");
+
+            //var tipoProcesso = contexto.GerenciaPrazo.AsNoTracking().FirstOrDefault(x => x.IdTipoProcesso.Equals(objeto.IdTipoProcesso) && x.IdGerencia.Equals(objeto.IdGerencia));
+            //if (tipoProcesso != null)
+            //    throw new ArgumentException("Tipo de processo já cadastrado nessa gerência!");
+
+            using var trans = _ctx.Database.BeginTransaction();
+            try
+            {
+                _ctx.Entry(objeto).State = EntityState.Added;
+                _ctx.Entry(objeto).Property("DataCriacao").CurrentValue = DateTime.Now;
+                _ctx.SaveChanges();
+                trans.Commit();
+
+                return objeto;
+            }
+            catch (Exception err)
+            {
+                trans.Rollback();
+                throw err;
+            }
+        }
     }
 }

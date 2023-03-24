@@ -51,8 +51,9 @@ namespace SigProc.infra.dados.Repositorios
             using var trans = _ctx.Database.BeginTransaction();
             try
             {
-                var objeto = _dbSet.Find(id);
+                var objeto = _dbSet.Find(id); 
                 _ctx.Entry(objeto).Property("DataExclusao").CurrentValue = DateTime.Now;
+                _ctx.Entry(objeto).Property("Status").CurrentValue = false;
                 _ctx.Entry(objeto).State = EntityState.Modified;
                 _ctx.SaveChanges();
 

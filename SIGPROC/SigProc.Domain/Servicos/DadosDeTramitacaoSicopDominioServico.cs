@@ -161,6 +161,7 @@ namespace SigProc.Domimio.Servicos
                 verificaCadatro.Concad = tramitacao.Concad;
                 verificaCadatro.DataEdicao = new DateTime();
                 verificaCadatro.StatusLine = "";
+                verificaCadatro.Status = true;
 
                 return _repository.Atualizar(verificaCadatro);
             }
