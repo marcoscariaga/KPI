@@ -23,5 +23,13 @@ namespace SigProc.Dominio.Servicos
         {
             return _repositorio.RetornaPorIdGerencia(id_gerencia);
         }
+        public GerenciaPrazo Atualizar(GerenciaPrazo objeto)
+        {
+            var gerenciaPrazo = _repositorio.RetornaPorId(objeto.Id);
+
+            gerenciaPrazo.Prazo = objeto.Prazo;
+
+            return _repositorio.Atualizar(gerenciaPrazo);
+        }
     }
 }
