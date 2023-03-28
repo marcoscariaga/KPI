@@ -27,7 +27,7 @@ namespace SigProc.infra.dados.Repositorios
 
         public ICollection<GerenciaPrazo> RetornaPorIdGerencia(int id_gerencia)
         {
-            return contexto.GerenciaPrazo.Include(a => a.Gerencia).Include(a => a.TipoPrazo).Include(a => a.TipoContratacao).Include(a => a.TipoProcesso).Where(x => x.IdGerencia == id_gerencia).ToList();
+            return contexto.GerenciaPrazo.Include(a => a.Gerencia).Include(a => a.TipoPrazo).Include(a => a.TipoContratacao).Include(a => a.TipoProcesso).Where(x => (x.IdGerencia == id_gerencia) && x.Status == true ).ToList();
         }
         public GerenciaPrazo Inserir(GerenciaPrazo objeto)
         {
