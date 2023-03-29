@@ -21,6 +21,11 @@ namespace SigProc.Aplicacao.Servicos
             return _servico.Atualizar(objeto);
         }
 
+        public TEntity Deletar(TEntity objeto)
+        {
+            return _servico.Deletar(objeto);
+        }
+
         public void Dispose()
         {
             _servico.Dispose();

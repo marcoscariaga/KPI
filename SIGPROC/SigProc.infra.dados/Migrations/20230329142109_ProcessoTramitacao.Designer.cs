@@ -12,7 +12,7 @@ using SigProc.infra.dados.Contextos;
 namespace SigProc.infra.dados.Migrations
 {
     [DbContext(typeof(SqlServidorContexto))]
-    [Migration("20230327175146_ProcessoTramitacao")]
+    [Migration("20230329142109_ProcessoTramitacao")]
     partial class ProcessoTramitacao
     {
         /// <inheritdoc />
@@ -1050,13 +1050,16 @@ namespace SigProc.infra.dados.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdOrgaoDestino");
 
                     b.HasIndex("IdProcesso");
 
-                    b.HasIndex("IdUsuarioTramitacao");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("ProcessoTramitacao");
                 });
@@ -1222,18 +1225,18 @@ namespace SigProc.infra.dados.Migrations
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "Gerencia")
                         .WithMany()
                         .HasForeignKey("IdOrgaoDestino")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.Processo", "Processo")
                         .WithMany()
                         .HasForeignKey("IdProcesso")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SigProc.Domain.Entidades.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("IdUsuarioTramitacao")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

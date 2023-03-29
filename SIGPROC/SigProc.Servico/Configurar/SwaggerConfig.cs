@@ -14,7 +14,7 @@ namespace SigProc.Servico.Configurar
                 {
                     Version = "v1",
                     Title = "Api SigProc",
-                    Description = "SISTEMA DE GERENCIAMENTO DE PROCESSOS DA SMS ",
+                    Description = "SISTEMA DE GERENCIAMENTO DE PROCESSOS DA SMS/RJ ",
                     Contact = new OpenApiContact { Name = "STI", Email = "" }
                 });
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

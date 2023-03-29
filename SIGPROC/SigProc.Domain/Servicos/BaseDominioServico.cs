@@ -20,6 +20,11 @@ namespace SigProc.Dominio.Servicos
             return repository.Atualizar(objeto);
         }
 
+        public TEntity Deletar(TEntity objeto)
+        {
+            return repository.Deletar(objeto);
+        }
+
         public void Dispose()
         {
             repository.Dispose();

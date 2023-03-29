@@ -3,6 +3,7 @@ using SigProc.Domain.Contratos.Servicos;
 using SigProc.Domimio.Contratos.Dados;
 using SigProc.Domimio.Contratos.Servicos;
 using SigProc.Domimio.Entidades;
+using SigProc.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,6 +26,11 @@ namespace SigProc.Domimio.Servicos
         public DadosDoProcessoSicop Atualizar(DadosDoProcessoSicop processo)
         {
             return _repository.Atualizar(processo);
+        }
+
+        public DadosDoProcessoSicop Deletar(DadosDoProcessoSicop objeto)
+        {
+            return _repository.Deletar(objeto);
         }
 
         public void Dispose()

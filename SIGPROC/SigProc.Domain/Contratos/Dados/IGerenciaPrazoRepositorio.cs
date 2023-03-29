@@ -12,6 +12,5 @@ namespace SigProc.Dominio.Contratos.Dados
     {
         ICollection<GerenciaPrazo> ListarAtivos();
         ICollection<GerenciaPrazo> RetornaPorIdGerencia(int id_gerencia);
-
     }
 }

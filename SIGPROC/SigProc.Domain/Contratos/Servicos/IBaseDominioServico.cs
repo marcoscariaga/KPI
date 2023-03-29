@@ -13,5 +13,6 @@ namespace SigProc.Domain.Contratos.Servicos
         TEntity Excluir(int id);
         ICollection<TEntity> ListarTudo();
         TEntity RetornaPorId(int id);
+        TEntity Deletar(TEntity objeto);
     }
 }

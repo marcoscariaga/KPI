@@ -42,6 +42,11 @@ namespace SigProc.Domain.Servicos
         public Usuario BuscarPorEmail(string email)
             => _repository.BuscarPorEmail(email);
 
+        public Usuario Deletar(Usuario objeto)
+        {
+            return _repository.Deletar(objeto);
+        }
+
         public void Dispose()
         {
             _repository.Dispose();

@@ -18,13 +18,18 @@ namespace SigProc.infra.dados.Mapeamentos
 
             builder.HasOne<Processo>(c => c.Processo)
                .WithMany()
-               .HasForeignKey(c => c.IdProcesso).IsRequired();
+               .HasForeignKey(c => c.IdProcesso)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasOne<Gerencia>(c => c.Gerencia)
                .WithMany()
-               .HasForeignKey(c => c.IdOrgaoOrigem).IsRequired();
+               .HasForeignKey(c => c.IdOrgaoOrigem).IsRequired().OnDelete(DeleteBehavior.Restrict);
+
             builder.HasOne<Gerencia>(c => c.Gerencia)
                .WithMany()
-               .HasForeignKey(c => c.IdOrgaoDestino).IsRequired();
+               .HasForeignKey(c => c.IdOrgaoDestino).IsRequired().OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(c => c.Prazo).IsRequired();
             builder.Property(c => c.DataTramitacao).IsRequired();
             builder.Property(c => c.DataPrazo).IsRequired();

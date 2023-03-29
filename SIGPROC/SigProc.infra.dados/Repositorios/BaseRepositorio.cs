@@ -67,6 +67,24 @@ namespace SigProc.infra.dados.Repositorios
             }
         }
 
+        public TEntity Deletar(TEntity objeto)
+        {
+            using var trans = _ctx.Database.BeginTransaction();
+            try
+            {
+                _ctx.Entry(objeto).State = EntityState.Deleted;
+                _ctx.SaveChanges();
+
+                trans.Commit();
+                return objeto;
+            }
+            catch (Exception err)
+            {
+                trans.Rollback();
+                throw err;
+            }
+        }
+
         public TEntity Inserir(TEntity objeto)
         {
             using var trans = _ctx.Database.BeginTransaction();

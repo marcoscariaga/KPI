@@ -25,6 +25,11 @@ namespace SigProc.Domimio.Servicos
             return _repository.Atualizar(tramitacao);
         }
 
+        public DadosDeTramitacaoSicop Deletar(DadosDeTramitacaoSicop objeto)
+        {
+            return _repository.Deletar(objeto);
+        }
+
         public void Dispose()
         {
             _repository.Dispose();

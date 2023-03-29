@@ -20,6 +20,11 @@ namespace SigProc.infra.dados.Repositorios
             contexto = sqlServerContext;
         }
 
+        public Processo BuscarPorNumeroProcesso(string numeroProcesso)
+        {
+            return contexto.Processo.Where(a => a.Status.Equals(true) && a.NumProcesso.Equals(numeroProcesso)).FirstOrDefault();
+        }
+
         public ICollection<Processo> ListarAtivos()
         {
             return contexto.Processo.Where(a => a.Status == true).ToList();

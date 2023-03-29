@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SigProc.Domain.Entidades;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Entidades;
 using SigProc.infra.dados.Contextos;
@@ -24,5 +25,9 @@ namespace SigProc.infra.dados.Repositorios
         {
             return contexto.Gerencia.Where(a => a.Status == true).ToList();
         }
+        public Gerencia BuscarPorSiglaGerencia(string sigla)
+            => contexto.Gerencia
+                 .AsNoTracking()
+                .FirstOrDefault(x => x.Sigla.Equals(sigla));
     }
 }
