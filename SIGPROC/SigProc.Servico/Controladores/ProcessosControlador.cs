@@ -57,7 +57,7 @@ namespace SisAgenda.Servico.Controladores
         {
             try
             {
-                var contato = _processoServico.Atualizar(_mapper.Map<Processo>(processo));
+                var contato = _processoServico.Atualizar(processo);
                 return StatusCode(200, new { contato, mensagem = "Processo editada com sucesso!" });
             }
             catch (ArgumentException ex)
