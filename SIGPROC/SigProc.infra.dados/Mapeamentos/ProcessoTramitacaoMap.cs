@@ -34,6 +34,7 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.Property(c => c.DataTramitacao).IsRequired();
             builder.Property(c => c.DataPrazo).IsRequired();
             builder.Property(c => c.Observacao);
+            builder.Property(c => c.NumeroProcesso);
             builder.Property(c => c.IdUsuarioTramitacao).IsRequired();
             builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.DataCriacao);

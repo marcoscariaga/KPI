@@ -128,5 +128,27 @@ namespace SigProc.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar tramitacao!" });
             }
         }
+
+        [HttpGet("BuscarPorNumeroProcesso{numeroProcesso}")]
+        public IActionResult BuscarPorNumeroProcesso(string numeroProcesso)
+        {
+            try
+            {
+                var processoTramitacao = _processoTramitacaoServico.BuscarPorNumeroProcesso(numeroProcesso);
+                if (processoTramitacao == null)
+                    return NoContent();
+
+                return StatusCode(200, processoTramitacao);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = $"Erro ao buscar tramitacao!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar tramitacao!" });
+            }
+        }
     }
 }

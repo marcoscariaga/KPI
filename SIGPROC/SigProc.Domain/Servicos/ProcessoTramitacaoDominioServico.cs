@@ -14,6 +14,11 @@ namespace SigProc.Dominio.Servicos
             _repositorio = repository;
         }
 
+        public ProcessoTramitacao BuscarPorNumeroProcesso(string numeroProcesso)
+        {
+            return _repositorio.BuscarPorNumeroProcesso(numeroProcesso);
+        }
+
         public ICollection<ProcessoTramitacao> ListarAtivos()
         {
             return _repositorio.ListarAtivos();

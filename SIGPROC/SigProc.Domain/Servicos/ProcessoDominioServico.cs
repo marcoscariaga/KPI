@@ -76,7 +76,8 @@ namespace SigProc.Dominio.Servicos
                 DataPrazo = dataFutura,
                 Observacao = processo.Observacao,
                 IdUsuarioTramitacao = processo.IdUsuarioCadastro,
-                Status = true
+                Status = true,
+                NumeroProcesso = processo.NumProcesso
             };
 
          

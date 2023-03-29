@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,6 +22,7 @@ namespace SigProc.Aplicacao.Modelos
         [Column(TypeName = "date")]
         public DateTime? Data_Prazo { get; set; }
         public string Observacao { get; set; }
+        public string NumeroProcesso { get; set; }
         public int IdUsuarioTramitacao { get; set; }
     }
 }

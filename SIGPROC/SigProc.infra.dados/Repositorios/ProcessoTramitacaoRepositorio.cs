@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SigProc.Domain.Entidades;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Entidades;
 using SigProc.infra.dados.Contextos;
@@ -24,5 +25,10 @@ namespace SigProc.infra.dados.Repositorios
         {
             return contexto.ProcessoTramitacao.Where(a => a.Status == true).ToList();
         }
+
+        public ProcessoTramitacao BuscarPorNumeroProcesso(string numeroProcesso)
+        => contexto.ProcessoTramitacao
+             .AsNoTracking()
+            .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso));
     }
 }

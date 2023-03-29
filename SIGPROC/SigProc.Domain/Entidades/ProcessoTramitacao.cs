@@ -23,6 +23,7 @@ namespace SigProc.Dominio.Entidades
         [Column(TypeName = "date")]
         public DateTime? DataPrazo { get; set; }
         public string Observacao { get; set; }
+        public string NumeroProcesso { get; set; }
         public int IdUsuarioTramitacao { get; set; }
 
 
