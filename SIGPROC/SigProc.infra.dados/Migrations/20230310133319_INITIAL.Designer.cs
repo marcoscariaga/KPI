@@ -923,26 +923,11 @@ namespace SigProc.infra.dados.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int>("TipoContratacaoId")
-                        .HasColumnType("int");
-
                     b.Property<string>("TipoDoc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TipoProcessoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TipoContratacaoId");
-
-                    b.HasIndex("TipoProcessoId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Processo");
                 });
@@ -1020,19 +1005,19 @@ namespace SigProc.infra.dados.Migrations
                 {
                     b.HasOne("SigProc.Dominio.Entidades.TipoContratacao", "TipoContratacao")
                         .WithMany()
-                        .HasForeignKey("TipoContratacaoId")
+                        .HasForeignKey("IdTipoContratacao")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.TipoProcesso", "TipoProcesso")
                         .WithMany()
-                        .HasForeignKey("TipoProcessoId")
+                        .HasForeignKey("IdTipoProcesso")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SigProc.Domain.Entidades.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .HasForeignKey("IdUsuarioCadastro")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

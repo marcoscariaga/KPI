@@ -34,8 +34,8 @@ namespace SigProc.Dominio.Servicos
             if (consultaProcesso != null)
                 throw new ArgumentException($"O processo {processo.NumProcesso} já está cadastrado no sistema.");
 
-            string[] siglaDestino = processo.OrgaoDestino.Split('-');
-            string[] siglaOrigem = processo.OrgaoOrigem.Split('-');
+            string[] siglaDestino = processo.OrgaoDestino.Split(new string[] { " - " }, StringSplitOptions.None);
+            string[] siglaOrigem = processo.OrgaoOrigem.Split(new string[] { " - " }, StringSplitOptions.None);
 
             var orgaoDestino = _gerencia.BuscarPorSiglaGerencia(siglaDestino[1].Trim());
             if (orgaoDestino == null)

@@ -18,24 +18,28 @@ namespace SigProc.infra.dados.Mapeamentos
 
             builder.HasOne<Processo>(c => c.Processo)
                .WithMany()
-               .HasForeignKey(c => c.IdProcesso)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .HasForeignKey(c => c.IdProcesso).IsRequired();
 
-            builder.HasOne<Gerencia>(c => c.Gerencia)
-               .WithMany()
-               .HasForeignKey(c => c.IdOrgaoOrigem).IsRequired().OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne<Gerencia>(c => c.Gerencia)
+            builder.HasOne<Gerencia>(c => c.GerenciaOrigem)
                .WithMany()
-               .HasForeignKey(c => c.IdOrgaoDestino).IsRequired().OnDelete(DeleteBehavior.Restrict);
+               .HasForeignKey(c => c.IdOrgaoOrigem).IsRequired();
+
+            builder.HasOne<Gerencia>(c => c.GerenciaDestino)
+               .WithMany()
+               .HasForeignKey(c => c.IdOrgaoDestino).IsRequired();
 
             builder.Property(c => c.Prazo).IsRequired();
             builder.Property(c => c.DataTramitacao).IsRequired();
             builder.Property(c => c.DataPrazo).IsRequired();
             builder.Property(c => c.Observacao);
             builder.Property(c => c.NumeroProcesso);
-            builder.Property(c => c.IdUsuarioTramitacao).IsRequired();
+            builder.HasOne<Usuario>(c => c.UsuarioTramitacao)
+               .WithMany()
+               .HasForeignKey(c => c.IdUsuarioTramitacao)
+               .OnDelete(DeleteBehavior.Restrict)
+               .IsRequired();
+
             builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.DataCriacao);
             builder.Property(c => c.DataExclusao);

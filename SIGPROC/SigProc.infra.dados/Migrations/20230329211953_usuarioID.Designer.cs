@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SigProc.infra.dados.Contextos;
 
@@ -11,9 +12,11 @@ using SigProc.infra.dados.Contextos;
 namespace SigProc.infra.dados.Migrations
 {
     [DbContext(typeof(SqlServidorContexto))]
-    partial class SqlServidorContextoModelSnapshot : ModelSnapshot
+    [Migration("20230329211953_usuarioID")]
+    partial class usuarioID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1055,11 +1058,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasIndex("IdOrgaoDestino");
 
-                    b.HasIndex("IdOrgaoOrigem");
-
                     b.HasIndex("IdProcesso");
-
-                    b.HasIndex("IdUsuarioTramitacao");
 
                     b.ToTable("ProcessoTramitacao");
                 });
@@ -1222,15 +1221,9 @@ namespace SigProc.infra.dados.Migrations
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.ProcessoTramitacao", b =>
                 {
-                    b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaDestino")
+                    b.HasOne("SigProc.Dominio.Entidades.Gerencia", "Gerencia")
                         .WithMany()
                         .HasForeignKey("IdOrgaoDestino")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaOrigem")
-                        .WithMany()
-                        .HasForeignKey("IdOrgaoOrigem")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1240,19 +1233,9 @@ namespace SigProc.infra.dados.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SigProc.Domain.Entidades.Usuario", "UsuarioTramitacao")
-                        .WithMany()
-                        .HasForeignKey("IdUsuarioTramitacao")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("GerenciaDestino");
-
-                    b.Navigation("GerenciaOrigem");
+                    b.Navigation("Gerencia");
 
                     b.Navigation("Processo");
-
-                    b.Navigation("UsuarioTramitacao");
                 });
 #pragma warning restore 612, 618
         }

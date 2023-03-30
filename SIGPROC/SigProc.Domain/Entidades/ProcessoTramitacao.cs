@@ -27,9 +27,10 @@ namespace SigProc.Dominio.Entidades
         public int IdUsuarioTramitacao { get; set; }
 
 
-        public virtual Usuario Usuario { get; set; }
         public virtual Processo Processo { get; set; }
-        public virtual Gerencia Gerencia { get; set; }
+        public virtual Gerencia GerenciaOrigem { get; set; }
+        public virtual Gerencia GerenciaDestino { get; set; }
+        public virtual Usuario UsuarioTramitacao { get; set; }
 
     }
 }

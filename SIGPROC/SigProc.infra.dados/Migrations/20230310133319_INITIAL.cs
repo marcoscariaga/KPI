@@ -319,9 +319,6 @@ namespace SigProc.infra.dados.Migrations
                     Observacao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdUsuarioCadastro = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    TipoContratacaoId = table.Column<int>(type: "int", nullable: false),
-                    TipoProcessoId = table.Column<int>(type: "int", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -330,20 +327,20 @@ namespace SigProc.infra.dados.Migrations
                 {
                     table.PrimaryKey("PK_Processo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Processo_TipoContratacao_TipoContratacaoId",
-                        column: x => x.TipoContratacaoId,
+                        name: "FK_Processo_TipoContratacao_IdTipoContratacao",
+                        column: x => x.IdTipoContratacao,
                         principalTable: "TipoContratacao",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Processo_TipoProcesso_TipoProcessoId",
-                        column: x => x.TipoProcessoId,
+                        name: "FK_Processo_TipoProcesso_IdTipoProcesso",
+                        column: x => x.IdTipoProcesso,
                         principalTable: "TipoProcesso",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Processo_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
+                        name: "FK_Processo_Usuario_IdUsuarioCadastro",
+                        column: x => x.IdUsuarioCadastro,
                         principalTable: "Usuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -355,19 +352,19 @@ namespace SigProc.infra.dados.Migrations
                 column: "IdUsuarioResp");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Processo_TipoContratacaoId",
+                name: "IX_Processo_IdTipoContratacao",
                 table: "Processo",
-                column: "TipoContratacaoId");
+                column: "IdTipoContratacao");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Processo_TipoProcessoId",
+                name: "IX_Processo_IdTipoProcesso",
                 table: "Processo",
-                column: "TipoProcessoId");
+                column: "IdTipoProcesso");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Processo_UsuarioId",
+                name: "IX_Processo_IdUsuarioCadastro",
                 table: "Processo",
-                column: "UsuarioId");
+                column: "IdUsuarioCadastro");
         }
 
         /// <inheritdoc />

@@ -129,7 +129,7 @@ namespace SigProc.Servico.Controladores
             }
         }
 
-        [HttpGet("BuscarPorNumeroProcesso{numeroProcesso}")]
+        [HttpGet("BuscarPorNumeroProcesso/{numeroProcesso}")]
         public IActionResult BuscarPorNumeroProcesso(string numeroProcesso)
         {
             try

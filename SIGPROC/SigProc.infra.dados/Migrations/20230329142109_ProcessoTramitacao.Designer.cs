@@ -1050,16 +1050,12 @@ namespace SigProc.infra.dados.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdOrgaoDestino");
 
                     b.HasIndex("IdProcesso");
 
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("ProcessoTramitacao");
                 });
@@ -1236,7 +1232,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasOne("SigProc.Domain.Entidades.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .HasForeignKey("IdUsuarioTramitacao")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

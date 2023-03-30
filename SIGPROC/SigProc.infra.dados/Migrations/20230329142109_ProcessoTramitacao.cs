@@ -25,7 +25,6 @@ namespace SigProc.infra.dados.Migrations
                     DataPrazo = table.Column<DateTime>(type: "date", nullable: false),
                     Observacao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdUsuarioTramitacao = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -47,8 +46,8 @@ namespace SigProc.infra.dados.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProcessoTramitacao_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
+                        name: "FK_ProcessoTramitacao_Usuario_IdUsuarioTramitacao",
+                        column: x => x.IdUsuarioTramitacao,
                         principalTable: "Usuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -65,9 +64,9 @@ namespace SigProc.infra.dados.Migrations
                 column: "IdProcesso");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProcessoTramitacao_UsuarioId",
+                name: "IX_ProcessoTramitacao_IdUsuarioTramitacao",
                 table: "ProcessoTramitacao",
-                column: "UsuarioId");
+                column: "IdUsuarioTramitacao");
         }
 
         /// <inheritdoc />

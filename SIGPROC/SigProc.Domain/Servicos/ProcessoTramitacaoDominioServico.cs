@@ -23,5 +23,6 @@ namespace SigProc.Dominio.Servicos
         {
             return _repositorio.ListarAtivos();
         }
+
     }
 }

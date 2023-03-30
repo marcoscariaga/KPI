@@ -28,7 +28,10 @@ namespace SigProc.infra.dados.Repositorios
 
         public ProcessoTramitacao BuscarPorNumeroProcesso(string numeroProcesso)
         => contexto.ProcessoTramitacao
-             .AsNoTracking()
+            .AsNoTracking()
+            .Include(a => a.GerenciaOrigem)
+            .Include(a => a.GerenciaDestino)
+            .Include(a => a.UsuarioTramitacao)
             .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso));
     }
 }
