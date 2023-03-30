@@ -14,7 +14,7 @@ namespace SigProc.Aplicacao.Modelos
         public int IdProcesso { get; set; }
         public int IdOrgaoOrigem { get; set; }
         public int IdOrgaoDestino { get; set; }
-        public int Prazo { get; set; }
+        public int? Prazo { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime? Data_Tramitacao { get; set; }

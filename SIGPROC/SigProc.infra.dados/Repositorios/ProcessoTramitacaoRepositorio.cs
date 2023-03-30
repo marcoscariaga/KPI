@@ -26,12 +26,21 @@ namespace SigProc.infra.dados.Repositorios
             return contexto.ProcessoTramitacao.Where(a => a.Status == true).ToList();
         }
 
-        public ProcessoTramitacao BuscarPorNumeroProcesso(string numeroProcesso)
-        => contexto.ProcessoTramitacao
-            .AsNoTracking()
-            .Include(a => a.GerenciaOrigem)
-            .Include(a => a.GerenciaDestino)
-            .Include(a => a.UsuarioTramitacao)
-            .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso));
+        public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
+            => contexto.ProcessoTramitacao
+                .OrderByDescending(x => x.DataCriacao)
+                .Include(a => a.GerenciaOrigem)
+                .Include(a => a.GerenciaDestino)
+                .Include(a => a.UsuarioTramitacao)
+                .AsNoTracking()
+                .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso));
+
+        public ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
+           => contexto.ProcessoTramitacao
+                .Where(x => x.NumeroProcesso.Equals(numeroProcesso))
+                .Include(a => a.GerenciaOrigem)
+                .Include(a => a.GerenciaDestino)
+                .Include(a => a.UsuarioTramitacao)
+                .AsNoTracking().ToList();
     }
 }

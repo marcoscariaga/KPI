@@ -17,9 +17,14 @@ namespace SigProc.Aplicacao.Servicos
             this.processoTramitacaoDomainService = processoTramitacaoDomainService;
         }
 
-        public ProcessoTramitacao BuscarPorNumeroProcesso(string numeroProcesso)
+        public ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
         {
-            return processoTramitacaoDomainService.BuscarPorNumeroProcesso(numeroProcesso);
+            return processoTramitacaoDomainService.BuscarTramitacoesPorNumeroProcesso(numeroProcesso);
+        }
+
+        public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
+        {
+            return processoTramitacaoDomainService.BuscarUltimaTramitacaoPorNumeroProcesso(numeroProcesso);
         }
 
         public ICollection<ProcessoTramitacao> ListarAtivos()

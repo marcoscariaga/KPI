@@ -7,6 +7,7 @@ namespace SigProc.Dominio.Contratos.Servicos
     public interface IProcessoTramitacaoDominioServico : IBaseDominioServico<ProcessoTramitacao>
     {
         public ICollection<ProcessoTramitacao> ListarAtivos();
-        ProcessoTramitacao BuscarPorNumeroProcesso(string numeroProcesso);
+        ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso);
+        ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso);
     }
 }

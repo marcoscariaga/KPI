@@ -129,12 +129,33 @@ namespace SigProc.Servico.Controladores
             }
         }
 
-        [HttpGet("BuscarPorNumeroProcesso/{numeroProcesso}")]
-        public IActionResult BuscarPorNumeroProcesso(string numeroProcesso)
+        [HttpGet("BuscarUltimaTramitacaoPorNumeroProcesso/{numeroProcesso}")]
+        public IActionResult BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
         {
             try
             {
-                var processoTramitacao = _processoTramitacaoServico.BuscarPorNumeroProcesso(numeroProcesso);
+                var processoTramitacao = _processoTramitacaoServico.BuscarUltimaTramitacaoPorNumeroProcesso(numeroProcesso);
+                if (processoTramitacao == null)
+                    return NoContent();
+
+                return StatusCode(200, processoTramitacao);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = $"Erro ao buscar tramitacao!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar tramitacao!" });
+            }
+        }
+        [HttpGet("BuscarTramitacoesPorNumeroProcesso/{numeroProcesso}")]
+        public IActionResult BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
+        {
+            try
+            {
+                var processoTramitacao = _processoTramitacaoServico.BuscarTramitacoesPorNumeroProcesso(numeroProcesso);
                 if (processoTramitacao == null)
                     return NoContent();
 
