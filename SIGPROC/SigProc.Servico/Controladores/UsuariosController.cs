@@ -44,7 +44,7 @@ namespace SigProc.Servico.Controllers
             }
         }
         [HttpPut("Editar")]
-        public IActionResult Editar([FromBody] UsuarioModelo usuario)
+        public IActionResult Editar([FromBody] Usuario usuario)
         {
             try
             {

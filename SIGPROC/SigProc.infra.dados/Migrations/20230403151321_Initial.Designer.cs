@@ -12,8 +12,8 @@ using SigProc.infra.dados.Contextos;
 namespace SigProc.infra.dados.Migrations
 {
     [DbContext(typeof(SqlServidorContexto))]
-    [Migration("20230403123028_ProcessoTramitacao_tempoEnvio,dataEnvio,tempoPrazo")]
-    partial class ProcessoTramitacaotempoEnviodataEnviotempoPrazo
+    [Migration("20230403151321_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1237,13 +1237,13 @@ namespace SigProc.infra.dados.Migrations
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaDestino")
                         .WithMany()
                         .HasForeignKey("IdOrgaoDestino")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaOrigem")
                         .WithMany()
                         .HasForeignKey("IdOrgaoOrigem")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.Processo", "Processo")

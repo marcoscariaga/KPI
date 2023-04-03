@@ -1234,13 +1234,13 @@ namespace SigProc.infra.dados.Migrations
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaDestino")
                         .WithMany()
                         .HasForeignKey("IdOrgaoDestino")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaOrigem")
                         .WithMany()
                         .HasForeignKey("IdOrgaoOrigem")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.Processo", "Processo")

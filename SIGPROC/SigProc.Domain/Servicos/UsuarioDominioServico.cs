@@ -73,6 +73,7 @@ namespace SigProc.Domain.Servicos
             #endregion
 
             objeto.Senha = CriptografiaServico.Encrypt(objeto.Senha);
+            objeto.Status = true;
             return _repository.Inserir(objeto);
         }
 

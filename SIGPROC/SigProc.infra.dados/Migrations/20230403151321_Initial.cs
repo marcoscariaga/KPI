@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SigProc.infra.dados.Migrations
 {
     /// <inheritdoc />
-    public partial class INITIAL : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -136,7 +136,8 @@ namespace SigProc.infra.dados.Migrations
                     StatusLine = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,7 +206,8 @@ namespace SigProc.infra.dados.Migrations
                     StatusLine = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -219,14 +221,31 @@ namespace SigProc.infra.dados.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TipoContratacao", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TipoPrazo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TipoPrazo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -236,10 +255,10 @@ namespace SigProc.infra.dados.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -262,7 +281,8 @@ namespace SigProc.infra.dados.Migrations
                     Senha = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -276,14 +296,15 @@ namespace SigProc.infra.dados.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sigla = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Prazo = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Telefone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdUsuarioResp = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -302,7 +323,7 @@ namespace SigProc.infra.dados.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NumProcesso = table.Column<int>(type: "int", nullable: false),
+                    NumProcesso = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Requerente = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Assunto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TipoDoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -312,16 +333,16 @@ namespace SigProc.infra.dados.Migrations
                     OrgaoCadastro = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrgaoOrigem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrgaoDestino = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    InfComplementar = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InfoComplementar = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Prioridade = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdTipoContratacao = table.Column<int>(type: "int", nullable: false),
                     IdTipoProcesso = table.Column<int>(type: "int", nullable: false),
                     Observacao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdUsuarioCadastro = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -346,10 +367,126 @@ namespace SigProc.infra.dados.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "GerenciaPrazo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdGerencia = table.Column<int>(type: "int", nullable: false),
+                    IdTipoPrazo = table.Column<int>(type: "int", nullable: false),
+                    IdTipoContratacao = table.Column<int>(type: "int", nullable: true),
+                    IdTipoProcesso = table.Column<int>(type: "int", nullable: true),
+                    Prazo = table.Column<int>(type: "int", nullable: false),
+                    IdUsuarioCadastro = table.Column<int>(type: "int", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GerenciaPrazo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GerenciaPrazo_Gerencia_IdGerencia",
+                        column: x => x.IdGerencia,
+                        principalTable: "Gerencia",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GerenciaPrazo_TipoContratacao_IdTipoContratacao",
+                        column: x => x.IdTipoContratacao,
+                        principalTable: "TipoContratacao",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GerenciaPrazo_TipoPrazo_IdTipoPrazo",
+                        column: x => x.IdTipoPrazo,
+                        principalTable: "TipoPrazo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GerenciaPrazo_TipoProcesso_IdTipoProcesso",
+                        column: x => x.IdTipoProcesso,
+                        principalTable: "TipoProcesso",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProcessoTramitacao",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdProcesso = table.Column<int>(type: "int", nullable: false),
+                    IdOrgaoOrigem = table.Column<int>(type: "int", nullable: false),
+                    IdOrgaoDestino = table.Column<int>(type: "int", nullable: false),
+                    Prazo = table.Column<int>(type: "int", nullable: false),
+                    TempoPrazo = table.Column<int>(type: "int", nullable: true),
+                    TempoEnvio = table.Column<int>(type: "int", nullable: true),
+                    DataEnvio = table.Column<DateTime>(type: "date", nullable: true),
+                    DataTramitacao = table.Column<DateTime>(type: "date", nullable: false),
+                    DataPrazo = table.Column<DateTime>(type: "date", nullable: false),
+                    Observacao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumeroProcesso = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdUsuarioTramitacao = table.Column<int>(type: "int", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataEdicao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataExclusao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProcessoTramitacao", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProcessoTramitacao_Gerencia_IdOrgaoDestino",
+                        column: x => x.IdOrgaoDestino,
+                        principalTable: "Gerencia",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProcessoTramitacao_Gerencia_IdOrgaoOrigem",
+                        column: x => x.IdOrgaoOrigem,
+                        principalTable: "Gerencia",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProcessoTramitacao_Processo_IdProcesso",
+                        column: x => x.IdProcesso,
+                        principalTable: "Processo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProcessoTramitacao_Usuario_IdUsuarioTramitacao",
+                        column: x => x.IdUsuarioTramitacao,
+                        principalTable: "Usuario",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Gerencia_IdUsuarioResp",
                 table: "Gerencia",
                 column: "IdUsuarioResp");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GerenciaPrazo_IdGerencia",
+                table: "GerenciaPrazo",
+                column: "IdGerencia");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GerenciaPrazo_IdTipoContratacao",
+                table: "GerenciaPrazo",
+                column: "IdTipoContratacao");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GerenciaPrazo_IdTipoPrazo",
+                table: "GerenciaPrazo",
+                column: "IdTipoPrazo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GerenciaPrazo_IdTipoProcesso",
+                table: "GerenciaPrazo",
+                column: "IdTipoProcesso");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Processo_IdTipoContratacao",
@@ -365,6 +502,26 @@ namespace SigProc.infra.dados.Migrations
                 name: "IX_Processo_IdUsuarioCadastro",
                 table: "Processo",
                 column: "IdUsuarioCadastro");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProcessoTramitacao_IdOrgaoDestino",
+                table: "ProcessoTramitacao",
+                column: "IdOrgaoDestino");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProcessoTramitacao_IdOrgaoOrigem",
+                table: "ProcessoTramitacao",
+                column: "IdOrgaoOrigem");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProcessoTramitacao_IdProcesso",
+                table: "ProcessoTramitacao",
+                column: "IdProcesso");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProcessoTramitacao_IdUsuarioTramitacao",
+                table: "ProcessoTramitacao",
+                column: "IdUsuarioTramitacao");
         }
 
         /// <inheritdoc />
@@ -375,6 +532,15 @@ namespace SigProc.infra.dados.Migrations
 
             migrationBuilder.DropTable(
                 name: "DadosDoProcessoSicop");
+
+            migrationBuilder.DropTable(
+                name: "GerenciaPrazo");
+
+            migrationBuilder.DropTable(
+                name: "ProcessoTramitacao");
+
+            migrationBuilder.DropTable(
+                name: "TipoPrazo");
 
             migrationBuilder.DropTable(
                 name: "Gerencia");

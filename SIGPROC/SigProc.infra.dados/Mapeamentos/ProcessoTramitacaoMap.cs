@@ -22,12 +22,16 @@ namespace SigProc.infra.dados.Mapeamentos
 
 
             builder.HasOne<Gerencia>(c => c.GerenciaOrigem)
-               .WithMany()
-               .HasForeignKey(c => c.IdOrgaoOrigem).IsRequired();
+                 .WithMany()
+                 .HasForeignKey(c => c.IdOrgaoOrigem)
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Gerencia>(c => c.GerenciaDestino)
-               .WithMany()
-               .HasForeignKey(c => c.IdOrgaoDestino).IsRequired();
+                .WithMany()
+                .HasForeignKey(c => c.IdOrgaoDestino)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(c => c.TempoPrazo);
             builder.Property(c => c.TempoEnvio);
