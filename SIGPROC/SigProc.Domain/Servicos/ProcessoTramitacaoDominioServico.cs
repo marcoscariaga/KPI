@@ -1,4 +1,5 @@
-﻿using SigProc.Domain.Contratos.Servicos;
+﻿using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using SigProc.Domain.Contratos.Servicos;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
@@ -43,6 +44,13 @@ namespace SigProc.Dominio.Servicos
                     diasAcrescentados++;
                 }
             }
+
+            var ultimaTramitacao = _repositorio.BuscarUltimaTramitacaoPorNumeroProcesso(processoTramitacao.NumeroProcesso);
+            TimeSpan tempoEnvio = (TimeSpan)(DateTime.Today - ultimaTramitacao.DataTramitacao);
+            ultimaTramitacao.DataEnvio = dataAtual;
+            ultimaTramitacao.TempoEnvio = tempoEnvio.Days;
+            _repositorio.Atualizar(ultimaTramitacao);
+
 
             ProcessoTramitacao tramitacao = new ProcessoTramitacao()
             {

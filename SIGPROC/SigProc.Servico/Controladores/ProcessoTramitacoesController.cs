@@ -90,7 +90,7 @@ namespace SigProc.Servico.Controladores
         {
             try
             {
-                var processoTramitacao = _processoTramitacaoServico.ListarTudo();
+                var processoTramitacao = _processoTramitacaoServico.ListarAtivos();
                 if (processoTramitacao.Count == 0)
                     return NoContent();
 

@@ -29,6 +29,9 @@ namespace SigProc.infra.dados.Mapeamentos
                .WithMany()
                .HasForeignKey(c => c.IdOrgaoDestino).IsRequired();
 
+            builder.Property(c => c.TempoPrazo);
+            builder.Property(c => c.TempoEnvio);
+            builder.Property(c => c.DataEnvio);
             builder.Property(c => c.Prazo).IsRequired();
             builder.Property(c => c.DataTramitacao).IsRequired();
             builder.Property(c => c.DataPrazo).IsRequired();

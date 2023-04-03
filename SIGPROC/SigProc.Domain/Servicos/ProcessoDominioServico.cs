@@ -66,6 +66,8 @@ namespace SigProc.Dominio.Servicos
                 }
             }
 
+                var tempoPrazo = dataFutura - DateTime.Now; 
+
             ProcessoTramitacao processoTramitacao = new ProcessoTramitacao()
             {
                 IdProcesso = cadProcesso.Id,
@@ -77,7 +79,10 @@ namespace SigProc.Dominio.Servicos
                 Observacao = processo.Observacao,
                 IdUsuarioTramitacao = processo.IdUsuarioCadastro,
                 Status = true,
-                NumeroProcesso = processo.NumProcesso
+                NumeroProcesso = processo.NumProcesso,
+                TempoPrazo = tempoPrazo.Days,
+                TempoEnvio = null,
+                DataEnvio = null
             };
 
          

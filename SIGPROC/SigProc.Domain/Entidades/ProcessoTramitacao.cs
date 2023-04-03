@@ -16,6 +16,10 @@ namespace SigProc.Dominio.Entidades
         public int IdOrgaoOrigem { get; set; }
         public int IdOrgaoDestino { get; set; }
         public int Prazo { get; set; }
+        public int? TempoPrazo { get; set; }
+        public int? TempoEnvio { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime? DataEnvio { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime? DataTramitacao { get; set; }
