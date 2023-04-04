@@ -73,7 +73,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Domimio.Entidades.DadosDeTramitacaoSicop", b =>
@@ -566,7 +566,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DadosDeTramitacaoSicop");
+                    b.ToTable("DadosDeTramitacaoSicop", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Domimio.Entidades.DadosDoProcessoSicop", b =>
@@ -807,7 +807,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DadosDoProcessoSicop");
+                    b.ToTable("DadosDoProcessoSicop", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.Gerencia", b =>
@@ -854,7 +854,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasIndex("IdUsuarioResp");
 
-                    b.ToTable("Gerencia");
+                    b.ToTable("Gerencia", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.GerenciaPrazo", b =>
@@ -905,7 +905,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasIndex("IdTipoProcesso");
 
-                    b.ToTable("GerenciaPrazo");
+                    b.ToTable("GerenciaPrazo", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.Processo", b =>
@@ -997,7 +997,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasIndex("IdUsuarioCadastro");
 
-                    b.ToTable("Processo");
+                    b.ToTable("Processo", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.ProcessoTramitacao", b =>
@@ -1070,7 +1070,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasIndex("IdUsuarioTramitacao");
 
-                    b.ToTable("ProcessoTramitacao");
+                    b.ToTable("ProcessoTramitacao", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.TipoContratacao", b =>
@@ -1099,7 +1099,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoContratacao");
+                    b.ToTable("TipoContratacao", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.TipoPrazo", b =>
@@ -1128,7 +1128,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoPrazo");
+                    b.ToTable("TipoPrazo", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.TipoProcesso", b =>
@@ -1157,7 +1157,7 @@ namespace SigProc.infra.dados.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoProcesso");
+                    b.ToTable("TipoProcesso", (string)null);
                 });
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.Gerencia", b =>

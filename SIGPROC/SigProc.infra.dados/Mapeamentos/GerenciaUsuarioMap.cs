@@ -15,15 +15,31 @@ namespace SigProc.infra.dados.Mapeamentos
         public void Configure(EntityTypeBuilder<GerenciaUsuario> builder)
         {
             builder.HasKey(c => c.Id);
+
             builder.HasOne<Gerencia>(c => c.Gerencia)
                .WithMany()
-               .HasForeignKey(c => c.IdGerencia).IsRequired();
+               .HasForeignKey(c => c.IdGerencia)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.NoAction);
+
             builder.HasOne<TipoUsuarioGerencia>(c => c.TipoUsuarioGerencia)
                .WithMany()
-               .HasForeignKey(c => c.IdTipoUsuarioGerencia).IsRequired();
+               .HasForeignKey(c => c.IdTipoUsuarioGerencia)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.NoAction);
+
             builder.HasOne<Usuario>(c => c.Usuario)
                .WithMany()
-               .HasForeignKey(c => c.IdUsuarioCadastro).IsRequired();
+               .HasForeignKey(c => c.IdUsuario)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.NoAction);
+
+            //builder.HasOne<Usuario>(c => c.Usuario)
+            // .WithMany()
+            // .HasForeignKey(c => c.IdUsuarioCadastro)
+            // .IsRequired()
+            // .OnDelete(DeleteBehavior.NoAction);
+
             builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.DataCriacao);
             builder.Property(c => c.DataExclusao);

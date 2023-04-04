@@ -27,6 +27,7 @@ namespace SigProc.infra.dados.Contextos
         public DbSet<TipoPrazo> TipoPrazo { get; set; }
         public DbSet<DadosDoProcessoSicop> DadosDoProcessoSicop { get; set; }
         public DbSet<DadosDeTramitacaoSicop> DadosDeTramitacaoSicop { get; set; }
+        public DbSet<TipoUsuarioGerencia> TipoUsuarioGerencia { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,6 +40,7 @@ namespace SigProc.infra.dados.Contextos
             modelBuilder.ApplyConfiguration(new TipoContratacaoMap());
             modelBuilder.ApplyConfiguration(new TipoProcessoMap());
             modelBuilder.ApplyConfiguration(new TipoPrazoMap());
+            modelBuilder.ApplyConfiguration(new TipoUsuarioGerenciaMap());
             modelBuilder.ApplyConfiguration(new DadosDoProcessoSicopMap());
             modelBuilder.ApplyConfiguration(new DadosDeTramitacaoSicopMap());
         }
