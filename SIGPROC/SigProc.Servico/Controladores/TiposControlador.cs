@@ -19,13 +19,15 @@ namespace SisAgenda.Servico.Controladores
             private readonly ITipoContratacaoServico _tipoContratacaoServico;
             private readonly ITipoProcessoServico _tipoProcessoServico;
             private readonly ITipoPrazoServico _tipoPrazoServico;
-            private IMapper _mapper;
-            public TiposController(ITipoContratacaoServico tipoContratacaoServico, ITipoProcessoServico tipoProcessoServico, ITipoPrazoServico tipoPrazoServico, IMapper mapper)
+            private readonly ITipoUsuarioGerenciaServico _tipoUsuarioGerenciaServico;
+        private IMapper _mapper;
+            public TiposController(ITipoContratacaoServico tipoContratacaoServico, ITipoProcessoServico tipoProcessoServico, ITipoPrazoServico tipoPrazoServico, ITipoUsuarioGerenciaServico tipoUsuarioGerenciaServico, IMapper mapper)
             {
                 _tipoContratacaoServico = tipoContratacaoServico;
                 _tipoProcessoServico = tipoProcessoServico;
                 _tipoPrazoServico = tipoPrazoServico;
-                _mapper = mapper;
+                _tipoUsuarioGerenciaServico = tipoUsuarioGerenciaServico;
+            _mapper = mapper;
             }
 
         // ***************** TIPO CONTRATAÇÃO *****************
@@ -277,6 +279,49 @@ namespace SisAgenda.Servico.Controladores
             catch (Exception ex)
             {
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar Tipo de Prazo!" });
+            }
+        }
+
+
+        // ***************** TIPO USUÁRIO GERÊNCIA *****************
+
+        [HttpGet("ConsultarTipoUsuarioGerencia")]
+        public IActionResult ListarTudoTipoUsuarioGerencia()
+        {
+            try
+            {
+                var tipoUsuarioGerencia = _tipoUsuarioGerenciaServico.ListarTudo();
+                if (tipoUsuarioGerencia.Count == 0)
+                    return NoContent();
+                return StatusCode(200, tipoUsuarioGerencia);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar o Tipo de Usuário da Gerência!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar o Tipo de Usuário da Gerência!" });
+            }
+        }
+
+        [HttpGet("BuscarTipoUsuarioGerenciaPorID/{id}")]
+        public IActionResult GetTipoUsuarioGerenciaById(int id)
+        {
+            try
+            {
+                var buscar = _tipoUsuarioGerenciaServico.RetornaPorId(id);
+                if (buscar == null)
+                    return NoContent();
+                return StatusCode(200, buscar);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar Tipo de Usuário da Gerência!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar Tipo de Usuário da Gerência!" });
             }
         }
 

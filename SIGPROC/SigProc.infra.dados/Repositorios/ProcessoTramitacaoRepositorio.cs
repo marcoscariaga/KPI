@@ -73,6 +73,7 @@ namespace SigProc.infra.dados.Repositorios
                 .AsNoTracking()
                 .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso)); ;
         }
+
           
         public ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
         {
