@@ -27,7 +27,7 @@ namespace SigProc.infra.dados.Repositorios
 
         public ICollection<GerenciaUsuario> RetornaPorIdGerencia(int id_gerencia)
         {
-            return contexto.GerenciaUsuario.Include(a => a.Gerencia).Include(a => a.TipoUsuarioGerencia).Include(a => a.Usuario).Where(x => (x.IdGerencia == id_gerencia) && x.Status == true ).ToList();
+            return contexto.GerenciaUsuario.Include(a => a.Gerencia).Include(a => a.TipoUsuarioGerencia).Include(a => a.UsuarioGerencia).Include(a => a.UsuarioCadastro).Where(x => (x.IdGerencia == id_gerencia) && x.Status == true ).ToList();
         }
         
         

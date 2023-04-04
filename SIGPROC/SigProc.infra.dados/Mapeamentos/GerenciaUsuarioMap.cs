@@ -28,17 +28,18 @@ namespace SigProc.infra.dados.Mapeamentos
                .IsRequired()
                .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne<Usuario>(c => c.Usuario)
+            builder.HasOne<Usuario>(c => c.UsuarioGerencia)
                .WithMany()
-               .HasForeignKey(c => c.IdUsuario)
+               .HasForeignKey(c => c.IdUsuarioGerencia)
                .IsRequired()
-               .OnDelete(DeleteBehavior.NoAction);
+               .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.HasOne<Usuario>(c => c.Usuario)
-            // .WithMany()
-            // .HasForeignKey(c => c.IdUsuarioCadastro)
-            // .IsRequired()
-            // .OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne<Usuario>(c => c.UsuarioCadastro)
+               .WithMany()
+               .HasForeignKey(c => c.IdUsuarioCadastro)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
+
 
             builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.DataCriacao);

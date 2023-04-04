@@ -10,6 +10,7 @@ namespace SigProc.Aplicacao.Modelos
     public class GerenciaUsuarioModelo
     {
         public int IdGerencia { get; set; }
+        public int IdUsuarioGerencia { get; set; }
         public int IdTipoUsuarioGerencia { get; set; }
         public int IdUsuarioCadastro { get; set; }
         public bool Status { get; set; }
