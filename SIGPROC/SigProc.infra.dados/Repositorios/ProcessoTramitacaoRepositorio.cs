@@ -74,6 +74,10 @@ namespace SigProc.infra.dados.Repositorios
                 .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso)); ;
         }
 
+<<<<<<< HEAD
+=======
+          
+>>>>>>> 2d0df49bb4aad77167655bae0a555e8c0ad72ed3
         public ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
         {
             #region Buscar todas as tramitações do processo e atualiza o tempo de prazo

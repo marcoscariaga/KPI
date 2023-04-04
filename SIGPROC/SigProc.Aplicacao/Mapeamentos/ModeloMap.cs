@@ -24,12 +24,14 @@ namespace SigProc.Aplicacao.Mapeamentos
             CreateMap<AutenticacaoModelo, Usuario>();
             CreateMap<GerenciaModelo, Gerencia>();
             CreateMap<GerenciaPrazoModelo, GerenciaPrazo>();
+            CreateMap<GerenciaUsuarioModelo, GerenciaUsuario>();
             CreateMap<GerenciaPrazoUpdateModelo, GerenciaPrazo>();
             CreateMap<ProcessoModelo, Processo>();
             CreateMap<ProcessoTramitacaoModelo, ProcessoTramitacao>();
             CreateMap<TipoContratacaoModelo, TipoContratacao>();
             CreateMap<TipoProcessoModelo, TipoProcesso>();
             CreateMap<TipoPrazoModelo, TipoPrazo>(); ;
+            CreateMap<TipoUsuarioGerenciaModelo, TipoUsuarioGerencia>(); ;
             CreateMap<DadosDoProcessoSicopModelo, DadosDoProcessoSicop>().AfterMap((command, entity) =>
             {
                 entity.Id = 0;
