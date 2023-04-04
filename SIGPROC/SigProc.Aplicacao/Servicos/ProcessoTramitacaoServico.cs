@@ -22,6 +22,11 @@ namespace SigProc.Aplicacao.Servicos
             return processoTramitacaoDomainService.BuscarTramitacoesPorNumeroProcesso(numeroProcesso);
         }
 
+        public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia)
+        {
+            return processoTramitacaoDomainService.BuscarUltimaTramitacaoPorIdGerenciaAtual(idGerencia);
+        }
+
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
         {
             return processoTramitacaoDomainService.BuscarUltimaTramitacaoPorNumeroProcesso(numeroProcesso);

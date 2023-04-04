@@ -26,18 +26,18 @@ namespace SigProc.infra.dados.Repositorios
         {
             #region Buscar todos as tramitações ativas e atualiza o tempo de prazo
 
-            var processos = contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).ToList();                
-                
+            var processos = contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).ToList();
+
             foreach (var processo in processos)
-            {                    
-                using var trans = contexto.Database.BeginTransaction();    
+            {
+                using var trans = contexto.Database.BeginTransaction();
 
                 TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
                 processo.TempoPrazo = tempoPrazo.Days;
-                    
+
                 contexto.Entry(processo).State = EntityState.Modified;
                 contexto.SaveChanges();
-                trans.Commit();    
+                trans.Commit();
             }
             #endregion
 
@@ -54,14 +54,14 @@ namespace SigProc.infra.dados.Repositorios
                    .AsNoTracking()
                    .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso) && x.DataEnvio.Equals(null));
 
-                using var trans = contexto.Database.BeginTransaction();
+            using var trans = contexto.Database.BeginTransaction();
 
-                TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
-                processo.TempoPrazo = tempoPrazo.Days;
+            TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
+            processo.TempoPrazo = tempoPrazo.Days;
 
-                contexto.Entry(processo).State = EntityState.Modified;
-                contexto.SaveChanges();
-                trans.Commit();
+            contexto.Entry(processo).State = EntityState.Modified;
+            contexto.SaveChanges();
+            trans.Commit();
             #endregion
 
 
@@ -73,11 +73,11 @@ namespace SigProc.infra.dados.Repositorios
                 .AsNoTracking()
                 .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso)); ;
         }
-          
+
         public ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
         {
             #region Buscar todas as tramitações do processo e atualiza o tempo de prazo
-            
+
             var processos = contexto.ProcessoTramitacao
                 .Where(x => x.NumeroProcesso.Equals(numeroProcesso) && x.DataEnvio.Equals(null))
                 .AsNoTracking().ToList();
@@ -88,10 +88,10 @@ namespace SigProc.infra.dados.Repositorios
 
                 TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
                 processo.TempoPrazo = tempoPrazo.Days;
-                
+
                 contexto.Entry(processo).State = EntityState.Modified;
                 contexto.SaveChanges();
-                trans.Commit();    
+                trans.Commit();
             }
             #endregion
 
@@ -101,6 +101,16 @@ namespace SigProc.infra.dados.Repositorios
                 .Include(a => a.GerenciaDestino)
                 .Include(a => a.UsuarioTramitacao)
                 .AsNoTracking().ToList();
+        }
+        public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia)
+        {
+            var ultimasTramitacoes = contexto.ProcessoTramitacao
+         .Where(pt => pt.IdOrgaoDestino == idGerencia)
+         .GroupBy(pt => pt.IdProcesso)
+         .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
+         .ToList();
+
+            return ultimasTramitacoes;
         }
     }
 }

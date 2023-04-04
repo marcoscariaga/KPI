@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using SigProc.Domain.Contratos.Servicos;
+using SigProc.Domain.Entidades;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
 namespace SigProc.Dominio.Servicos
@@ -46,12 +49,7 @@ namespace SigProc.Dominio.Servicos
             }
 
             var ultimaTramitacao = _repositorio.BuscarUltimaTramitacaoPorNumeroProcesso(processoTramitacao.NumeroProcesso);
-            TimeSpan tempoEnvio = (TimeSpan)(DateTime.Today - ultimaTramitacao.DataTramitacao);
-            ultimaTramitacao.DataEnvio = dataAtual;
-            ultimaTramitacao.TempoEnvio = tempoEnvio.Days;
-            _repositorio.Atualizar(ultimaTramitacao);
-
-
+         
             ProcessoTramitacao tramitacao = new ProcessoTramitacao()
             {
                 IdProcesso = processoTramitacao.IdProcesso,
@@ -73,5 +71,11 @@ namespace SigProc.Dominio.Servicos
         {
             return _repositorio.BuscarTramitacoesPorNumeroProcesso(numeroProcesso);
         }
+
+        public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia)
+        {
+            return _repositorio.BuscarUltimaTramitacaoPorIdGerenciaAtual(idGerencia);
+        }
     }
 }
+

@@ -9,5 +9,6 @@ namespace SigProc.Dominio.Contratos.Servicos
         public ICollection<ProcessoTramitacao> ListarAtivos();
         ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso);
         ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso);
+        ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia);
     }
 }
