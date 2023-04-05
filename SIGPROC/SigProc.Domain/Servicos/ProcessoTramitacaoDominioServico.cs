@@ -15,10 +15,12 @@ namespace SigProc.Dominio.Servicos
     {
         private readonly IProcessoTramitacaoRepositorio _repositorio;
         private readonly IGerenciaPrazoRepositorio _gerenciaPrazo;
-        public ProcessoTramitacaoDominioServico(IProcessoTramitacaoRepositorio repository, IGerenciaPrazoRepositorio gerenciaPrazo) : base(repository)
+        private readonly IGerenciaUsuarioRepositorio _gerenciaUsuario;
+        public ProcessoTramitacaoDominioServico(IProcessoTramitacaoRepositorio repository, IGerenciaPrazoRepositorio gerenciaPrazo, IGerenciaUsuarioRepositorio gerenciaUsuario) : base(repository)
         {
             _repositorio = repository;
             _gerenciaPrazo = gerenciaPrazo;
+            _gerenciaUsuario = gerenciaUsuario;
         }
 
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
