@@ -12,10 +12,15 @@ namespace SigProc.Dominio.Servicos
     {
         private readonly IGerenciaRepositorio _repositorio;
         private readonly IGerenciaPrazoDominioServico _repositorioPrazo;
-        public GerenciaDominioServico(IGerenciaRepositorio repository, IGerenciaPrazoDominioServico repositorioPrazo) : base(repository)
+        private readonly IGerenciaUsuarioDominioServico _repositorioGerenciaUsuario;
+        private readonly ITipoUsuarioGerenciaDominioServico _repositorioTipoUsuaruiGerencia;
+
+        public GerenciaDominioServico(IGerenciaRepositorio repository, IGerenciaPrazoDominioServico repositorioPrazo, IGerenciaUsuarioDominioServico repositorioGerenciaUsuario, ITipoUsuarioGerenciaDominioServico repositorioTipoUsuaruiGerencia) : base(repository)
         {
             _repositorio = repository;
             _repositorioPrazo = repositorioPrazo;
+            _repositorioGerenciaUsuario = repositorioGerenciaUsuario;
+            _repositorioTipoUsuaruiGerencia = repositorioTipoUsuaruiGerencia;
         }
 
         public ICollection<Gerencia> ListarAtivos()
@@ -25,7 +30,7 @@ namespace SigProc.Dominio.Servicos
         public Gerencia Inserir(Gerencia objeto)
         {
             if (objeto.Prazo <= 0)
-                throw new ArgumentException("Informe o prazo da gerência!" );
+                throw new ArgumentException("Informe o prazo da gerência!");
 
             #region Cadastro da Gerência
             var gerencia = _repositorio.Inserir(objeto);
@@ -41,6 +46,18 @@ namespace SigProc.Dominio.Servicos
                 Status = true
             };
             _repositorioPrazo.Inserir(prazo);
+            #endregion
+
+            #region Associação entre a gerencia e usuário
+            var tipoUsuario = _repositorioTipoUsuaruiGerencia.ListarAtivos().Where(x=>x.Descricao.ToLower().Equals("gerente")).FirstOrDefault();
+
+            GerenciaUsuario usuario = new GerenciaUsuario()
+            {
+                IdGerencia = gerencia.Id,
+                IdUsuarioGerencia = objeto.IdUsuarioResp,
+                IdTipoUsuarioGerencia = tipoUsuario.Id,
+                IdUsuarioCadastro = objeto.IdUsuarioResp,
+            };
             #endregion
 
             return gerencia;
