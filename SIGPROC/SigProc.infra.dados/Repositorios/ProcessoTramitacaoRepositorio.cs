@@ -111,5 +111,21 @@ namespace SigProc.infra.dados.Repositorios
 
             return ultimasTramitacoes;
         }
+        public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
+        {
+           // substitua pelo ID do usuário desejado
+
+            var ultimasTramitacoes = (from pt in contexto.ProcessoTramitacao
+                                      join g in contexto.Gerencia on pt.IdOrgaoDestino equals g.Id
+                                      where g.IdUsuarioResp == idUsuario
+                                      && pt.DataTramitacao == (from pt2 in contexto.ProcessoTramitacao
+                                                               where pt2.NumeroProcesso == pt.NumeroProcesso
+                                                               group pt2 by pt2.NumeroProcesso into g
+                                                               select g.Max(pt2 => pt2.DataTramitacao)).FirstOrDefault()
+                                      orderby pt.DataTramitacao descending
+                                      select pt).ToList();
+
+            return ultimasTramitacoes;
+        }
     }
 }

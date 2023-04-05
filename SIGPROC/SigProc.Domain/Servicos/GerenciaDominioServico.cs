@@ -35,31 +35,48 @@ namespace SigProc.Dominio.Servicos
             #region Cadastro da Gerência
             var gerencia = _repositorio.Inserir(objeto);
             #endregion
-
+            GerenciaPrazo prazo = new GerenciaPrazo();
             #region Cadastro do prazo da Gerência
-            GerenciaPrazo prazo = new GerenciaPrazo()
+            try
             {
-                IdGerencia = gerencia.Id,
-                IdTipoPrazo = 1,
-                Prazo = objeto.Prazo,
-                IdUsuarioCadastro = objeto.IdUsuarioResp,
-                Status = true
-            };
-            _repositorioPrazo.Inserir(prazo);
+                prazo.IdGerencia = gerencia.Id;
+                prazo.IdTipoPrazo = 1;
+                prazo.Prazo = objeto.Prazo;
+                prazo.IdUsuarioCadastro = objeto.IdUsuarioResp;
+                prazo.Status = true;
+
+                _repositorioPrazo.Inserir(prazo);
+            }
+
+            catch (Exception)
+            {
+                _repositorio.Deletar(gerencia);
+            }
+
             #endregion
 
             #region Associação entre a gerencia e usuário
-            var tipoUsuario = _repositorioTipoUsuaruiGerencia.ListarAtivos().Where(x=>x.Descricao.ToLower().Equals("gerente")).FirstOrDefault();
-
-            GerenciaUsuario usuario = new GerenciaUsuario()
+            try
             {
-                IdGerencia = gerencia.Id,
-                IdUsuarioGerencia = objeto.IdUsuarioResp,
-                IdTipoUsuarioGerencia = tipoUsuario.Id,
-                IdUsuarioCadastro = objeto.IdUsuarioResp,
-            };
-            #endregion
+                var tipoUsuario = _repositorioTipoUsuaruiGerencia.ListarAtivos().Where(x => x.Descricao.ToLower().Equals("gerente")).FirstOrDefault();
 
+                GerenciaUsuario usuario = new GerenciaUsuario()
+                {
+                    IdGerencia = gerencia.Id,
+                    IdUsuarioGerencia = objeto.IdUsuarioResp,
+                    IdTipoUsuarioGerencia = tipoUsuario.Id,
+                    IdUsuarioCadastro = objeto.IdUsuarioResp,
+                };
+                #endregion
+                _repositorioGerenciaUsuario.Inserir(usuario);
+                return gerencia;
+            }
+
+            catch (Exception)
+            {
+                _repositorio.Deletar(gerencia);
+                _repositorioPrazo.Deletar(prazo);
+            }
             return gerencia;
         }
 

@@ -35,6 +35,7 @@ namespace SigProc.infra.dados.Contextos
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new GerenciaMap());
             modelBuilder.ApplyConfiguration(new GerenciaPrazoMap());
+            modelBuilder.ApplyConfiguration(new GerenciaUsuarioMap());
             modelBuilder.ApplyConfiguration(new ProcessoMap());
             modelBuilder.ApplyConfiguration(new ProcessoTramitacaoMap());
             modelBuilder.ApplyConfiguration(new TipoContratacaoMap());

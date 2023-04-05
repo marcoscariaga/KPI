@@ -76,6 +76,11 @@ namespace SigProc.Dominio.Servicos
         {
             return _repositorio.BuscarUltimaTramitacaoPorIdGerenciaAtual(idGerencia);
         }
+
+        public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
+        {
+            return _repositorio.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario);
+        }
     }
 }
 

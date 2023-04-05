@@ -32,13 +32,13 @@ namespace SigProc.infra.dados.Mapeamentos
                .WithMany()
                .HasForeignKey(c => c.IdUsuarioGerencia)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne<Usuario>(c => c.UsuarioCadastro)
                .WithMany()
                .HasForeignKey(c => c.IdUsuarioCadastro)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
 
             builder.Property(c => c.Status).IsRequired();

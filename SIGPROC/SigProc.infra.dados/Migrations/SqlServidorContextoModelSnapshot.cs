@@ -925,9 +925,6 @@ namespace SigProc.infra.dados.Migrations
                     b.Property<DateTime?>("DataExclusao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GerenciaId")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdGerencia")
                         .HasColumnType("int");
 
@@ -943,24 +940,15 @@ namespace SigProc.infra.dados.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int>("TipoUsuarioGerenciaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioCadastroId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioGerenciaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("GerenciaId");
+                    b.HasIndex("IdGerencia");
 
-                    b.HasIndex("TipoUsuarioGerenciaId");
+                    b.HasIndex("IdTipoUsuarioGerencia");
 
-                    b.HasIndex("UsuarioCadastroId");
+                    b.HasIndex("IdUsuarioCadastro");
 
-                    b.HasIndex("UsuarioGerenciaId");
+                    b.HasIndex("IdUsuarioGerencia");
 
                     b.ToTable("GerenciaUsuario");
                 });
@@ -1292,26 +1280,26 @@ namespace SigProc.infra.dados.Migrations
                 {
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "Gerencia")
                         .WithMany()
-                        .HasForeignKey("GerenciaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("IdGerencia")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.TipoUsuarioGerencia", "TipoUsuarioGerencia")
                         .WithMany()
-                        .HasForeignKey("TipoUsuarioGerenciaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("IdTipoUsuarioGerencia")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SigProc.Domain.Entidades.Usuario", "UsuarioCadastro")
                         .WithMany()
-                        .HasForeignKey("UsuarioCadastroId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("IdUsuarioCadastro")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SigProc.Domain.Entidades.Usuario", "UsuarioGerencia")
                         .WithMany()
-                        .HasForeignKey("UsuarioGerenciaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("IdUsuarioGerencia")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Gerencia");
