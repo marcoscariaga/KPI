@@ -22,7 +22,7 @@ namespace SigProc.infra.dados.Repositorios
 
         public ICollection<GerenciaUsuario> ListarAtivos()
         {
-            return contexto.GerenciaUsuario.Where(a => a.Status == true).ToList();
+            return contexto.GerenciaUsuario.Include(a => a.Gerencia).Include(a => a.TipoUsuarioGerencia).Include(a => a.UsuarioGerencia).Include(a => a.UsuarioCadastro).Where(a => a.Status == true).ToList();
         }
 
         public ICollection<GerenciaUsuario> RetornaPorIdGerencia(int id_gerencia)

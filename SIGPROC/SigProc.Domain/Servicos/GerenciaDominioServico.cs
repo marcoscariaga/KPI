@@ -66,7 +66,8 @@ namespace SigProc.Dominio.Servicos
                     IdUsuarioGerencia = objeto.IdUsuarioResp,
                     IdTipoUsuarioGerencia = tipoUsuario.Id,
                     IdUsuarioCadastro = objeto.IdUsuarioResp,
-                };
+                    Status = true,
+            };
                 #endregion
                 _repositorioGerenciaUsuario.Inserir(usuario);
                 return gerencia;
