@@ -99,6 +99,7 @@ namespace SigProc.infra.dados.Repositorios
                 .Include(a => a.GerenciaOrigem)
                 .Include(a => a.GerenciaDestino)
                 .Include(a => a.UsuarioTramitacao)
+                .Include(a => a.Processo)
                 .AsNoTracking().ToList();
         }
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia)
