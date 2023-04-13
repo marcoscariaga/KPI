@@ -91,11 +91,11 @@ namespace SigProc.Servico.Controladores
         }
 
         [HttpGet("Consultar")]
-        public IActionResult ListarTudo()
+        public IActionResult ListarAtivos()
         {
             try
             {
-                var prazos = _gerenciaUsuario.ListarTudo();
+                var prazos = _gerenciaUsuario.ListarAtivos();
                 if (prazos.Count == 0)
                     return NoContent();
 

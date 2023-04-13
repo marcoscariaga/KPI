@@ -192,7 +192,7 @@ namespace SigProc.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar tramitacao!" });
             }
         }
-        [HttpGet("BuscarUltimaTramitacaoPorUsuarioGerencial/{idUsuario}")]
+        [HttpGet("BuscarUltimaTramitacaoPorUsuarioGerencia/{idUsuario}")]
         public IActionResult BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
         {
             try

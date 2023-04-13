@@ -121,9 +121,14 @@ namespace SigProc.infra.dados.Repositorios
                                       && pt.DataTramitacao == (from pt2 in contexto.ProcessoTramitacao
                                                                where pt2.NumeroProcesso == pt.NumeroProcesso
                                                                group pt2 by pt2.NumeroProcesso into g
-                                                               select g.Max(pt2 => pt2.DataTramitacao)).FirstOrDefault()
+                                                               select g.Max(pt2 => pt2.DataTramitacao))
+                                                               .FirstOrDefault()
                                       orderby pt.DataTramitacao descending
-                                      select pt).ToList();
+                                      select pt).Include(a => a.GerenciaOrigem)
+                                                 .Include(a => a.GerenciaDestino)
+                                                 .Include(a => a.UsuarioTramitacao)
+                                                 .Include(a => a.Processo)
+                                                 .ToList();
 
             return ultimasTramitacoes;
         }
