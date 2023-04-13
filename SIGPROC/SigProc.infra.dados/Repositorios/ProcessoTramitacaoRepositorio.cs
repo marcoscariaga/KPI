@@ -113,7 +113,7 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
         {
-           // substitua pelo ID do usuário desejado
+            // substitua pelo ID do usuário desejado
 
             var ultimasTramitacoes = (from pt in contexto.ProcessoTramitacao
                                       join g in contexto.Gerencia on pt.IdOrgaoDestino equals g.Id
