@@ -104,6 +104,25 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia)
         {
+            #region Buscar todas as tramitações do processo e atualiza o tempo de prazo
+
+            var processos = contexto.ProcessoTramitacao
+                .Where(x => x.IdOrgaoOrigem.Equals(idGerencia) && x.DataEnvio.Equals(null))
+                .AsNoTracking().ToList();
+
+            foreach (var processo in processos)
+            {
+                using var trans = contexto.Database.BeginTransaction();
+
+                TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
+                processo.TempoPrazo = tempoPrazo.Days;
+
+                contexto.Entry(processo).State = EntityState.Modified;
+                contexto.SaveChanges();
+                trans.Commit();
+            }
+            #endregion
+
             var ultimasTramitacoes = contexto.ProcessoTramitacao
          .Where(pt => pt.IdOrgaoDestino == idGerencia)
          .GroupBy(pt => pt.IdProcesso)
@@ -114,7 +133,26 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
         {
-           // substitua pelo ID do usuário desejado
+            #region Buscar todas as tramitações do processo e atualiza o tempo de prazo
+
+            var processos = contexto.ProcessoTramitacao
+                .Where(x => x.IdUsuarioTramitacao.Equals(idUsuario) && x.DataEnvio.Equals(null))
+                .AsNoTracking().ToList();
+
+            foreach (var processo in processos)
+            {
+                using var trans = contexto.Database.BeginTransaction();
+
+                TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
+                processo.TempoPrazo = tempoPrazo.Days;
+
+                contexto.Entry(processo).State = EntityState.Modified;
+                contexto.SaveChanges();
+                trans.Commit();
+            }
+            #endregion
+
+            // substitua pelo ID do usuário desejado
 
             var ultimasTramitacoes = (from pt in contexto.ProcessoTramitacao
                                       join g in contexto.Gerencia on pt.IdOrgaoDestino equals g.Id

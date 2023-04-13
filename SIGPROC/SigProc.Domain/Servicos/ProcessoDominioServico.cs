@@ -46,13 +46,12 @@ namespace SigProc.Dominio.Servicos
                 throw new ArgumentException($"A gerência {orgaoOrigem}, não está cadastrada no sistema.");
 
             var cadProcesso = _repositorio.Inserir(processo);
-            //var cadProcesso = new Processo();
            
             try
             {
                 var prazo = _gerenciaPrazo.ListarTudo().Where(x=>x.IdGerencia.Equals(orgaoDestino.Id)).OrderByDescending(x=>x.Prazo).FirstOrDefault();
 
-            DateTime dataAtual = DateTime.Now;
+            DateTime dataAtual = DateTime.Today;
             int diasParaAcrescentar = prazo.Prazo;
 
             DateTime dataFutura = dataAtual;
@@ -66,15 +65,15 @@ namespace SigProc.Dominio.Servicos
                 }
             }
 
-                var tempoPrazo = dataFutura - DateTime.Now; 
+                var tempoPrazo = dataFutura - DateTime.Today; 
 
             ProcessoTramitacao processoTramitacao = new ProcessoTramitacao()
             {
                 IdProcesso = cadProcesso.Id,
                 IdOrgaoOrigem = orgaoOrigem.Id,
                 IdOrgaoDestino = orgaoDestino.Id,
-                Prazo = diasAcrescentados,
-                DataTramitacao = DateTime.Now,
+                Prazo = tempoPrazo.Days,
+                DataTramitacao = DateTime.Today,
                 DataPrazo = dataFutura,
                 Observacao = processo.Observacao,
                 IdUsuarioTramitacao = processo.IdUsuarioCadastro,

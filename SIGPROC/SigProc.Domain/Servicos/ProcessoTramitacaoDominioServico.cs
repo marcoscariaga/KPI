@@ -36,7 +36,7 @@ namespace SigProc.Dominio.Servicos
         {
             var prazo = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(processoTramitacao.IdOrgaoDestino)).OrderByDescending(x => x.Prazo).FirstOrDefault();
 
-            DateTime dataAtual = DateTime.Now;
+            DateTime dataAtual = DateTime.Today;
             int diasParaAcrescentar = prazo.Prazo;
 
             DateTime dataFutura = dataAtual;
@@ -50,20 +50,29 @@ namespace SigProc.Dominio.Servicos
                 }
             }
 
-            var ultimaTramitacao = _repositorio.BuscarUltimaTramitacaoPorNumeroProcesso(processoTramitacao.NumeroProcesso);
-         
+            var ultimaTramitacao = _repositorio.ListarTudo().OrderByDescending(x => x.DataCriacao).FirstOrDefault(x => x.NumeroProcesso.Equals(processoTramitacao.NumeroProcesso));
+            TimeSpan tempoEnvio = ((TimeSpan)(DateTime.Today - ultimaTramitacao.DataTramitacao));
+            ultimaTramitacao.TempoEnvio = tempoEnvio.Days;
+            ultimaTramitacao.DataEnvio = dataAtual;
+            _repositorio.Atualizar(ultimaTramitacao);
+
+            var tempoPrazo = dataFutura - DateTime.Today;
+
             ProcessoTramitacao tramitacao = new ProcessoTramitacao()
             {
                 IdProcesso = processoTramitacao.IdProcesso,
                 IdOrgaoOrigem = processoTramitacao.IdOrgaoOrigem,
                 IdOrgaoDestino = processoTramitacao.IdOrgaoDestino,
-                Prazo = diasAcrescentados,
-                DataTramitacao = DateTime.Now,
+                Prazo = tempoPrazo.Days,
+                DataTramitacao = dataAtual,
                 DataPrazo = dataFutura,
                 Observacao = processoTramitacao.Observacao,
+                TempoPrazo = tempoPrazo.Days,
                 IdUsuarioTramitacao = processoTramitacao.IdUsuarioTramitacao,
                 Status = true,
-                NumeroProcesso = processoTramitacao.NumeroProcesso
+                NumeroProcesso = processoTramitacao.NumeroProcesso,
+                TempoEnvio = null,
+                DataEnvio = null
             };
 
             return _repositorio.Inserir(tramitacao);
