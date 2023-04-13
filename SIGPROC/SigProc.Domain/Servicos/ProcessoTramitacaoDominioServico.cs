@@ -56,16 +56,18 @@ namespace SigProc.Dominio.Servicos
             ultimaTramitacao.DataEnvio = dataAtual;
             _repositorio.Atualizar(ultimaTramitacao);
 
+            var tempoPrazo = dataFutura - DateTime.Today;
 
             ProcessoTramitacao tramitacao = new ProcessoTramitacao()
             {
                 IdProcesso = processoTramitacao.IdProcesso,
                 IdOrgaoOrigem = processoTramitacao.IdOrgaoOrigem,
                 IdOrgaoDestino = processoTramitacao.IdOrgaoDestino,
-                Prazo = diasAcrescentados,
+                Prazo = tempoPrazo.Days,
                 DataTramitacao = dataAtual,
                 DataPrazo = dataFutura,
                 Observacao = processoTramitacao.Observacao,
+                TempoPrazo = tempoPrazo.Days,
                 IdUsuarioTramitacao = processoTramitacao.IdUsuarioTramitacao,
                 Status = true,
                 NumeroProcesso = processoTramitacao.NumeroProcesso,

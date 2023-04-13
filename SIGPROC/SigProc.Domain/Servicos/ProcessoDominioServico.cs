@@ -72,7 +72,7 @@ namespace SigProc.Dominio.Servicos
                 IdProcesso = cadProcesso.Id,
                 IdOrgaoOrigem = orgaoOrigem.Id,
                 IdOrgaoDestino = orgaoDestino.Id,
-                Prazo = diasAcrescentados,
+                Prazo = tempoPrazo.Days,
                 DataTramitacao = DateTime.Today,
                 DataPrazo = dataFutura,
                 Observacao = processo.Observacao,
