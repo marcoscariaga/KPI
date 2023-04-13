@@ -41,7 +41,6 @@ namespace SigProc.infra.dados.Repositorios
             }
             #endregion
 
-
             return contexto.ProcessoTramitacao.Where(a => a.Status == true).ToList();
         }
 
