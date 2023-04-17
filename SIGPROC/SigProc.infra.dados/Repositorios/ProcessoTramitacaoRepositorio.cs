@@ -41,7 +41,7 @@ namespace SigProc.infra.dados.Repositorios
             }
             #endregion
 
-            return contexto.ProcessoTramitacao.Where(a => a.Status == true).ToList();
+            return contexto.ProcessoTramitacao.Where(a => a.Status == true).Include(a => a.Processo).ToList();
         }
 
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
