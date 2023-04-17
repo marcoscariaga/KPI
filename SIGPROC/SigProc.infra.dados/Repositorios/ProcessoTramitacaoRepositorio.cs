@@ -106,7 +106,7 @@ namespace SigProc.infra.dados.Repositorios
             #region Buscar todas as tramitações do processo e atualiza o tempo de prazo
 
             var processos = contexto.ProcessoTramitacao
-                .Where(x => x.IdOrgaoOrigem.Equals(idGerencia) && x.DataEnvio.Equals(null))
+                .Where(x => x.IdOrgaoDestino.Equals(idGerencia) && x.DataEnvio.Equals(null))
                 .AsNoTracking().ToList();
 
             foreach (var processo in processos)
@@ -123,10 +123,11 @@ namespace SigProc.infra.dados.Repositorios
             #endregion
 
             var ultimasTramitacoes = contexto.ProcessoTramitacao
-         .Where(pt => pt.IdOrgaoDestino == idGerencia)
-         .GroupBy(pt => pt.IdProcesso)
-         .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
-         .ToList();
+          .Include(pt => pt.Processo)
+              .Where(pt => pt.IdOrgaoDestino == idGerencia && pt.DataEnvio.Equals(null))
+              .GroupBy(pt => pt.IdProcesso)
+              .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
+          .ToList();
 
             return ultimasTramitacoes;
         }
