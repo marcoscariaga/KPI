@@ -28,7 +28,7 @@ namespace SigProc.Servico.Controladores
             {
                 var tramitacoes = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario);
 
-                var model = new Prazos()
+                var model = new PrazosPorGerencia()
                 {
                     TotaProcessos = tramitacoes.Count(),
                     PrazoEmDia = tramitacoes.Count(x => x.TempoPrazo > 0),
@@ -54,19 +54,19 @@ namespace SigProc.Servico.Controladores
             try
             {
                 var gerencias = _gerenciaUsuarioServico.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
-                var listagemTramitacao = new List<TotalDashboardModelo>();
+                var listagemTramitacao = new List<TotalProcessoPorGerencia>();
                 var quantidadeProcessos = 0;
                 foreach (var gerencia in gerencias)
                 {
-                    var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.IdOrgaoDestino == gerencia.IdGerencia)
-                                                 .GroupBy(pt => pt.IdProcesso)
-                                                 .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
-                                                 .FirstOrDefault())
-                                                 .ToList();
+                    var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.IdOrgaoDestino == gerencia.IdGerencia && pt.DataEnvio == null)
+                                                                 .GroupBy(pt => pt.IdProcesso)
+                                                                 .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
+                                                                 .FirstOrDefault())
+                                                                 .ToList();
 
                     foreach (var tramitacao in tramitacoesPorGerencia)
                     {
-                        var model = new TotalDashboardModelo();
+                        var model = new TotalProcessoPorGerencia();
                         model.Gerencia = tramitacao.GerenciaDestino.Sigla;
                         model.Quantidade = _tramitacaoServico.ListarAtivos().Where(x => x.DataEnvio.Equals(null) && x.IdOrgaoDestino.Equals(tramitacao.IdOrgaoDestino)).Count();
                         listagemTramitacao.Add(model);
@@ -74,7 +74,7 @@ namespace SigProc.Servico.Controladores
                     }
 
                 }
-                var totalProcessos = new TotalDashboardModelo();
+                var totalProcessos = new TotalProcessoPorGerencia();
                 totalProcessos.Gerencia = "Total";
                 totalProcessos.Quantidade = quantidadeProcessos;
                 listagemTramitacao.Add(totalProcessos);
@@ -92,18 +92,17 @@ namespace SigProc.Servico.Controladores
             }
         }
 
-        [HttpGet("TotalProPrioridade/{idUsuario}")]
-        public IActionResult TotalProPrioridade(int idUsuario)
+        [HttpGet("TotalPrioridadePorGerencia/{idUsuario}")]
+        public IActionResult TotalProPrioridadePorGerencia(int idUsuario)
         {
             try
             {
                 var gerencias = _gerenciaUsuarioServico.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
                 var listagemTramitacao = new List<TotalDashboardModelo>();
-                var quantidadeProcessos = 0;
        
                 foreach (var gerencia in gerencias)
                 {
-                    var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.IdOrgaoDestino == gerencia.IdGerencia)
+                    var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.IdOrgaoDestino == gerencia.IdGerencia && pt.DataEnvio == null)
                                                                  .GroupBy(pt => pt.IdProcesso)
                                                                  .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
                                                                  .FirstOrDefault())
@@ -119,7 +118,6 @@ namespace SigProc.Servico.Controladores
                             model.Quantidade += 1;
 
                             listagemTramitacao.Add(model);
-                            quantidadeProcessos += model.Quantidade;
                         }
                         if (tramitacao.Processo.Prioridade == "media")
                         {
@@ -129,9 +127,8 @@ namespace SigProc.Servico.Controladores
                             model.Quantidade += 1;
 
                             listagemTramitacao.Add(model);
-                            quantidadeProcessos += model.Quantidade;
                         }
-                        if (tramitacao.Processo.Prioridade == "baixo")
+                        if (tramitacao.Processo.Prioridade == "baixa")
                         {
                             var model = new TotalDashboardModelo();
                             model.Prioridade = "Baixa";
@@ -139,11 +136,67 @@ namespace SigProc.Servico.Controladores
                             model.Quantidade += 1;
 
                             listagemTramitacao.Add(model);
-                            quantidadeProcessos += model.Quantidade;
                         }
                     }
                 }
+ 
                 return StatusCode(200, listagemTramitacao);
+
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
+            }
+        }
+        [HttpGet("TotalPrioridade/{idUsuario}")]
+        public IActionResult TotalProPrioridade(int idUsuario)
+        {
+            try
+            {
+                var gerencias = _gerenciaUsuarioServico.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
+                var listagemTramitacao = new List<TotalDashboardModelo>();
+                var quantidadeAlta = 0;
+                var quantidadeMedia = 0;
+                var quantidadeBaixa = 0;
+
+                foreach (var gerencia in gerencias)
+                {
+                    var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.IdOrgaoDestino == gerencia.IdGerencia && pt.DataEnvio == null)
+                                                              .GroupBy(pt => pt.IdProcesso)
+                                                              .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
+                                                              .FirstOrDefault())
+                                                              .ToList();
+
+                    foreach (var tramitacao in tramitacoesPorGerencia)
+                    {
+                        if (tramitacao.Processo.Prioridade == "alta")
+                        {
+                            quantidadeAlta+= 1;
+                        }
+                        if (tramitacao.Processo.Prioridade == "media")
+                        {
+                            quantidadeMedia+= 1;
+                        }
+                        if (tramitacao.Processo.Prioridade == "baixa")
+                        {
+                         quantidadeBaixa+= 1;
+                        }
+                    }
+                }
+                var model = new Prazo() { 
+                    Alta = quantidadeAlta,
+                    Media = quantidadeMedia,
+                    Baixa = quantidadeBaixa,
+                    Total = quantidadeAlta + quantidadeMedia + quantidadeBaixa,
+                };
+               
+
+                return StatusCode(200, model);
 
             }
             catch (ArgumentException ex)
@@ -159,11 +212,5 @@ namespace SigProc.Servico.Controladores
     }
 }
 
-public class Prazos
-{
-    public int TotaProcessos { get; set; }
-    public int PrazoEmDia { get; set; }
-    public int PrazoVencimento1Dia { get; set; }
-    public int PrazoAtrasado { get; set; }
-}
+
 
