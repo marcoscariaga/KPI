@@ -21,74 +21,21 @@ namespace SigProc.Servico.Controladores
             _gerenciaUsuarioServico = gerenciaUsuarioServico;
         }
 
-        [HttpGet("TotalProcessos/{idUsuario}")]
-        public IActionResult TotalProcessos(int idUsuario)
+        [HttpGet("TotalProcessosPrazos/{idUsuario}")]
+        public IActionResult TotalProcessosPrazos(int idUsuario)
         {
             try
             {
-                var gerencia = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario).Count();
+                var tramitacoes = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario);
 
-                return StatusCode(200, gerencia);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
-            }
-        }
-
-        [HttpGet("TotalProcessosEmAtraso/{idUsuario}")]
-        public IActionResult TotalProcessosEmAtraso(int idUsuario)
-        {
-            try
-            {
-                var gerencia = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario).Where(x => x.TempoPrazo < 0).Count();
-
-                return StatusCode(200, gerencia);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
-            }
-        }
-
-        [HttpGet("TotalProcessos1DiaDoPrazo/{idUsuario}")]
-        public IActionResult TotalProcessos1DiaDoPrazo(int idUsuario)
-        {
-            try
-            {
-                var gerencia = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario).Where(x => x.TempoPrazo >= 0 && x.TempoPrazo == 1).Count();
-
-                return StatusCode(200, gerencia);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
-            }
-        }
-
-        [HttpGet("TotalProcessosEmDia/{idUsuario}")]
-        public IActionResult TotalProcessosEmDia(int idUsuario)
-        {
-            try
-            {
-                var gerencia = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario).Where(x => x.TempoPrazo > 0).Count();
-
-                return StatusCode(200, gerencia);
+                var model = new Prazos()
+                {
+                    TotaProcessos = tramitacoes.Count(),
+                    PrazoEmDia = tramitacoes.Count(x => x.TempoPrazo > 0),
+                    PrazoVencimento1Dia = tramitacoes.Count(x => x.TempoPrazo == 1),
+                    PrazoAtrasado = tramitacoes.Count(x => x.TempoPrazo < 0),
+                };
+                return StatusCode(200, model);
             }
             catch (ArgumentException ex)
             {
@@ -210,5 +157,13 @@ namespace SigProc.Servico.Controladores
             }
         }
     }
+}
+
+public class Prazos
+{
+    public int TotaProcessos { get; set; }
+    public int PrazoEmDia { get; set; }
+    public int PrazoVencimento1Dia { get; set; }
+    public int PrazoAtrasado { get; set; }
 }
 
