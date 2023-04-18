@@ -1,4 +1,5 @@
 ﻿using SigProc.Aplicacao.Contratos;
+using SigProc.Aplicacao.Modelos.ModeloSaida;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
 using System;

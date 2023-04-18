@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SigProc.Aplicacao.Contratos;
+using SigProc.Aplicacao.Modelos.ModeloSaida;
 using SigProc.Dominio.Entidades;
 
 namespace SigProc.Servico.Controladores
@@ -106,7 +107,7 @@ namespace SigProc.Servico.Controladores
             try
             {
                 var gerencias = _gerenciaUsuarioServico.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
-                var listagemTramitacao = new List<Dados>();
+                var listagemTramitacao = new List<TotalDashboardModelo>();
                 var quantidadeProcessos = 0;
                 foreach (var gerencia in gerencias)
                 {
@@ -118,7 +119,7 @@ namespace SigProc.Servico.Controladores
 
                     foreach (var tramitacao in tramitacoesPorGerencia)
                     {
-                        var model = new Dados();
+                        var model = new TotalDashboardModelo();
                         model.Gerencia = tramitacao.GerenciaDestino.Sigla;
                         model.Quantidade = _tramitacaoServico.ListarAtivos().Where(x => x.DataEnvio.Equals(null) && x.IdOrgaoDestino.Equals(tramitacao.IdOrgaoDestino)).Count();
                         listagemTramitacao.Add(model);
@@ -126,7 +127,7 @@ namespace SigProc.Servico.Controladores
                     }
 
                 }
-                var totalProcessos = new Dados();
+                var totalProcessos = new TotalDashboardModelo();
                 totalProcessos.Gerencia = "Total";
                 totalProcessos.Quantidade = quantidadeProcessos;
                 listagemTramitacao.Add(totalProcessos);
@@ -150,8 +151,9 @@ namespace SigProc.Servico.Controladores
             try
             {
                 var gerencias = _gerenciaUsuarioServico.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
-                var listagemTramitacao = new List<DadosPrioridade>();
+                var listagemTramitacao = new List<TotalDashboardModelo>();
                 var quantidadeProcessos = 0;
+       
                 foreach (var gerencia in gerencias)
                 {
                     var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.IdOrgaoDestino == gerencia.IdGerencia)
@@ -164,39 +166,33 @@ namespace SigProc.Servico.Controladores
                     {
                         if (tramitacao.Processo.Prioridade == "alta")
                         {
-                            var model = new DadosPrioridade();
+                            var model = new TotalDashboardModelo();
                             model.Prioridade = "Alta";
                             model.Gerencia = tramitacao.GerenciaDestino.Sigla;
-                            model.Quantidade = _tramitacaoServico.ListarAtivos().Where(x => x.DataEnvio.Equals(null) && x.IdOrgaoDestino.Equals(tramitacao.IdOrgaoDestino)).Count();
-                            if (model.Quantidade != 0)
-                            {
-                                listagemTramitacao.Add(model);
-                                quantidadeProcessos += model.Quantidade;
-                            }
+                            model.Quantidade += 1;
+
+                            listagemTramitacao.Add(model);
+                            quantidadeProcessos += model.Quantidade;
                         }
                         if (tramitacao.Processo.Prioridade == "media")
                         {
-                            var model = new DadosPrioridade();
+                            var model = new TotalDashboardModelo();
                             model.Prioridade = "Média";
                             model.Gerencia = tramitacao.GerenciaDestino.Sigla;
-                            model.Quantidade = _tramitacaoServico.ListarAtivos().Where(x => x.DataEnvio.Equals(null) && x.IdOrgaoDestino.Equals(tramitacao.IdOrgaoDestino)).Count();
-                            if (model.Quantidade != 0)
-                            {
-                                listagemTramitacao.Add(model);
-                                quantidadeProcessos += model.Quantidade;
-                            }
+                            model.Quantidade += 1;
+
+                            listagemTramitacao.Add(model);
+                            quantidadeProcessos += model.Quantidade;
                         }
                         if (tramitacao.Processo.Prioridade == "baixo")
                         {
-                            var model = new DadosPrioridade();
+                            var model = new TotalDashboardModelo();
                             model.Prioridade = "Baixa";
                             model.Gerencia = tramitacao.GerenciaDestino.Sigla;
-                            model.Quantidade = _tramitacaoServico.ListarAtivos().Where(x => x.DataEnvio.Equals(null) && x.IdOrgaoDestino.Equals(tramitacao.IdOrgaoDestino)).Count();
-                            if (model.Quantidade != 0)
-                            {
-                                listagemTramitacao.Add(model);
-                                quantidadeProcessos += model.Quantidade;
-                            }
+                            model.Quantidade += 1;
+
+                            listagemTramitacao.Add(model);
+                            quantidadeProcessos += model.Quantidade;
                         }
                     }
                 }
@@ -216,15 +212,3 @@ namespace SigProc.Servico.Controladores
     }
 }
 
-public class Dados
-{
-    public string Gerencia { get; set; }
-    public int Quantidade { get; set; }
-}
-
-public class DadosPrioridade
-{
-    public string Prioridade { get; set; }
-    public string Gerencia { get; set; }
-    public int Quantidade { get; set; }
-}

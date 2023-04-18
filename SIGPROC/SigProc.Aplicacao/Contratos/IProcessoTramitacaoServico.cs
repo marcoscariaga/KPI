@@ -1,6 +1,8 @@
-﻿using SigProc.Domain.Contratos.Servicos;
+﻿using SigProc.Aplicacao.Modelos.ModeloSaida;
+using SigProc.Domain.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
