@@ -66,11 +66,20 @@ namespace SigProc.Servico.Controladores
 
                     foreach (var tramitacao in tramitacoesPorGerencia)
                     {
+                        var contagem = new PrazosPorGerencia()
+                        {
+                            TotaProcessos = tramitacoesPorGerencia.Count(),
+                            PrazoEmDia = tramitacoesPorGerencia.Count(x => x.TempoPrazo > 0),
+                            PrazoVencimento1Dia = tramitacoesPorGerencia.Count(x => x.TempoPrazo == 1),
+                            PrazoAtrasado = tramitacoesPorGerencia.Count(x => x.TempoPrazo < 0),
+                        };
+
                         var model = new TotalProcessoPorGerencia();
                         model.Gerencia = tramitacao.GerenciaDestino.Sigla;
-                        model.Quantidade = _tramitacaoServico.ListarAtivos().Where(x => x.DataEnvio.Equals(null) && x.IdOrgaoDestino.Equals(tramitacao.IdOrgaoDestino)).Count();
+                        model.PrazosPorGerencias = contagem;
+                        
                         listagemTramitacao.Add(model);
-                        quantidadeProcessos += model.Quantidade;
+                        quantidadeProcessos += contagem.TotaProcessos;
                     }
 
                 }

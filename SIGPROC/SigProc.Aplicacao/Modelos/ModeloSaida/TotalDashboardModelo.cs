@@ -16,7 +16,8 @@ namespace SigProc.Aplicacao.Modelos.ModeloSaida
     public class TotalProcessoPorGerencia
     {
         public string? Gerencia { get; set; }
-        public int Quantidade { get; set; }
+        public int? Quantidade { get; set; }
+        public PrazosPorGerencia PrazosPorGerencias { get; set; }
     }
 
     public class PrazosPorGerencia
