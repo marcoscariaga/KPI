@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SigProc.Domain.Entidades;
+using SigProc.Domimio.Contratos.Dados;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Entidades;
 using SigProc.infra.dados.Contextos;
@@ -41,7 +42,7 @@ namespace SigProc.infra.dados.Repositorios
             }
             #endregion
 
-            return contexto.ProcessoTramitacao.Where(a => a.Status == true).Include(a => a.Processo).ToList();
+            return contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).Include(a => a.Processo).ToList();
         }
 
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
@@ -56,7 +57,7 @@ namespace SigProc.infra.dados.Repositorios
             using var trans = contexto.Database.BeginTransaction();
 
             TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
-            processo.TempoPrazo = tempoPrazo.Days;
+            processo.TempoPrazo = tempoPrazo.Days; ;
 
             contexto.Entry(processo).State = EntityState.Modified;
             contexto.SaveChanges();
@@ -171,5 +172,40 @@ namespace SigProc.infra.dados.Repositorios
 
             return ultimasTramitacoes;
         }
+
+
+        public virtual TimeSpan CalculaPrazo(DateTime dataTramitacao, int prazo)
+        {
+        
+            List<DateTime> datasFeriados = new List<DateTime>();
+
+            // Faz a busca dos feriados e seleciona somente o campo "DataFeriado"
+            var feriados = contexto.Feriado.Where(x => x.DataFeriado >= DateTime.Today && x.Status == true).Select(f => f.DataFeriado);
+
+            // Adiciona as datas dos feriados à lista de datasFeriados
+            datasFeriados.AddRange(feriados);
+
+            // Imprime as datas dos feriados na lista
+            foreach (DateTime dataFeriado in datasFeriados)
+            {
+                Console.WriteLine(dataFeriado.ToString("dd/MM/yyyy"));
+            }
+
+            int diasParaAcrescentar = prazo;
+
+            DateTime dataFutura = dataTramitacao;
+            int diasAcrescentados = 0;
+            while (diasAcrescentados < diasParaAcrescentar)
+            {
+                dataFutura = dataFutura.AddDays(1);
+                if (dataFutura.DayOfWeek != DayOfWeek.Saturday && dataFutura.DayOfWeek != DayOfWeek.Sunday && !datasFeriados.Contains(dataFutura))
+                {
+                    diasAcrescentados++;
+                }
+            }
+            var data = dataFutura - dataTramitacao;
+            return data;
+        }
     }
 }
+

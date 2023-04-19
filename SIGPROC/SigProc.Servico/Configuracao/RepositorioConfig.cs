@@ -24,7 +24,7 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<ITipoUsuarioGerenciaRepositorio, TipoUsuarioGerenciaRepositorio>();
             builder.Services.AddTransient<IDadosDoProcessoSicopRepositorio, DadosDoProcessoSicopRepositorio>();
             builder.Services.AddTransient<IDadosDeTramitacaoSicopRepositorio, DadosDeTramitacaoSicopRepositorio>();
-
+            builder.Services.AddTransient<IFeriadoRepositorio, FeriadoRepositorio>();
 
             var connectionString = builder.Configuration.GetConnectionString("SIGPROC");
             builder.Services.AddDbContext<SqlServidorContexto>

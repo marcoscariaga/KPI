@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ServiceSicop;
 using SigProc.Domain.Contratos.Servicos;
+using SigProc.Domimio.Contratos.Dados;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
@@ -16,12 +17,14 @@ namespace SigProc.Dominio.Servicos
         private readonly IGerenciaRepositorio _gerencia;
         private readonly IProcessoTramitacaoRepositorio _processoTramitacao;
         private readonly IGerenciaPrazoRepositorio _gerenciaPrazo;
-        public ProcessoDominioServico(IProcessoRepositorio repository, IGerenciaRepositorio gerencia, IProcessoTramitacaoRepositorio processoTramitacao, IGerenciaPrazoRepositorio gerenciaPrazo) : base(repository)
+        private readonly IFeriadoRepositorio _feriadoRepositorio;
+        public ProcessoDominioServico(IProcessoRepositorio repository, IGerenciaRepositorio gerencia, IProcessoTramitacaoRepositorio processoTramitacao, IGerenciaPrazoRepositorio gerenciaPrazo, IFeriadoRepositorio feriadoRepositorio) : base(repository)
         {
             _repositorio = repository;
             _gerencia = gerencia;
             _processoTramitacao = processoTramitacao;
             _gerenciaPrazo = gerenciaPrazo;
+            _feriadoRepositorio = feriadoRepositorio;
         }
 
         public ICollection<Processo> ListarAtivos()
@@ -30,6 +33,8 @@ namespace SigProc.Dominio.Servicos
         }
         public Processo Inserir(Processo processo)
         {
+            #region Validação parada cadastrar o processo
+
             var consultaProcesso = _repositorio.BuscarPorNumeroProcesso(processo.NumProcesso);
             if (consultaProcesso != null)
                 throw new ArgumentException($"O processo {processo.NumProcesso} já está cadastrado no sistema.");
@@ -46,45 +51,52 @@ namespace SigProc.Dominio.Servicos
                 throw new ArgumentException($"A gerência {orgaoOrigem}, não está cadastrada no sistema.");
 
             var cadProcesso = _repositorio.Inserir(processo);
-           
+
+            #endregion
+
             try
             {
-                var prazo = _gerenciaPrazo.ListarTudo().Where(x=>x.IdGerencia.Equals(orgaoDestino.Id)).OrderByDescending(x=>x.Prazo).FirstOrDefault();
+                #region Busca o prazo, e o feriados para fazer o cálculo do prazo da tramitação
 
-            DateTime dataAtual = DateTime.Today;
-            int diasParaAcrescentar = prazo.Prazo;
+                var prazo = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(orgaoDestino.Id)).OrderByDescending(x => x.Prazo).FirstOrDefault();
+                var feriados = _feriadoRepositorio.ListarDatas();
 
-            DateTime dataFutura = dataAtual;
-            int diasAcrescentados = 0;
-            while (diasAcrescentados < diasParaAcrescentar)
-            {
-                dataFutura = dataFutura.AddDays(1);
-                if (dataFutura.DayOfWeek != DayOfWeek.Saturday && dataFutura.DayOfWeek != DayOfWeek.Sunday)
+                DateTime dataAtual = DateTime.Today;
+                int diasParaAcrescentar = prazo.Prazo;
+
+                DateTime dataFutura = dataAtual;
+                int diasAcrescentados = 0;
+                while (diasAcrescentados < diasParaAcrescentar)
                 {
-                    diasAcrescentados++;
+                    dataFutura = dataFutura.AddDays(1);
+                    if (dataFutura.DayOfWeek != DayOfWeek.Saturday && dataFutura.DayOfWeek != DayOfWeek.Sunday && !feriados.Contains(dataFutura))
+                    {
+                        diasAcrescentados++;
+                    }
                 }
-            }
 
-                var tempoPrazo = dataFutura - DateTime.Today; 
+                var tempoPrazo = dataFutura - DateTime.Today;
 
-            ProcessoTramitacao processoTramitacao = new ProcessoTramitacao()
-            {
-                IdProcesso = cadProcesso.Id,
-                IdOrgaoOrigem = orgaoOrigem.Id,
-                IdOrgaoDestino = orgaoDestino.Id,
-                Prazo = tempoPrazo.Days,
-                DataTramitacao = DateTime.Today,
-                DataPrazo = dataFutura,
-                Observacao = processo.Observacao,
-                IdUsuarioTramitacao = processo.IdUsuarioCadastro,
-                Status = true,
-                NumeroProcesso = processo.NumProcesso,
-                TempoPrazo = tempoPrazo.Days,
-                TempoEnvio = null,
-                DataEnvio = null
-            };
+                #endregion
 
-         
+                ProcessoTramitacao processoTramitacao = new ProcessoTramitacao()
+                {
+                    IdProcesso = cadProcesso.Id,
+                    IdOrgaoOrigem = orgaoOrigem.Id,
+                    IdOrgaoDestino = orgaoDestino.Id,
+                    Prazo = tempoPrazo.Days,
+                    DataTramitacao = DateTime.Today,
+                    DataPrazo = dataFutura,
+                    Observacao = processo.Observacao,
+                    IdUsuarioTramitacao = processo.IdUsuarioCadastro,
+                    Status = true,
+                    NumeroProcesso = processo.NumProcesso,
+                    TempoPrazo = tempoPrazo.Days,
+                    TempoEnvio = null,
+                    DataEnvio = null
+                };
+
+
                 _processoTramitacao.Inserir(processoTramitacao);
             }
             catch (Exception)
@@ -93,7 +105,7 @@ namespace SigProc.Dominio.Servicos
                 _repositorio.Deletar(processo);
                 throw new ArgumentException($"Erro ao cadastrar a tramitação, tente novamente.");
             }
-           
+
 
             return cadProcesso;
         }
