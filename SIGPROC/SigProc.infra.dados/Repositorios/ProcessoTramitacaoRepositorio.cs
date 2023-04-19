@@ -32,9 +32,9 @@ namespace SigProc.infra.dados.Repositorios
             foreach (var processo in processos)
             {
                 using var trans = contexto.Database.BeginTransaction();
-
-                TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
-                processo.TempoPrazo = tempoPrazo.Days;
+              
+                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
+                processo.TempoPrazo = tempoPrazo;
 
                 contexto.Entry(processo).State = EntityState.Modified;
                 contexto.SaveChanges();
@@ -56,8 +56,8 @@ namespace SigProc.infra.dados.Repositorios
 
             using var trans = contexto.Database.BeginTransaction();
 
-            TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
-            processo.TempoPrazo = tempoPrazo.Days; ;
+            var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
+            processo.TempoPrazo = tempoPrazo;
 
             contexto.Entry(processo).State = EntityState.Modified;
             contexto.SaveChanges();
@@ -85,8 +85,8 @@ namespace SigProc.infra.dados.Repositorios
             {
                 using var trans = contexto.Database.BeginTransaction();
 
-                TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
-                processo.TempoPrazo = tempoPrazo.Days;
+                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
+                processo.TempoPrazo = tempoPrazo;
 
                 contexto.Entry(processo).State = EntityState.Modified;
                 contexto.SaveChanges();
@@ -114,8 +114,8 @@ namespace SigProc.infra.dados.Repositorios
             {
                 using var trans = contexto.Database.BeginTransaction();
 
-                TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
-                processo.TempoPrazo = tempoPrazo.Days;
+                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
+                processo.TempoPrazo = tempoPrazo;
 
                 contexto.Entry(processo).State = EntityState.Modified;
                 contexto.SaveChanges();
@@ -144,8 +144,8 @@ namespace SigProc.infra.dados.Repositorios
             {
                 using var trans = contexto.Database.BeginTransaction();
 
-                TimeSpan tempoPrazo = ((TimeSpan)(processo.DataPrazo - DateTime.Today));
-                processo.TempoPrazo = tempoPrazo.Days;
+                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
+                processo.TempoPrazo = tempoPrazo;
 
                 contexto.Entry(processo).State = EntityState.Modified;
                 contexto.SaveChanges();
@@ -173,23 +173,26 @@ namespace SigProc.infra.dados.Repositorios
             return ultimasTramitacoes;
         }
 
+        public virtual int ContarDiasUteis(DateTime dataInicial, DateTime? dataFinal)
+        {
+            var datasFeriados = BucarFeriados();
 
+            int diasUteis = 0;
+
+            while (dataInicial < dataFinal)
+            {
+                if (dataInicial.DayOfWeek != DayOfWeek.Saturday && dataInicial.DayOfWeek != DayOfWeek.Sunday && !datasFeriados.Contains(dataInicial))
+                {
+                    diasUteis++;
+                }
+                dataInicial = dataInicial.AddDays(1);
+            }
+
+            return diasUteis;
+        }
         public virtual TimeSpan CalculaPrazo(DateTime dataTramitacao, int prazo)
         {
-        
-            List<DateTime> datasFeriados = new List<DateTime>();
-
-            // Faz a busca dos feriados e seleciona somente o campo "DataFeriado"
-            var feriados = contexto.Feriado.Where(x => x.DataFeriado >= DateTime.Today && x.Status == true).Select(f => f.DataFeriado);
-
-            // Adiciona as datas dos feriados à lista de datasFeriados
-            datasFeriados.AddRange(feriados);
-
-            // Imprime as datas dos feriados na lista
-            foreach (DateTime dataFeriado in datasFeriados)
-            {
-                Console.WriteLine(dataFeriado.ToString("dd/MM/yyyy"));
-            }
+            var datasFeriados = BucarFeriados();
 
             int diasParaAcrescentar = prazo;
 
@@ -204,7 +207,22 @@ namespace SigProc.infra.dados.Repositorios
                 }
             }
             var data = dataFutura - dataTramitacao;
+
             return data;
+        }
+        public virtual ICollection<DateTime> BucarFeriados()
+        {
+            List<DateTime> datasFeriados = new List<DateTime>();
+
+            var feriados = contexto.Feriado.Where(x => x.DataFeriado >= DateTime.Today && x.Status == true).Select(f => f.DataFeriado);
+            datasFeriados.AddRange(feriados);
+
+            foreach (DateTime dataFeriado in datasFeriados)
+            {
+                Console.WriteLine(dataFeriado.ToString("dd/MM/yyyy"));
+            }
+
+            return datasFeriados;
         }
     }
 }

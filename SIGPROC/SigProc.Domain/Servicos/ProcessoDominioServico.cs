@@ -84,14 +84,14 @@ namespace SigProc.Dominio.Servicos
                     IdProcesso = cadProcesso.Id,
                     IdOrgaoOrigem = orgaoOrigem.Id,
                     IdOrgaoDestino = orgaoDestino.Id,
-                    Prazo = tempoPrazo.Days,
+                    Prazo = diasAcrescentados,
                     DataTramitacao = DateTime.Today,
                     DataPrazo = dataFutura,
                     Observacao = processo.Observacao,
                     IdUsuarioTramitacao = processo.IdUsuarioCadastro,
                     Status = true,
                     NumeroProcesso = processo.NumProcesso,
-                    TempoPrazo = tempoPrazo.Days,
+                    TempoPrazo = diasAcrescentados,
                     TempoEnvio = null,
                     DataEnvio = null
                 };
