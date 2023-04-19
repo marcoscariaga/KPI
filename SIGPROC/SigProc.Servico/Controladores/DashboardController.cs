@@ -55,7 +55,10 @@ namespace SigProc.Servico.Controladores
             {
                 var gerencias = _gerenciaUsuarioServico.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
                 var listagemTramitacao = new List<TotalProcessoPorGerencia>();
-                var quantidadeProcessos = 0;
+                var quantidadePrazoEmDia = 0;
+                var quantidadePrazoVencimento1Dia = 0;
+                var quantidadePrazoAtrasado = 0;
+                var quantidadeTotaProcessos = 0;
                 foreach (var gerencia in gerencias)
                 {
                     var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.IdOrgaoDestino == gerencia.IdGerencia && pt.DataEnvio == null)
@@ -77,15 +80,27 @@ namespace SigProc.Servico.Controladores
                         var model = new TotalProcessoPorGerencia();
                         model.Gerencia = tramitacao.GerenciaDestino.Sigla;
                         model.PrazosPorGerencias = contagem;
-                        
-                        listagemTramitacao.Add(model);
-                        quantidadeProcessos += contagem.TotaProcessos;
-                    }
 
+                        quantidadePrazoEmDia += model.PrazosPorGerencias.PrazoEmDia;
+                        quantidadePrazoVencimento1Dia += model.PrazosPorGerencias.PrazoVencimento1Dia;
+                        quantidadePrazoAtrasado += model.PrazosPorGerencias.PrazoAtrasado;
+                        quantidadeTotaProcessos += model.PrazosPorGerencias.TotaProcessos;
+
+                        listagemTramitacao.Add(model);
+                        
+                    }
                 }
+
+                var contagens = new PrazosPorGerencia()
+                {
+                    TotaProcessos = quantidadeTotaProcessos,
+                    PrazoEmDia = quantidadePrazoEmDia,
+                    PrazoVencimento1Dia = quantidadePrazoVencimento1Dia,
+                    PrazoAtrasado = quantidadePrazoAtrasado,
+                };
                 var totalProcessos = new TotalProcessoPorGerencia();
                 totalProcessos.Gerencia = "Total";
-                totalProcessos.Quantidade = quantidadeProcessos;
+                totalProcessos.PrazosPorGerencias = contagens;
                 listagemTramitacao.Add(totalProcessos);
 
                 return StatusCode(200, listagemTramitacao);
