@@ -32,7 +32,7 @@ namespace SigProc.infra.dados.Repositorios
             foreach (var processo in processos)
             {
                 using var trans = contexto.Database.BeginTransaction();
-              
+
                 var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
                 processo.TempoPrazo = tempoPrazo;
 

@@ -66,8 +66,7 @@ namespace SigProc.Servico.Controladores
                                                                  .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
                                                                  .FirstOrDefault())
                                                                  .ToList();
-
-                    foreach (var tramitacao in tramitacoesPorGerencia)
+                    if (tramitacoesPorGerencia.Count() != 0)
                     {
                         var contagem = new PrazosPorGerencia()
                         {
@@ -78,7 +77,7 @@ namespace SigProc.Servico.Controladores
                         };
 
                         var model = new TotalProcessoPorGerencia();
-                        model.Gerencia = tramitacao.GerenciaDestino.Sigla;
+                        model.Gerencia = tramitacoesPorGerencia[0].GerenciaDestino.Sigla;
                         model.PrazosPorGerencias = contagem;
 
                         quantidadePrazoEmDia += model.PrazosPorGerencias.PrazoEmDia;
@@ -87,8 +86,7 @@ namespace SigProc.Servico.Controladores
                         quantidadeTotaProcessos += model.PrazosPorGerencias.TotaProcessos;
 
                         listagemTramitacao.Add(model);
-                        
-                    }
+                    }   
                 }
 
                 var contagens = new PrazosPorGerencia()
