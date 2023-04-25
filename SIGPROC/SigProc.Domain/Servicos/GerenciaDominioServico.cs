@@ -4,6 +4,7 @@ using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
 using SigProc.Infra.Seguranca.Servico;
+using System.Diagnostics;
 
 namespace SigProc.Dominio.Servicos
 {
@@ -31,6 +32,10 @@ namespace SigProc.Dominio.Servicos
         {
             if (objeto.Prazo <= 0)
                 throw new ArgumentException("Informe o prazo da gerência!");
+
+            var verificaCodigo = _repositorio.ListarTudo().Where(x=>x.Codigo == objeto.Codigo && x.Sigla == objeto.Sigla).FirstOrDefault(); 
+            if (verificaCodigo != null)
+                throw new ArgumentException($"A gerência já está cadastrada no sistema.");
 
             #region Cadastro da Gerência
             var gerencia = _repositorio.Inserir(objeto);

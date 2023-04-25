@@ -8,6 +8,8 @@ namespace SigProc.Dominio.Contratos.Servicos
     {
         public ICollection<GerenciaUsuario> ListarAtivos();
         public ICollection<GerenciaUsuario> RetornaPorIdGerencia(int id_gerencia);
-        
+        public ICollection<GerenciaUsuario> ListarGerenciaPorIdUsuario(int idUsuario);
+
+
     }
 }

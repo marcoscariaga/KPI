@@ -15,6 +15,7 @@ namespace SigProc.infra.dados.Mapeamentos
         public void Configure(EntityTypeBuilder<Gerencia> builder)
         {
             builder.HasKey(c => c.Id);
+            builder.Property(c => c.Codigo).IsRequired();
             builder.Property(c => c.Descricao).IsRequired();
             builder.Property(c => c.Sigla).IsRequired();
             builder.Property(c => c.Email);

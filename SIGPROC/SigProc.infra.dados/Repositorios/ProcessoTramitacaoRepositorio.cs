@@ -134,41 +134,12 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
         {
-            #region Buscar todas as tramitações do processo e atualiza o tempo de prazo
-
-            var processos = contexto.ProcessoTramitacao
-                .Where(x => x.IdUsuarioTramitacao.Equals(idUsuario) && x.DataEnvio.Equals(null))
-                .AsNoTracking().ToList();
-
-            foreach (var processo in processos)
-            {
-                using var trans = contexto.Database.BeginTransaction();
-
-                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-                processo.TempoPrazo = tempoPrazo;
-
-                contexto.Entry(processo).State = EntityState.Modified;
-                contexto.SaveChanges();
-                trans.Commit();
-            }
-            #endregion
-
-            // substitua pelo ID do usuário desejado
-
-            var ultimasTramitacoes = (from pt in contexto.ProcessoTramitacao
-                                      join g in contexto.Gerencia on pt.IdOrgaoDestino equals g.Id
-                                      where g.IdUsuarioResp == idUsuario
-                                      && pt.DataTramitacao == (from pt2 in contexto.ProcessoTramitacao
-                                                               where pt2.NumeroProcesso == pt.NumeroProcesso
-                                                               group pt2 by pt2.NumeroProcesso into g
-                                                               select g.Max(pt2 => pt2.DataTramitacao))
-                                                               .FirstOrDefault()
-                                      orderby pt.DataTramitacao descending
-                                      select pt).Include(a => a.GerenciaOrigem)
-                                                 .Include(a => a.GerenciaDestino)
-                                                 .Include(a => a.UsuarioTramitacao)
-                                                 .Include(a => a.Processo)
-                                                 .ToList();
+            var ultimasTramitacoes = contexto.ProcessoTramitacao
+          .Include(pt => pt.Processo)
+              .Where(pt => pt.IdOrgaoDestino == idUsuario && pt.DataEnvio.Equals(null))
+              .GroupBy(pt => pt.IdProcesso)
+              .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
+          .ToList();
 
             return ultimasTramitacoes;
         }

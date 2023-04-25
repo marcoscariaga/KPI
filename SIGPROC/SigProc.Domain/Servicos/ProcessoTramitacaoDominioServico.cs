@@ -102,9 +102,9 @@ namespace SigProc.Dominio.Servicos
 
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
         {
-            var gerencias = _gerenciaUsuario.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
+            var gerencias = _gerenciaUsuario.ListarGerenciaPorIdUsuario(idUsuario);
 
-            return  gerencias.SelectMany(g => _repositorio.BuscarUltimaTramitacaoPorIdGerenciaAtual(g.IdGerencia)).ToList();
+            return  gerencias.SelectMany(g => _repositorio.BuscarUltimaTramitacaoPorUsuarioGerencial(g.IdGerencia)).ToList();
         }
     }
 }

@@ -10,8 +10,9 @@ namespace SigProc.Dominio.Entidades
 {
     public class Gerencia : Base
     {
+        public string Codigo { get; set; }
         public string Descricao { get; set; }
-        public string Sigla { get; set; }
+        public string? Sigla { get; set; }
         public int Prazo { get; set; }
         public string? Email { get; set; }
         public string? Telefone { get; set; }

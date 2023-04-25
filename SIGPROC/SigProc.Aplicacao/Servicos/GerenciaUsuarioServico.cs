@@ -21,6 +21,12 @@ namespace SigProc.Aplicacao.Servicos
         {
             return gerenciaUsuarioDomainService.ListarAtivos();
         }
+
+        public ICollection<GerenciaUsuario> ListarGerenciaPorIdUsuario(int idUsuario)
+        {
+            return gerenciaUsuarioDomainService.ListarGerenciaPorIdUsuario(idUsuario);
+        }
+
         public ICollection<GerenciaUsuario> RetornaPorIdGerencia(int id_gerencia)
         {
             return gerenciaUsuarioDomainService.RetornaPorIdGerencia(id_gerencia);

@@ -8,6 +8,7 @@ namespace SigProc.Aplicacao.Modelos
 {
     public class GerenciaModelo
     {
+        public string Codigo { get; set; }
         public string Descricao { get; set; }
         public string Sigla { get; set; }
         public int Prazo { get; set; }

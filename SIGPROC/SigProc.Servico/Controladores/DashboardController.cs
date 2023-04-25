@@ -53,12 +53,13 @@ namespace SigProc.Servico.Controladores
         {
             try
             {
-                var gerencias = _gerenciaUsuarioServico.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
+                var gerencias = _gerenciaUsuarioServico.ListarGerenciaPorIdUsuario(idUsuario);
                 var listagemTramitacao = new List<TotalProcessoPorGerencia>();
                 var quantidadePrazoEmDia = 0;
                 var quantidadePrazoVencimento1Dia = 0;
                 var quantidadePrazoAtrasado = 0;
                 var quantidadeTotaProcessos = 0;
+                
                 foreach (var gerencia in gerencias)
                 {
                     var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.IdOrgaoDestino == gerencia.IdGerencia && pt.DataEnvio == null)
@@ -119,7 +120,7 @@ namespace SigProc.Servico.Controladores
         {
             try
             {
-                var gerencias = _gerenciaUsuarioServico.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
+                var gerencias = _gerenciaUsuarioServico.ListarGerenciaPorIdUsuario(idUsuario);
                 var listagemTramitacao = new List<TotalDashboardModelo>();
        
                 foreach (var gerencia in gerencias)
@@ -180,7 +181,7 @@ namespace SigProc.Servico.Controladores
         {
             try
             {
-                var gerencias = _gerenciaUsuarioServico.ListarAtivos().Where(x => x.IdUsuarioGerencia == idUsuario).ToList();
+                var gerencias = _gerenciaUsuarioServico.ListarGerenciaPorIdUsuario(idUsuario);
                 var listagemTramitacao = new List<TotalDashboardModelo>();
                 var quantidadeAlta = 0;
                 var quantidadeMedia = 0;

@@ -33,5 +33,9 @@ namespace SigProc.Dominio.Servicos
             return _repositorio.Inserir(objeto);
         }
 
+        public ICollection<GerenciaUsuario> ListarGerenciaPorIdUsuario(int idUsuario)
+        {
+            return _repositorio.ListarGerenciaPorIdUsuario(idUsuario);
+        }
     }
 }

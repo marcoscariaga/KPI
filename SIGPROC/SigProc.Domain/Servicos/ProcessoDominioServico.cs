@@ -7,6 +7,7 @@ using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace SigProc.Dominio.Servicos
 {
@@ -39,16 +40,8 @@ namespace SigProc.Dominio.Servicos
             if (consultaProcesso != null)
                 throw new ArgumentException($"O processo {processo.NumProcesso} já está cadastrado no sistema.");
 
-            string[] siglaDestino = processo.OrgaoDestino.Split(new string[] { " - " }, StringSplitOptions.None);
-            string[] siglaOrigem = processo.OrgaoOrigem.Split(new string[] { " - " }, StringSplitOptions.None);
-
-            var orgaoDestino = _gerencia.BuscarPorSiglaGerencia(siglaDestino[1].Trim());
-            if (orgaoDestino == null)
-                throw new ArgumentException($"A gerência {siglaDestino}, não está cadastrada no sistema.");
-
-            var orgaoOrigem = _gerencia.BuscarPorSiglaGerencia(siglaOrigem[1].Trim());
-            if (orgaoOrigem == null)
-                throw new ArgumentException($"A gerência {orgaoOrigem}, não está cadastrada no sistema.");
+            var idOrgaoDestino = VerificaGerencia(processo.OrgaoDestino);
+            var idOrgaoOrigem = VerificaGerencia(processo.OrgaoOrigem);
 
             var cadProcesso = _repositorio.Inserir(processo);
 
@@ -58,7 +51,7 @@ namespace SigProc.Dominio.Servicos
             {
                 #region Busca o prazo, e o feriados para fazer o cálculo do prazo da tramitação
 
-                var prazo = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(orgaoDestino.Id)).OrderByDescending(x => x.Prazo).FirstOrDefault();
+                var prazo = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(idOrgaoDestino)).OrderByDescending(x => x.Prazo).FirstOrDefault();
                 var feriados = _feriadoRepositorio.ListarDatas();
 
                 DateTime dataAtual = DateTime.Today;
@@ -82,8 +75,8 @@ namespace SigProc.Dominio.Servicos
                 ProcessoTramitacao processoTramitacao = new ProcessoTramitacao()
                 {
                     IdProcesso = cadProcesso.Id,
-                    IdOrgaoOrigem = orgaoOrigem.Id,
-                    IdOrgaoDestino = orgaoDestino.Id,
+                    IdOrgaoOrigem = idOrgaoOrigem,
+                    IdOrgaoDestino = idOrgaoDestino,
                     Prazo = diasAcrescentados,
                     DataTramitacao = DateTime.Today,
                     DataPrazo = dataFutura,
@@ -108,6 +101,17 @@ namespace SigProc.Dominio.Servicos
 
 
             return cadProcesso;
+        }
+        public int VerificaGerencia(string textoGerencia)
+        {
+            Match numeroGerencia = Regex.Match(textoGerencia, @"\d{8}");
+            string codigoGerencia = Convert.ToInt32(numeroGerencia.Value).ToString();
+
+            var gerencia = _gerencia.ListarTudo().Where(x => x.Sigla.Equals(codigoGerencia.Trim())).FirstOrDefault();
+            if (gerencia == null)
+                throw new ArgumentException($"A gerência {gerencia}, não está cadastrada no sistema.");
+
+            return gerencia.Id;
         }
     }
 }
