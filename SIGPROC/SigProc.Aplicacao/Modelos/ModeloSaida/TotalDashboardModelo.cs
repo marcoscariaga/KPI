@@ -21,7 +21,7 @@ namespace SigProc.Aplicacao.Modelos.ModeloSaida
 
     public class PrazosPorGerencia
     {
-        public int TotaProcessos { get; set; }
+        public int TotalProcessos { get; set; }
         public int PrazoEmDia { get; set; }
         public int PrazoVencimento1Dia { get; set; }
         public int PrazoAtrasado { get; set; }

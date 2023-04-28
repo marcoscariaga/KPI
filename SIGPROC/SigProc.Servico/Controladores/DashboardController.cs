@@ -30,9 +30,9 @@ namespace SigProc.Servico.Controladores
 
                 var model = new PrazosPorGerencia()
                 {
-                    TotaProcessos = tramitacoes.Count(),
+                    TotalProcessos = tramitacoes.Count(),
                     PrazoEmDia = tramitacoes.Count(x => x.TempoPrazo > 0),
-                    PrazoVencimento1Dia = tramitacoes.Count(x => x.TempoPrazo == 1),
+                    PrazoVencimento1Dia = tramitacoes.Count(x => x.TempoPrazo >= 0 && x.TempoPrazo <= 1),
                     PrazoAtrasado = tramitacoes.Count(x => x.TempoPrazo < 0),
                 };
                 return StatusCode(200, model);
@@ -71,9 +71,9 @@ namespace SigProc.Servico.Controladores
                     {
                         var contagem = new PrazosPorGerencia()
                         {
-                            TotaProcessos = tramitacoesPorGerencia.Count(),
+                            TotalProcessos = tramitacoesPorGerencia.Count(),
                             PrazoEmDia = tramitacoesPorGerencia.Count(x => x.TempoPrazo > 0),
-                            PrazoVencimento1Dia = tramitacoesPorGerencia.Count(x => x.TempoPrazo == 1),
+                            PrazoVencimento1Dia = tramitacoesPorGerencia.Count(x => x.TempoPrazo >= 0 && x.TempoPrazo <= 1),
                             PrazoAtrasado = tramitacoesPorGerencia.Count(x => x.TempoPrazo < 0),
                         };
 
@@ -84,7 +84,7 @@ namespace SigProc.Servico.Controladores
                         quantidadePrazoEmDia += model.PrazosPorGerencias.PrazoEmDia;
                         quantidadePrazoVencimento1Dia += model.PrazosPorGerencias.PrazoVencimento1Dia;
                         quantidadePrazoAtrasado += model.PrazosPorGerencias.PrazoAtrasado;
-                        quantidadeTotaProcessos += model.PrazosPorGerencias.TotaProcessos;
+                        quantidadeTotaProcessos += model.PrazosPorGerencias.TotalProcessos;
 
                         listagemTramitacao.Add(model);
                     }   
@@ -92,7 +92,7 @@ namespace SigProc.Servico.Controladores
 
                 var contagens = new PrazosPorGerencia()
                 {
-                    TotaProcessos = quantidadeTotaProcessos,
+                    TotalProcessos = quantidadeTotaProcessos,
                     PrazoEmDia = quantidadePrazoEmDia,
                     PrazoVencimento1Dia = quantidadePrazoVencimento1Dia,
                     PrazoAtrasado = quantidadePrazoAtrasado,

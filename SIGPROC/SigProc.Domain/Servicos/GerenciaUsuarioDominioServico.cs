@@ -26,7 +26,7 @@ namespace SigProc.Dominio.Servicos
         }
         public GerenciaUsuario Inserir(GerenciaUsuario objeto)
         {
-            var verificaUsuario = _repositorio.ListarAtivos().Where(x=>x.IdGerencia.Equals(objeto.IdGerencia) && x.IdUsuarioGerencia.Equals(objeto.IdTipoUsuarioGerencia)).FirstOrDefault();
+            var verificaUsuario = _repositorio.ListarAtivos().Where(x=>x.IdGerencia.Equals(objeto.IdGerencia) && x.IdUsuarioGerencia.Equals(objeto.IdUsuarioGerencia)).FirstOrDefault();
             if (verificaUsuario != null)
                 throw new ArgumentException($"O usuário já está associado a gerência.");
             

@@ -34,6 +34,7 @@ namespace SigProc.infra.dados.Repositorios
             //              (gu, pt) => new { GerenciaUsuario = gu, ProcessoTramitacao = pt })
             //        .ToList();
 
+
             var resultado = contexto.GerenciaUsuario.Include(a => a.Gerencia).Include(a => a.TipoUsuarioGerencia).Include(a => a.UsuarioGerencia).Include(a => a.UsuarioCadastro).Where(a => a.Status == true).ToList()
 
             .Where(x => x.IdUsuarioGerencia == idUsuario)
@@ -46,8 +47,7 @@ namespace SigProc.infra.dados.Repositorios
             .Select(x => x.FirstOrDefault())
             .ToList();
 
-
-            var lista = new List<GerenciaUsuario>();
+           var lista = new List<GerenciaUsuario>();
             foreach (var item in resultado)
             {
                 var model = new GerenciaUsuario();

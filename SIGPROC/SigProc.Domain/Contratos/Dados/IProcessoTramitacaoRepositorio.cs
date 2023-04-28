@@ -1,4 +1,5 @@
-﻿using SigProc.Domain.Contratos.Dados;
+﻿using Microsoft.AspNetCore.Mvc;
+using SigProc.Domain.Contratos.Dados;
 using SigProc.Dominio.Entidades;
 using System;
 using System.Collections.Generic;

@@ -105,6 +105,7 @@ namespace SigProc.Dominio.Servicos
             var gerencias = _gerenciaUsuario.ListarGerenciaPorIdUsuario(idUsuario);
 
             return  gerencias.SelectMany(g => _repositorio.BuscarUltimaTramitacaoPorUsuarioGerencial(g.IdGerencia)).ToList();
+
         }
     }
 }

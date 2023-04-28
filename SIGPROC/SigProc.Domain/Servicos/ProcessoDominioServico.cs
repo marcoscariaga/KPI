@@ -107,7 +107,7 @@ namespace SigProc.Dominio.Servicos
             Match numeroGerencia = Regex.Match(textoGerencia, @"\d{8}");
             string codigoGerencia = Convert.ToInt32(numeroGerencia.Value).ToString();
 
-            var gerencia = _gerencia.ListarTudo().Where(x => x.Sigla.Equals(codigoGerencia.Trim())).FirstOrDefault();
+            var gerencia = _gerencia.ListarTudo().Where(x => x.Codigo.Equals(codigoGerencia.Trim())).FirstOrDefault();
             if (gerencia == null)
                 throw new ArgumentException($"A gerência {gerencia}, não está cadastrada no sistema.");
 

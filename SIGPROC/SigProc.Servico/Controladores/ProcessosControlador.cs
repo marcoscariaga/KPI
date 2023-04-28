@@ -109,7 +109,25 @@ namespace SisAgenda.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar processo!" });
             }
         }
+        [HttpGet("BuscarPorNumeroProcesso/{numeroProcesso}")]
+        public IActionResult BuscarPorNumeroProcesso(string numeroProcesso)
+        {
+            try
+            {
+                var processos = _processoServico.ListarTudo().Where(x=>x.NumProcesso.Equals(numeroProcesso)).FirstOrDefault();
 
+                return StatusCode(200, processos);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar processo!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar processo!" });
+            }
+        }
         [HttpGet("BuscarPorID/{id}")]
         public IActionResult GetById(int id)
         {

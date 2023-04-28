@@ -35,7 +35,9 @@ namespace SigProc.Servico.Controladores
                     };
                     return Ok(result);
                 }
-                else
+                
+
+
                 {
                     //UNAUTHORIZED (HTTP 401)
                     return Unauthorized("Acesso negado.");
