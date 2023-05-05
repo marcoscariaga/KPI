@@ -8,6 +8,7 @@ using SigProc.Dominio.Entidades;
 using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos;
 using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SisAgenda.Servico.Controladores
 {
@@ -25,15 +26,29 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpPost("Cadastrar")]
-        public IActionResult Post([FromBody] GerenciaModelo gerencia)
+        public IActionResult Post([FromBody] GerenciaModelo[] gerencia)
         {
             //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
             try
             {
-                var cadastro = _gerenciaServico.Inserir(_mapper.Map<Gerencia>(gerencia));
+                foreach (var item in gerencia)
+                {
+                    string s = item.Descricao;
+
+                    string[] subs = s.Split(new string[] { " - " }, StringSplitOptions.None);
+
+
+                    item.Descricao = subs[1].Trim();
+                    item.Sigla = subs[0].Trim();
+                    item.Email = $"{item.Sigla}gmail.com";
+                    item.Telefone = "21 2222-2222";
+                    item.Prazo = 7;
+                   var cadastro = _gerenciaServico.Inserir(_mapper.Map<Gerencia>(item));
+                }
+             
 
                 //Log.ForContext("Action", $"CadastrarU").Information($"O usuário: {sUsuario}, cadastrou o usuário: {usuario.Nome}.");
-                return StatusCode(201,new { cadastro, mensagem = "Gerência cadastrado com sucesso!" } );
+                return StatusCode(201,new {  mensagem = "Gerência cadastrado com sucesso!" } );
             }
             catch (ValidationException ex)
             {

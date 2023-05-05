@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using SigProc.Aplicacao.Contratos;
+using SigProc.Aplicacao.Modelos;
 using SigProc.Domimio.Entidades;
+using SigProc.Dominio.Entidades;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SigProc.Servico.Controladores
 {
@@ -13,12 +18,15 @@ namespace SigProc.Servico.Controladores
         private readonly IDadosDoProcessoSicopServico _appSicopProcesso;
         private readonly IDadosDeTramitacaoSicopServico _appSicopTramitacao;
         private IMapper _mapper;
-
-        public SicopController(IDadosDoProcessoSicopServico appSicopProcesso, IMapper mapper, IDadosDeTramitacaoSicopServico appSicopTramitacao)
+        private readonly IProcessoServico _appProcesso;
+        private readonly IProcessoTramitacaoServico _appProcessoTramitacao;
+        public SicopController(IDadosDoProcessoSicopServico appSicopProcesso, IMapper mapper, IDadosDeTramitacaoSicopServico appSicopTramitacao, IProcessoServico appProcesso, IProcessoTramitacaoServico appProcessoTramitacao)
         {
             _appSicopProcesso = appSicopProcesso;
             _mapper = mapper;
             _appSicopTramitacao = appSicopTramitacao;
+            _appProcesso = appProcesso;
+            _appProcessoTramitacao = appProcessoTramitacao;
         }
         /// <summary>
         /// Serviço de Controle de Processos
@@ -28,11 +36,32 @@ namespace SigProc.Servico.Controladores
         public IActionResult ConsultarProcessoSicop(string numeroProcesso)
         {
             var processo = _appSicopProcesso.ConsultarProcesso(numeroProcesso);
-            if (processo.StatusLine == "Consulta Efetuada")
-                return Ok(_appSicopProcesso.Inserir(processo));
+            //if (processo.StatusLine == "Consulta Efetuada")
+            //    return Ok(_appSicopProcesso.Inserir(processo));
 
+            var cadastraProcesso = new ProcessoModelo()
+            {
+                NumProcesso = processo.NumeroDoProcesso,
+                Requerente = processo.NomeDoRequerente,
+                Assunto = processo.CodigoAssunto,
+                TipoDoc = processo.TipoDoDocumento,
+                NumDoc = processo.NumeroDoTipoDoDocumento,
+                DataCadastroProc =processo.DataDeCadastroDeProcesso,
+                DataUltimaTramProc = processo.DataDeDespachoTramitacao,
+                OrgaoCadastro = processo.OrgaoDeOrigem,
+                OrgaoOrigem = processo.OrgaoOrigemTramitacao,
+                OrgaoDestino = processo.OrgaoDestinoTramitacao,
+                InfoComplementar = processo.InformacaoComplementar1 + processo.InformacaoComplementar2 + processo.InformacaoComplementar3,
+                Prioridade = "alta",
+                IdTipoContratacao = 1,
+                IdTipoProcesso = 1,
+                Observacao = "",
+                IdUsuarioCadastro = 1,
+                Status = true,
+            };
+            _appProcesso.Inserir(_mapper.Map<Processo>(cadastraProcesso));
 
-            return NoContent();
+            return Ok(processo);
         }
 
         [HttpGet("ConsultarProcessoSicopPorNum/{numProcesso}")]
@@ -156,10 +185,12 @@ namespace SigProc.Servico.Controladores
         public IActionResult ConsultarTramitacaoSicop(string numeroProcesso)
         {
             var tramitacao = _appSicopTramitacao.ConsultarProcesso(numeroProcesso);
-            if (tramitacao.StatusLine == "Consulta efetuada. Tecle (ENTER) p/mais Informacoes.") ;
-            return Ok(_appSicopTramitacao.Inserir(tramitacao));
+            //if (tramitacao.StatusLine == "Consulta efetuada. Tecle (ENTER) p/mais Informacoes.") ;
+            //return Ok(_appSicopTramitacao.Inserir(tramitacao));
+            
+            var teste = _appProcessoTramitacao.Testando(tramitacao);
 
-            return NoContent();
+            return Ok(teste);
         }
 
         [HttpPut("EditarTramitacao")]
@@ -242,14 +273,16 @@ namespace SigProc.Servico.Controladores
             }
         }
 
-        [HttpGet("BuscarTramitacaoPorNumeroDeProcesso")]
-        public IActionResult BuscarTramitacaoPorNumeroDeProcesso(string numeroProcesso)
+        [HttpPost("BuscarTramitacaoPorNumeroDeProcesso")]
+        public IActionResult BuscarTramitacaoPorNumeroDeProcesso(ProcessoTramitacao processoTramitacao)
         {
             try
             {
-                var tramitacao = _appSicopTramitacao.ListarTudo().Where(x => x.NumeroDoProcesso.Equals(numeroProcesso)).FirstOrDefault();
-                if (tramitacao == null)
-                    return NoContent();
+                //var tramitacao = _appSicopTramitacao.ListarTudo().Where(x => x.NumeroDoProcesso.Equals(numeroProcesso)).FirstOrDefault();
+                //if (tramitacao == null)
+                //    return NoContent();
+
+                var tramitacao = _appProcessoTramitacao.Verificar(processoTramitacao);
 
                 return StatusCode(200, tramitacao);
             }

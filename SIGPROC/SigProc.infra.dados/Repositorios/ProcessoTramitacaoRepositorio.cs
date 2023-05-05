@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SigProc.Domain.Entidades;
 using SigProc.Domimio.Contratos.Dados;
+using SigProc.Domimio.Entidades;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Entidades;
+using SigProc.Dominio.Servicos;
 using SigProc.infra.dados.Contextos;
 using SigProc.infra.dados.Repositorios;
 using System;
@@ -89,7 +91,7 @@ namespace SigProc.infra.dados.Repositorios
                     contexto.SaveChanges();
                     trans.Commit();
                 }
-              
+
             }
             #endregion
 
@@ -98,45 +100,44 @@ namespace SigProc.infra.dados.Repositorios
 
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
         {
-            #region Busca a ultima tramitação do processo e atualiza o tempo de prazo
+            //#region Busca a ultima tramitação do processo e atualiza o tempo de prazo
 
-            var processo = contexto.ProcessoTramitacao
-                   .OrderByDescending(x => x.DataCriacao)
-                   .AsNoTracking()
-                   .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso) && x.DataEnvio.Equals(null));
+            //var processo = contexto.ProcessoTramitacao
+            //       .OrderByDescending(x => x.DataCriacao)
+            //       .AsNoTracking()
+            //       .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso) && x.DataEnvio.Equals(null));
 
-            using var trans = contexto.Database.BeginTransaction();
+            //using var trans = contexto.Database.BeginTransaction();
 
-            var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-            processo.TempoPrazo = tempoPrazo;
+            //var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
+            //processo.TempoPrazo = tempoPrazo;
 
-            if (tempoPrazo == 0)
-            {
-                TimeSpan diferenca = (TimeSpan)(processo.DataPrazo - DateTime.Today);
+            //if (tempoPrazo == 0)
+            //{
+            //    TimeSpan diferenca = (TimeSpan)(processo.DataPrazo - DateTime.Today);
 
-                processo.TempoPrazo = diferenca.Days;
+            //    processo.TempoPrazo = diferenca.Days;
 
-                contexto.Entry(processo).State = EntityState.Modified;
-                contexto.SaveChanges();
-                trans.Commit();
+            //    contexto.Entry(processo).State = EntityState.Modified;
+            //    contexto.SaveChanges();
+            //    trans.Commit();
 
-            }
-            else
-            {
-                processo.TempoPrazo = tempoPrazo;
+            //}
+            //else
+            //{
+            //    processo.TempoPrazo = tempoPrazo;
 
-                contexto.Entry(processo).State = EntityState.Modified;
-                contexto.SaveChanges();
-                trans.Commit();
-            }
-            #endregion
+            //    contexto.Entry(processo).State = EntityState.Modified;
+            //    contexto.SaveChanges();
+            //    trans.Commit();
+            //}
+            //#endregion
 
 
             return contexto.ProcessoTramitacao
                 .OrderByDescending(x => x.DataCriacao)
                 .Include(a => a.GerenciaOrigem)
                 .Include(a => a.GerenciaDestino)
-                .Include(a => a.UsuarioTramitacao)
                 .AsNoTracking()
                 .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso)); ;
         }
@@ -179,7 +180,6 @@ namespace SigProc.infra.dados.Repositorios
                 .Where(x => x.NumeroProcesso.Equals(numeroProcesso))
                 .Include(a => a.GerenciaOrigem)
                 .Include(a => a.GerenciaDestino)
-                .Include(a => a.UsuarioTramitacao)
                 .Include(a => a.Processo)
                 .AsNoTracking().ToList();
         }
@@ -242,7 +242,7 @@ namespace SigProc.infra.dados.Repositorios
                 using var trans = contexto.Database.BeginTransaction();
 
                 var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-                if(tempoPrazo == 0)
+                if (tempoPrazo == 0)
                 {
                     TimeSpan diferenca = (TimeSpan)(processo.DataPrazo - DateTime.Today);
 
@@ -253,14 +253,15 @@ namespace SigProc.infra.dados.Repositorios
                     trans.Commit();
 
                 }
-                else{
+                else
+                {
                     processo.TempoPrazo = tempoPrazo;
 
                     contexto.Entry(processo).State = EntityState.Modified;
                     contexto.SaveChanges();
                     trans.Commit();
                 }
-             
+
             }
             return ultimasTramitacoes;
         }
@@ -298,7 +299,18 @@ namespace SigProc.infra.dados.Repositorios
                     diasAcrescentados++;
                 }
             }
-            var data = dataFutura - dataTramitacao;
+            TimeSpan data = new TimeSpan(); /// FAZER UMA VALIDAÇÃO PARA VER SE A DATA FUTURA É MENOR QUE A DATA DE ATUAL SE FOR CONTAR DA DATA FUTURA ATÉ HOJE
+            if (dataTramitacao <= dataFutura)
+            {
+                var dias = ContarDiasUteis(dataFutura, DateTime.Today) * -1;
+                data = TimeSpan.FromDays(dias);
+            }
+            else
+            {
+                data = dataFutura - dataTramitacao;
+            }
+
+
 
             return data;
         }
@@ -315,6 +327,11 @@ namespace SigProc.infra.dados.Repositorios
             }
 
             return datasFeriados;
+        }
+
+        public ProcessoTramitacaoDominioServico.DadosDeTramitacao Testando(DadosDeTramitacaoSicop processoTramitacao)
+        {
+            throw new NotImplementedException();
         }
     }
 }

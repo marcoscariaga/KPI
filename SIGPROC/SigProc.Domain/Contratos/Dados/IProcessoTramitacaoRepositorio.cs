@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SigProc.Domain.Contratos.Dados;
+using SigProc.Domimio.Entidades;
 using SigProc.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SigProc.Dominio.Servicos.ProcessoTramitacaoDominioServico;
 
 namespace SigProc.Dominio.Contratos.Dados
 {
@@ -17,5 +19,7 @@ namespace SigProc.Dominio.Contratos.Dados
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia);
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario);
         TimeSpan CalculaPrazo(DateTime dataTramitacao, int prazo);
+        public DadosDeTramitacao Testando(DadosDeTramitacaoSicop processoTramitacao);
+        public int ContarDiasUteis(DateTime dataInicial, DateTime? dataFinal);
     }
 }

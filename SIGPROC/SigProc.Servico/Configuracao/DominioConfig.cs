@@ -23,8 +23,9 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<ITipoPrazoDominioServico, TipoPrazoDominioServico>();
             builder.Services.AddTransient<ITipoUsuarioGerenciaDominioServico, TipoUsuarioGerenciaDominioServico>();
             builder.Services.AddTransient<IDadosDoProcessoSicopDominioServico, DadosDoProcessoSicopDominioServico>();
-            builder.Services.AddTransient<IDadosDeTramitacaoSicopDominioServico, DadosDeTramitacaoSicopDominioServico>();
+            builder.Services.AddTransient<IDadosDeTramitacaoSicopDominioServico, DadosDeTramitacaoSicopDominioServico>(); 
             builder.Services.AddTransient<IFeriadoDominioServico, FeriadoDominioServico>();
+            builder.Services.AddTransient<IDespachoDominioServico, DespachoDominioServico>();
         }
     }
 }

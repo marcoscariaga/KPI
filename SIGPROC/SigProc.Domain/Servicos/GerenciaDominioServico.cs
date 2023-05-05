@@ -37,6 +37,8 @@ namespace SigProc.Dominio.Servicos
             if (verificaCodigo != null)
                 throw new ArgumentException($"A gerência já está cadastrada no sistema.");
 
+
+            
             #region Cadastro da Gerência
             var gerencia = _repositorio.Inserir(objeto);
             #endregion

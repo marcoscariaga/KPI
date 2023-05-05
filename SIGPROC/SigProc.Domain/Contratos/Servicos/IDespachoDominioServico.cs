@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace SigProc.Domimio.Contratos.Servicos
 {
-    public interface IDadosDeTramitacaoSicopDominioServico : IBaseDominioServico<DadosDeTramitacaoSicop>
+    public interface IDespachoDominioServico : IBaseDominioServico<Despacho>
     {
-        public DadosDeTramitacaoSicop ConsultarProcesso(string numeroProcesso);
     }
 }
