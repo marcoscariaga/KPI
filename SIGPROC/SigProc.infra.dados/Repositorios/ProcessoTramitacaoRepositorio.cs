@@ -20,7 +20,6 @@ namespace SigProc.infra.dados.Repositorios
     public class ProcessoTramitacaoRepositorio : BaseRepositorio<ProcessoTramitacao>, IProcessoTramitacaoRepositorio
     {
         private readonly SqlServidorContexto contexto;
-
         public ProcessoTramitacaoRepositorio(SqlServidorContexto sqlServerContext) : base(sqlServerContext)
         {
             contexto = sqlServerContext;
@@ -36,25 +35,19 @@ namespace SigProc.infra.dados.Repositorios
                 using var trans = contexto.Database.BeginTransaction();
 
                 var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-                if (tempoPrazo == 0)
+
+                if (tempoPrazo.diasUteisAtraso <= 0)
                 {
-                    TimeSpan diferenca = (TimeSpan)(processo.DataPrazo - DateTime.Today);
-
-                    processo.TempoPrazo = diferenca.Days;
-
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
-
+                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
                 }
                 else
                 {
-                    processo.TempoPrazo = tempoPrazo;
-
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
+                    processo.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
                 }
+
+                contexto.Entry(processo).State = EntityState.Modified;
+                contexto.SaveChanges();
+                trans.Commit();
 
             }
             #endregion
@@ -72,25 +65,19 @@ namespace SigProc.infra.dados.Repositorios
                 using var trans = contexto.Database.BeginTransaction();
 
                 var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-                if (tempoPrazo == 0)
+
+                if (tempoPrazo.diasUteisAtraso <= 0)
                 {
-                    TimeSpan diferenca = (TimeSpan)(processo.DataPrazo - DateTime.Today);
-
-                    processo.TempoPrazo = diferenca.Days;
-
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
-
+                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
                 }
                 else
                 {
-                    processo.TempoPrazo = tempoPrazo;
-
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
+                    processo.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
                 }
+
+                contexto.Entry(processo).State = EntityState.Modified;
+                contexto.SaveChanges();
+                trans.Commit();
 
             }
             #endregion
@@ -154,25 +141,19 @@ namespace SigProc.infra.dados.Repositorios
                 using var trans = contexto.Database.BeginTransaction();
 
                 var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-                if (tempoPrazo == 0)
+
+                if (tempoPrazo.diasUteisAtraso <= 0)
                 {
-                    TimeSpan diferenca = (TimeSpan)(processo.DataPrazo - DateTime.Today);
-
-                    processo.TempoPrazo = diferenca.Days;
-
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
-
+                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
                 }
                 else
                 {
-                    processo.TempoPrazo = tempoPrazo;
-
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
+                    processo.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
                 }
+
+                contexto.Entry(processo).State = EntityState.Modified;
+                contexto.SaveChanges();
+                trans.Commit();
             }
             #endregion
 
@@ -196,25 +177,19 @@ namespace SigProc.infra.dados.Repositorios
                 using var trans = contexto.Database.BeginTransaction();
 
                 var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-                if (tempoPrazo == 0)
+
+                if (tempoPrazo.diasUteisAtraso <= 0)
                 {
-                    TimeSpan diferenca = (TimeSpan)(processo.DataPrazo - DateTime.Today);
-
-                    processo.TempoPrazo = diferenca.Days;
-
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
-
+                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
                 }
                 else
                 {
-                    processo.TempoPrazo = tempoPrazo;
-
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
+                    processo.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
                 }
+
+                contexto.Entry(processo).State = EntityState.Modified;
+                contexto.SaveChanges();
+                trans.Commit();
             }
             #endregion
 
@@ -242,50 +217,63 @@ namespace SigProc.infra.dados.Repositorios
                 using var trans = contexto.Database.BeginTransaction();
 
                 var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-                if (tempoPrazo == 0)
+
+                if (tempoPrazo.diasUteisAtraso <= 0)
                 {
-                    TimeSpan diferenca = (TimeSpan)(processo.DataPrazo - DateTime.Today);
-
-                    processo.TempoPrazo = diferenca.Days;
-
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
-
+                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
                 }
                 else
                 {
-                    processo.TempoPrazo = tempoPrazo;
-
+                    processo.TempoPrazo  =(tempoPrazo.diasUteisRestantes * -1);
+                }
+             
                     contexto.Entry(processo).State = EntityState.Modified;
                     contexto.SaveChanges();
                     trans.Commit();
-                }
-
+             
             }
             return ultimasTramitacoes;
         }
-
-        public virtual int ContarDiasUteis(DateTime dataInicial, DateTime? dataFinal)
+        public virtual (int diasUteisRestantes, int diasUteisAtraso) ContarDiasUteis(DateTime dataInicial, DateTime? dataFinal)
         {
-            var datasFeriados = BucarFeriados();
+            var datasFeriados = ListarFeriados();
 
-            int diasUteis = 0;
+            DateTime dataAtual = dataInicial;
+            DateTime dataVencimento = (DateTime)dataFinal;
 
-            while (dataInicial < dataFinal)
+            int diasUteisRestantes = 0;
+            int diasUteisAtraso = 0;
+
+            if (dataVencimento < dataAtual)
             {
-                if (dataInicial.DayOfWeek != DayOfWeek.Saturday && dataInicial.DayOfWeek != DayOfWeek.Sunday && !datasFeriados.Contains(dataInicial))
+                for (DateTime data = dataVencimento.Date.AddDays(1); data <= dataAtual; data = data.AddDays(1))
                 {
-                    diasUteis++;
+                    if (data.DayOfWeek != DayOfWeek.Saturday && data.DayOfWeek != DayOfWeek.Sunday && !datasFeriados.Contains(data.Date))
+                    {
+                        diasUteisAtraso++;
+                    }
                 }
-                dataInicial = dataInicial.AddDays(1);
+            }
+            else
+            {
+                TimeSpan diff = dataVencimento - dataAtual;
+                int diasTotais = diff.Days;
+
+                for (int i = 1; i <= diasTotais; i++)
+                {
+                    DateTime data = dataAtual.AddDays(i);
+                    if (data.DayOfWeek != DayOfWeek.Saturday && data.DayOfWeek != DayOfWeek.Sunday && !datasFeriados.Contains(data.Date))
+                    {
+                        diasUteisRestantes++;
+                    }
+                }
             }
 
-            return diasUteis;
+            return (diasUteisRestantes, diasUteisAtraso);
         }
-        public virtual TimeSpan CalculaPrazo(DateTime dataTramitacao, int prazo)
+        public virtual (TimeSpan diasRestantes, DateTime dataFutura) CalculaPrazo(DateTime dataTramitacao, int prazo)
         {
-            var datasFeriados = BucarFeriados();
+            var datasFeriados = ListarFeriados();
 
             int diasParaAcrescentar = prazo;
 
@@ -299,39 +287,37 @@ namespace SigProc.infra.dados.Repositorios
                     diasAcrescentados++;
                 }
             }
-            TimeSpan data = new TimeSpan(); /// FAZER UMA VALIDAÇÃO PARA VER SE A DATA FUTURA É MENOR QUE A DATA DE ATUAL SE FOR CONTAR DA DATA FUTURA ATÉ HOJE
-            if (dataTramitacao <= dataFutura)
+            
+            var dias = ContarDiasUteis(DateTime.Today,dataFutura);
+
+
+            if (dias.diasUteisAtraso <= 0)
             {
-                var dias = ContarDiasUteis(dataFutura, DateTime.Today) * -1;
-                data = TimeSpan.FromDays(dias);
+                return (TimeSpan.FromDays(dias.diasUteisRestantes),(dataFutura));
             }
             else
             {
-                data = dataFutura - dataTramitacao;
+                return (TimeSpan.FromDays(dias.diasUteisAtraso * -1), dataFutura);
             }
-
-
-
-            return data;
         }
-        public virtual ICollection<DateTime> BucarFeriados()
+        public ICollection<DateTime> ListarFeriados()
         {
+            // Cria uma lista para armazenar as datas dos feriados
             List<DateTime> datasFeriados = new List<DateTime>();
 
-            var feriados = contexto.Feriado.Where(x => x.DataFeriado >= DateTime.Today && x.Status == true).Select(f => f.DataFeriado);
+            // Faz a busca dos feriados e seleciona somente o campo "DataFeriado"
+            var feriados = contexto.Feriado.Where(x => x.Status == true).Select(f => f.DataFeriado);
+
+            // Adiciona as datas dos feriados à lista de datasFeriados
             datasFeriados.AddRange(feriados);
 
+            // Imprime as datas dos feriados na lista
             foreach (DateTime dataFeriado in datasFeriados)
             {
                 Console.WriteLine(dataFeriado.ToString("dd/MM/yyyy"));
             }
 
             return datasFeriados;
-        }
-
-        public ProcessoTramitacaoDominioServico.DadosDeTramitacao Testando(DadosDeTramitacaoSicop processoTramitacao)
-        {
-            throw new NotImplementedException();
         }
     }
 }

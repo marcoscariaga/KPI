@@ -8,6 +8,7 @@ using SigProc.Domimio.Entidades;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -54,108 +55,127 @@ namespace SigProc.Dominio.Servicos
             var ultimaTramitacao = _repositorio.BuscarUltimaTramitacaoPorNumeroProcesso(processoTramitacao.NumeroProcesso);
             var tramitacaoConvertida = ConverteTramitacao(tramitacoes);
 
-            var desc = tramitacaoConvertida.ItensTramitacao.OrderBy(x=>x.Sequencia).ToList();
+            var desc = tramitacaoConvertida.ItensTramitacao.OrderBy(x => x.Sequencia).ToList();
 
-            ////excluir a lista
             var list = new List<ProcessoTramitacao>();
 
             for (var i = 0; i < desc.Count; i++)
             {
                 var item = desc[i];
 
-                //if (Convert.ToInt32(ultimaTramitacao.Sequencia) > Convert.ToInt32(tramitacaoConvertida.ItensTramitacao[i].Sequencia) && ultimaTramitacao != null)
-                //{
+                var tramitacaoAtual = new ProcessoTramitacao()
+                {
+                    IdOrgaoOrigem = item.OrgaoDeOrigem,
+                    IdOrgaoDestino = (int?)desc[i].OrgaoDeDestino,
+                    Despacho = item.Despacho,
+                    IdProcesso = processoTramitacao.IdProcesso,
+                    MatriculaRecebedor = item.MatRec,
+                    MatriculaDigitador = item.MatDig,
+                    NumeroProcesso = processoTramitacao.NumeroProcesso,
+                    Prazo = 0,
+                    TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)).diasUteisRestantes,
+                    TempoPrazo = 0,
+                    Guia = Convert.ToInt32(item.Guia),
+                    Sequencia = Convert.ToInt32(item.Sequencia),
+                    DataEnvio = (DateTime?)DateTime.Parse(item.DataDoDespacho),
+                    DataRecebimento = DateTime.Parse(item.DataRecebimento),
+                    DataTramitacao = (DateTime?)DateTime.Parse(item.DataDoDespacho),
+                    DataPrazo = new DateTime(),
+                    Status = true
+                };
+
+                list.Add(tramitacaoAtual);
+
+                _repositorio.Inserir(tramitacaoAtual);
+            }
+            var prazo = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(tramitacaoConvertida.ItensTramitacao[11].OrgaoDeDestino)).OrderByDescending(x => x.Prazo).FirstOrDefault();
+
+            var tempoRestante = _repositorio.CalculaPrazo(DateTime.Parse(desc[11].DataDoDespacho), prazo.Prazo);
+            var novaTramitacao = new ProcessoTramitacao()
+            {
+                IdOrgaoOrigem = desc[11].OrgaoDeDestino,
+                IdOrgaoDestino = null,
+                Despacho = null,
+                IdProcesso = processoTramitacao.IdProcesso,
+                MatriculaRecebedor = null,
+                MatriculaDigitador = null,
+                NumeroProcesso = processoTramitacao.NumeroProcesso,
+                Prazo = tempoRestante.diasRestantes.Days,
+                TempoEnvio = 0,
+                TempoPrazo = tempoRestante.diasRestantes.Days,
+                Guia = 0,
+                Sequencia = Convert.ToInt32(desc[11].Sequencia) + 1,
+                DataEnvio = null,
+                DataRecebimento = DateTime.Parse(desc[11].DataDoDespacho),
+                DataTramitacao = null,
+                DataPrazo = tempoRestante.dataFutura,
+                Status = true
+            };
+            list.Add(novaTramitacao);
+            _repositorio.Inserir(novaTramitacao);
+
+            return (novaTramitacao);
+        }
+
+        public ProcessoTramitacao Atualizar(ProcessoTramitacao processoTramitacao)
+        {
+            var tramitacoes = _dadosDoProcessodominioServico.ConsultarProcesso(processoTramitacao.NumeroProcesso);
+            var ultimaTramitacao = _repositorio.BuscarUltimaTramitacaoPorNumeroProcesso(processoTramitacao.NumeroProcesso);
+            var tramitacaoConvertida = ConverteTramitacao(tramitacoes);
+            var prazo = 0;
+            var desc = tramitacaoConvertida.ItensTramitacao.OrderBy(x => x.Sequencia).ToList();
+
+            foreach (var item in tramitacaoConvertida.ItensTramitacao)
+            {
+                if (Convert.ToInt32(item.Sequencia) == ultimaTramitacao.Sequencia)
+                {
+                    ultimaTramitacao.IdOrgaoOrigem = item.OrgaoDeOrigem;
+                    ultimaTramitacao.IdOrgaoDestino = item.OrgaoDeOrigem;
+                    ultimaTramitacao.Despacho = item.Despacho;
+                    ultimaTramitacao.MatriculaRecebedor = item.MatRec;
+                    ultimaTramitacao.MatriculaDigitador = item.MatDig;
+                    ultimaTramitacao.NumeroProcesso = processoTramitacao.NumeroProcesso;
+                    ultimaTramitacao.TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)).diasUteisRestantes;
+                    ultimaTramitacao.Guia = Convert.ToInt32(item.Guia);
+                    ultimaTramitacao.Sequencia = Convert.ToInt32(item.Sequencia);
+                    ultimaTramitacao.DataEnvio = (DateTime?)DateTime.Parse(item.DataDoDespacho);
+                    ultimaTramitacao.DataRecebimento = DateTime.Parse(item.DataRecebimento);
+                    ultimaTramitacao.DataTramitacao = (DateTime?)DateTime.Parse(item.DataDoDespacho);
+                   
+                    _repositorio.Atualizar(ultimaTramitacao);
+                }
+
+                if (Convert.ToInt32(item.Sequencia) > ultimaTramitacao.Sequencia)
+                {
+                    prazo = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(tramitacaoConvertida.ItensTramitacao[11].OrgaoDeDestino)).OrderByDescending(x => x.Prazo).FirstOrDefault().Prazo;
                     var tramitacaoAtual = new ProcessoTramitacao()
                     {
                         IdOrgaoOrigem = item.OrgaoDeOrigem,
-                        IdOrgaoDestino = (int?)desc[i].OrgaoDeDestino,
+                        IdOrgaoDestino = item.OrgaoDeDestino,
                         Despacho = item.Despacho,
                         IdProcesso = processoTramitacao.IdProcesso,
                         MatriculaRecebedor = item.MatRec,
                         MatriculaDigitador = item.MatDig,
                         NumeroProcesso = processoTramitacao.NumeroProcesso,
-                        Prazo = 0,
-                        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)),
-                        TempoPrazo = 0,
+                        Prazo = _repositorio.CalculaPrazo(DateTime.Parse(desc[11].DataDoDespacho), prazo).diasRestantes.Days,
+                        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)).diasUteisRestantes,
+                        TempoPrazo = _repositorio.CalculaPrazo(DateTime.Parse(desc[11].DataDoDespacho), prazo).diasRestantes.Days,
                         Guia = Convert.ToInt32(item.Guia),
                         Sequencia = Convert.ToInt32(item.Sequencia),
                         DataEnvio = (DateTime?)DateTime.Parse(item.DataDoDespacho),
                         DataRecebimento = DateTime.Parse(item.DataRecebimento),
                         DataTramitacao = (DateTime?)DateTime.Parse(item.DataDoDespacho),
-                        DataPrazo = new DateTime()
+                        DataPrazo = new DateTime(),
+                        Status = true
                     };
 
-                    list.Add(tramitacaoAtual);
-
-                      _repositorio.Inserir(tramitacaoAtual);
-                //}
-                //else if (Convert.ToInt32(ultimaTramitacao.Sequencia) == Convert.ToInt32(tramitacaoConvertida.ItensTramitacao[i].Sequencia) && ultimaTramitacao != null)
-                //{
-                //    var atualizaTramitacaoNova = new ProcessoTramitacao()
-                //    {
-                //        Id = ultimaTramitacao.Id,
-                //        IdOrgaoDestino = (int?)tramitacaoConvertida.ItensTramitacao[i].OrgaoDeDestino,
-                //        Despacho = item.Despacho,
-                //        IdProcesso = processoTramitacao.IdProcesso,
-                //        MatriculaRecebedor = item.MatRec,
-                //        MatriculaDigitador = item.MatDig,
-                //        NumeroProcesso = processoTramitacao.NumeroProcesso,
-                //        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)),
-                //        TempoPrazo = 0,
-                //        Guia = Convert.ToInt32(item.Guia),
-                //        Sequencia = Convert.ToInt32(item.Sequencia),
-                //        DataEnvio = (DateTime?)DateTime.Parse(item.DataDoDespacho),
-                //        DataRecebimento = DateTime.Parse(item.DataRecebimento),
-                //        DataTramitacao = (DateTime?)DateTime.Parse(item.DataDoDespacho),
-                //        DataPrazo = new DateTime()
-                //    };
-                //    _repositorio.Atualizar(atualizaTramitacaoNova);
-                //}
-                //else
-                //{
-                //    var tramitacaoAtual = new ProcessoTramitacao()
-                //    {
-                //        IdOrgaoOrigem = item.OrgaoDeOrigem,
-                //        IdOrgaoDestino = (int?)tramitacaoConvertida.ItensTramitacao[i].OrgaoDeDestino,
-                //        Despacho = item.Despacho,
-                //        IdProcesso = processoTramitacao.IdProcesso,
-                //        MatriculaRecebedor = item.MatRec,
-                //        MatriculaDigitador = item.MatDig,
-                //        NumeroProcesso = processoTramitacao.NumeroProcesso,
-                //        Prazo = 0,
-                //        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)),
-                //        TempoPrazo = 0,
-                //        Guia = Convert.ToInt32(item.Guia),
-                //        Sequencia = Convert.ToInt32(item.Sequencia),
-                //        DataEnvio = (DateTime?)DateTime.Parse(item.DataDoDespacho),
-                //        DataRecebimento = DateTime.Parse(item.DataRecebimento),
-                //        DataTramitacao = (DateTime?)DateTime.Parse(item.DataDoDespacho),
-                //        DataPrazo = new DateTime()
-                //    };
-
-                //    list.Add(tramitacaoAtual);
-                //    _repositorio.Inserir(tramitacaoAtual);
-                //}
-
-            }
-            var prazo = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(tramitacaoConvertida.ItensTramitacao[11].OrgaoDeDestino)).OrderByDescending(x => x.Prazo).FirstOrDefault();
-            var feriados = _feriadoRepositorio.ListarDatas();
-
-            DateTime dataAtual = DateTime.Parse(desc[11].DataDoDespacho);
-            int diasParaAcrescentar = prazo.Prazo;
-
-            DateTime dataFutura = dataAtual;
-            int diasAcrescentados = 0;
-            while (diasAcrescentados < diasParaAcrescentar)
-            {
-                dataFutura = dataFutura.AddDays(1);
-                if (dataFutura.DayOfWeek != DayOfWeek.Saturday && dataFutura.DayOfWeek != DayOfWeek.Sunday && !feriados.Contains(dataFutura))
-                {
-                    diasAcrescentados++;
+                    _repositorio.Inserir(tramitacaoAtual);
                 }
-            }
 
-            var tempoPrazo = dataFutura - DateTime.Today;
+            }
+            prazo = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(tramitacaoConvertida.ItensTramitacao[11].OrgaoDeDestino)).OrderByDescending(x => x.Prazo).FirstOrDefault().Prazo;
+
+            var tempoRestante = _repositorio.CalculaPrazo(DateTime.Parse(desc[11].DataDoDespacho), prazo);
 
             var novaTramitacao = new ProcessoTramitacao()
             {
@@ -166,23 +186,23 @@ namespace SigProc.Dominio.Servicos
                 MatriculaRecebedor = null,
                 MatriculaDigitador = null,
                 NumeroProcesso = processoTramitacao.NumeroProcesso,
-                Prazo = diasAcrescentados,
+                Prazo = tempoRestante.diasRestantes.Days,
                 TempoEnvio = 0,
-                TempoPrazo = _repositorio.CalculaPrazo(DateTime.Parse(desc[11].DataDoDespacho), prazo.Prazo).Days,
+                TempoPrazo = tempoRestante.diasRestantes.Days,
                 Guia = 0,
                 Sequencia = Convert.ToInt32(desc[11].Sequencia) + 1,
                 DataEnvio = null,
                 DataRecebimento = DateTime.Parse(desc[11].DataDoDespacho),
                 DataTramitacao = null,
-                DataPrazo = dataFutura,
+                DataPrazo = tempoRestante.dataFutura,
+                Status = true
             };
-            list.Add(novaTramitacao);
-              _repositorio.Inserir(novaTramitacao);
+            _repositorio.Inserir(novaTramitacao);
 
 
-
-            return (novaTramitacao);
+            return (processoTramitacao);
         }
+
 
         public ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
         {
@@ -292,7 +312,7 @@ namespace SigProc.Dominio.Servicos
                         MatriculaDigitador = item.MatDig,
                         NumeroProcesso = processoTramitacao.NumeroProcesso,
                         Prazo = 0,
-                        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)),
+                        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)).diasUteisRestantes,
                         TempoPrazo = 0,
                         Guia = Convert.ToInt32(item.Guia),
                         Sequencia = Convert.ToInt32(item.Sequencia),
@@ -317,7 +337,7 @@ namespace SigProc.Dominio.Servicos
                         MatriculaRecebedor = item.MatRec,
                         MatriculaDigitador = item.MatDig,
                         NumeroProcesso = processoTramitacao.NumeroProcesso,
-                        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)),
+                        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)).diasUteisRestantes,
                         TempoPrazo = 0,
                         Guia = Convert.ToInt32(item.Guia),
                         Sequencia = Convert.ToInt32(item.Sequencia),
@@ -340,7 +360,7 @@ namespace SigProc.Dominio.Servicos
                         MatriculaDigitador = item.MatDig,
                         NumeroProcesso = processoTramitacao.NumeroProcesso,
                         Prazo = 0,
-                        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)),
+                        TempoEnvio = _repositorio.ContarDiasUteis(DateTime.Parse(item.DataRecebimento), (DateTime?)DateTime.Parse(item.DataDoDespacho)).diasUteisRestantes,
                         TempoPrazo = 0,
                         Guia = Convert.ToInt32(item.Guia),
                         Sequencia = Convert.ToInt32(item.Sequencia),
@@ -355,23 +375,7 @@ namespace SigProc.Dominio.Servicos
 
             }
             var prazo = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(tramitacaoConvertida.ItensTramitacao[0].OrgaoDeDestino)).OrderByDescending(x => x.Prazo).FirstOrDefault();
-            var feriados = _feriadoRepositorio.ListarDatas();
-
-            DateTime dataAtual = DateTime.Parse(tramitacaoConvertida.ItensTramitacao[0].DataDoDespacho);
-            int diasParaAcrescentar = prazo.Prazo;
-
-            DateTime dataFutura = dataAtual;
-            int diasAcrescentados = 0;
-            while (diasAcrescentados < diasParaAcrescentar)
-            {
-                dataFutura = dataFutura.AddDays(1);
-                if (dataFutura.DayOfWeek != DayOfWeek.Saturday && dataFutura.DayOfWeek != DayOfWeek.Sunday && !feriados.Contains(dataFutura))
-                {
-                    diasAcrescentados++;
-                }
-            }
-
-            var tempoPrazo = dataFutura - DateTime.Today;
+            var tempoRestante = _repositorio.CalculaPrazo(DateTime.Parse(tramitacaoConvertida.ItensTramitacao[0].DataDoDespacho), prazo.Prazo);
 
             var novaTramitacao = new ProcessoTramitacao()
             {
@@ -382,15 +386,15 @@ namespace SigProc.Dominio.Servicos
                 MatriculaRecebedor = null,
                 MatriculaDigitador = null,
                 NumeroProcesso = processoTramitacao.NumeroProcesso,
-                Prazo = diasAcrescentados,
+                Prazo = tempoRestante.diasRestantes.Days,
                 TempoEnvio = 0,
-                TempoPrazo = _repositorio.CalculaPrazo(DateTime.Parse(tramitacaoConvertida.ItensTramitacao[0].DataDoDespacho), prazo.Prazo).Days,
+                TempoPrazo = tempoRestante.diasRestantes.Days,
                 Guia = 0,
                 Sequencia = Convert.ToInt32(tramitacaoConvertida.ItensTramitacao[0].Sequencia) + 1,
                 DataEnvio = null,
                 DataRecebimento = DateTime.Parse(tramitacaoConvertida.ItensTramitacao[0].DataDoDespacho),
                 DataTramitacao = null,
-                DataPrazo = dataFutura,
+                DataPrazo = tempoRestante.dataFutura,
             };
             list.Add(novaTramitacao);
             //  _repositorio.Inserir(tramitacaoNova);

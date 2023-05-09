@@ -18,8 +18,7 @@ namespace SigProc.Dominio.Contratos.Dados
         ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso);
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia);
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario);
-        TimeSpan CalculaPrazo(DateTime dataTramitacao, int prazo);
-        public DadosDeTramitacao Testando(DadosDeTramitacaoSicop processoTramitacao);
-        public int ContarDiasUteis(DateTime dataInicial, DateTime? dataFinal);
+        public (TimeSpan diasRestantes, DateTime dataFutura ) CalculaPrazo(DateTime dataTramitacao, int prazo);
+        public (int diasUteisRestantes, int diasUteisAtraso) ContarDiasUteis(DateTime dataInicial, DateTime? dataFinal);
     }
 }
