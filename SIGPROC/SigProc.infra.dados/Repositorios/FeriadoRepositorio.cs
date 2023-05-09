@@ -26,7 +26,7 @@ namespace SigProc.infra.dados.Repositorios
             List<DateTime> datasFeriados = new List<DateTime>();
 
             // Faz a busca dos feriados e seleciona somente o campo "DataFeriado"
-            var feriados = contexto.Feriado.Where(x => x.DataFeriado >= DateTime.Today && x.Status == true).Select(f => f.DataFeriado);
+            var feriados = contexto.Feriado.Where(x => x.Status == true).Select(f => f.DataFeriado);
 
             // Adiciona as datas dos feriados à lista de datasFeriados
             datasFeriados.AddRange(feriados);

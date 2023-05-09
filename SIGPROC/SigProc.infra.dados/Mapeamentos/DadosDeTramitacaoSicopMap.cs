@@ -13,11 +13,7 @@ namespace SigProc.infra.dados.Mapeamentos
     {
         public void Configure(EntityTypeBuilder<DadosDeTramitacaoSicop> builder)
         {
-            builder.HasKey(c => c.Id);
-            builder.Property(c => c.DataCriacao);
-            builder.Property(c => c.DataExclusao);
-            builder.Property(c => c.DataEdicao);
-            builder.Property(c => c.Status).IsRequired();
+           
         }
     }
 }

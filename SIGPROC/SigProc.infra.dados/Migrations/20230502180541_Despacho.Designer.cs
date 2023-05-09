@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SigProc.infra.dados.Contextos;
 
@@ -11,9 +12,11 @@ using SigProc.infra.dados.Contextos;
 namespace SigProc.infra.dados.Migrations
 {
     [DbContext(typeof(SqlServidorContexto))]
-    partial class SqlServidorContextoModelSnapshot : ModelSnapshot
+    [Migration("20230502180541_Despacho")]
+    partial class Despacho
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1142,41 +1145,31 @@ namespace SigProc.infra.dados.Migrations
                         .IsRequired()
                         .HasColumnType("date");
 
-                    b.Property<DateTime?>("DataRecebimento")
-                        .HasColumnType("date");
-
                     b.Property<DateTime?>("DataTramitacao")
+                        .IsRequired()
                         .HasColumnType("date");
 
-                    b.Property<string>("Despacho")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Guia")
+                    b.Property<int>("IdOrgaoDestino")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdOrgaoDestino")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdOrgaoOrigem")
+                    b.Property<int>("IdOrgaoOrigem")
                         .HasColumnType("int");
 
                     b.Property<int>("IdProcesso")
                         .HasColumnType("int");
 
-                    b.Property<string>("MatriculaDigitador")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MatriculaRecebedor")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IdUsuarioTramitacao")
+                        .HasColumnType("int");
 
                     b.Property<string>("NumeroProcesso")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Prazo")
-                        .HasColumnType("int");
+                    b.Property<string>("Observacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Sequencia")
+                    b.Property<int>("Prazo")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -1195,6 +1188,8 @@ namespace SigProc.infra.dados.Migrations
                     b.HasIndex("IdOrgaoOrigem");
 
                     b.HasIndex("IdProcesso");
+
+                    b.HasIndex("IdUsuarioTramitacao");
 
                     b.ToTable("ProcessoTramitacao");
                 });
@@ -1424,12 +1419,14 @@ namespace SigProc.infra.dados.Migrations
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaDestino")
                         .WithMany()
                         .HasForeignKey("IdOrgaoDestino")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaOrigem")
                         .WithMany()
                         .HasForeignKey("IdOrgaoOrigem")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.Processo", "Processo")
                         .WithMany()
@@ -1437,11 +1434,19 @@ namespace SigProc.infra.dados.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SigProc.Domain.Entidades.Usuario", "UsuarioTramitacao")
+                        .WithMany()
+                        .HasForeignKey("IdUsuarioTramitacao")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("GerenciaDestino");
 
                     b.Navigation("GerenciaOrigem");
 
                     b.Navigation("Processo");
+
+                    b.Navigation("UsuarioTramitacao");
                 });
 #pragma warning restore 612, 618
         }

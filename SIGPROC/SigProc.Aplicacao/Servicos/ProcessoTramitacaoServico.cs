@@ -1,5 +1,6 @@
 ﻿using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos.ModeloSaida;
+using SigProc.Domimio.Entidades;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SigProc.Dominio.Servicos.ProcessoTramitacaoDominioServico;
 
 namespace SigProc.Aplicacao.Servicos
 {
@@ -41,6 +43,15 @@ namespace SigProc.Aplicacao.Servicos
         public ICollection<ProcessoTramitacao> ListarAtivos()
         {
             return processoTramitacaoDomainService.ListarAtivos();
+        }
+        public DadosDeTramitacao Testando(DadosDeTramitacaoSicop processoTramitacao)
+        {
+            return processoTramitacaoDomainService.Testando(processoTramitacao);
+        }
+
+        public ICollection<ProcessoTramitacao> Verificar(ProcessoTramitacao processoTramitacao)
+        {
+            return processoTramitacaoDomainService.Verificar(processoTramitacao);
         }
     }
 

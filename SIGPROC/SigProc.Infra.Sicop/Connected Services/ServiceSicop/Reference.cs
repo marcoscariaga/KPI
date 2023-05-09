@@ -277,23 +277,38 @@ namespace ServiceSicop
         private string GUIA13Field;
         
         private string DESPACHO13Field;
-        
+
         private string ITEM14Field;
-        
+
         private string MATDIG14Field;
-        
+
         private string MATREC14Field;
-        
+
         private string ORGDEST14Field;
-        
+
         private string DATDESP14Field;
-        
+
         private string SEQ14Field;
-        
+
         private string GUIA14Field;
-        
+
         private string DESPACHO14Field;
-        
+        private string ITEM15Field;
+
+        private string MATDIG15Field;
+
+        private string MATREC15Field;
+
+        private string ORGDEST15Field;
+
+        private string DATDESP15Field;
+
+        private string SEQ15Field;
+
+        private string GUIA15Field;
+
+        private string DESPACHO15Field;
+
         private string CONCADField;
         
         private string StatusLineField;

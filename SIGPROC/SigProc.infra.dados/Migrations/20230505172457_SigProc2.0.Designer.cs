@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SigProc.infra.dados.Contextos;
 
@@ -11,9 +12,11 @@ using SigProc.infra.dados.Contextos;
 namespace SigProc.infra.dados.Migrations
 {
     [DbContext(typeof(SqlServidorContexto))]
-    partial class SqlServidorContextoModelSnapshot : ModelSnapshot
+    [Migration("20230505172457_SigProc2.0")]
+    partial class SigProc20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1146,18 +1149,22 @@ namespace SigProc.infra.dados.Migrations
                         .HasColumnType("date");
 
                     b.Property<DateTime?>("DataTramitacao")
+                        .IsRequired()
                         .HasColumnType("date");
 
                     b.Property<string>("Despacho")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Guia")
                         .HasColumnType("int");
 
                     b.Property<int?>("IdOrgaoDestino")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("IdOrgaoOrigem")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("IdProcesso")
@@ -1424,12 +1431,14 @@ namespace SigProc.infra.dados.Migrations
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaDestino")
                         .WithMany()
                         .HasForeignKey("IdOrgaoDestino")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.Gerencia", "GerenciaOrigem")
                         .WithMany()
                         .HasForeignKey("IdOrgaoOrigem")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SigProc.Dominio.Entidades.Processo", "Processo")
                         .WithMany()
