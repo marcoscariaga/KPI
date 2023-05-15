@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using SigProc.Domain.Contratos.Dados;
 using SigProc.Domimio.Contratos.Dados;
 using SigProc.Domimio.Entidades;
@@ -23,13 +24,16 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<ITipoPrazoRepositorio, TipoPrazoRepositorio>();
             builder.Services.AddTransient<ITipoUsuarioGerenciaRepositorio, TipoUsuarioGerenciaRepositorio>();
             builder.Services.AddTransient<IDadosDoProcessoSicopRepositorio, DadosDoProcessoSicopRepositorio>();
-            builder.Services.AddTransient<IDadosDeTramitacaoSicopRepositorio, DadosDeTramitacaoSicopRepositorio>(); 
+            builder.Services.AddTransient<IDadosDeTramitacaoSicopRepositorio, DadosDeTramitacaoSicopRepositorio>();
             builder.Services.AddTransient<IFeriadoRepositorio, FeriadoRepositorio>();
             builder.Services.AddTransient<IDespachoRepositorio, DespachoRepositorio>();
 
             var connectionString = builder.Configuration.GetConnectionString("SIGPROC");
             builder.Services.AddDbContext<SqlServidorContexto>
-                (options => options.UseSqlServer(connectionString));
+                (options =>
+                {
+                    options.UseSqlServer(connectionString);options.EnableSensitiveDataLogging();
+                });
         }
     }
 }

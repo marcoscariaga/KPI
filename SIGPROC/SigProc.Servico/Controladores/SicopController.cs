@@ -188,9 +188,9 @@ namespace SigProc.Servico.Controladores
             //if (tramitacao.StatusLine == "Consulta efetuada. Tecle (ENTER) p/mais Informacoes.") ;
             //return Ok(_appSicopTramitacao.Inserir(tramitacao));
             
-            var teste = _appProcessoTramitacao.Testando(tramitacao);
+           // var teste = _appProcessoTramitacao.Testando(tramitacao);
 
-            return Ok(teste);
+            return Ok(tramitacao);
         }
 
         [HttpPut("EditarTramitacao")]
@@ -278,11 +278,11 @@ namespace SigProc.Servico.Controladores
         {
             try
             {
-                //var tramitacao = _appSicopTramitacao.ListarTudo().Where(x => x.NumeroDoProcesso.Equals(numeroProcesso)).FirstOrDefault();
+                var tramitacao = _appSicopTramitacao.ListarTudo().Where(x => x.NumeroDoProcesso.Equals(processoTramitacao.NumeroProcesso)).FirstOrDefault();
                 //if (tramitacao == null)
                 //    return NoContent();
 
-                var tramitacao = _appProcessoTramitacao.Verificar(processoTramitacao);
+         
 
                 return StatusCode(200, tramitacao);
             }

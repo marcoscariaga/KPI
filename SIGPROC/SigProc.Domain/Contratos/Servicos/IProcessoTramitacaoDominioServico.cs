@@ -12,7 +12,5 @@ namespace SigProc.Dominio.Contratos.Servicos
         ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso);
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia);
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario);
-        public Dominio.Servicos.ProcessoTramitacaoDominioServico.DadosDeTramitacao Testando(DadosDeTramitacaoSicop processoTramitacao);
-        public ICollection<ProcessoTramitacao> Verificar(ProcessoTramitacao processoTramitacao);
     }
 }
