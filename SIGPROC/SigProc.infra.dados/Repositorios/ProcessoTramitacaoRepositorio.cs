@@ -26,137 +26,24 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<ProcessoTramitacao> ListarTudo()
         {
-            #region Buscar todos as tramitações ativas e atualiza o tempo de prazo
-
-            var processos = contexto.ProcessoTramitacao.ToList();
-
-            foreach (var processo in processos)
-            {
-                using var trans = contexto.Database.BeginTransaction();
-
-                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-
-                if (tempoPrazo.diasUteisAtraso <= 0)
-                {
-                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
-                }
-                else
-                {
-                    processo.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
-                }
-
-                contexto.Entry(processo).State = EntityState.Modified;
-                contexto.SaveChanges();
-                trans.Commit();
-
-            }
-            #endregion
-
             return contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).Include(a => a.Processo).ToList();
         }
         public ICollection<ProcessoTramitacao> ListarAtivos()
         {
-            #region Buscar todos as tramitações ativas e atualiza o tempo de prazo
-
-            var processos = contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).ToList();
-
-            foreach (var processo in processos)
-            {
-                using var trans = contexto.Database.BeginTransaction();
-
-                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-
-                if (tempoPrazo.diasUteisAtraso <= 0)
-                {
-                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
-                }
-                else
-                {
-                    processo.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
-                }
-
-                contexto.Entry(processo).State = EntityState.Modified;
-                contexto.SaveChanges();
-                trans.Commit();
-
-            }
-            #endregion
-
             return contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).Include(a => a.Processo).ToList();
         }
 
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
         {
-            //#region Busca a ultima tramitação do processo e atualiza o tempo de prazo
-
-            //var processo = contexto.ProcessoTramitacao
-            //       .OrderByDescending(x => x.DataCriacao)
-            //       .AsNoTracking()
-            //       .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso) && x.DataEnvio.Equals(null));
-
-            //using var trans = contexto.Database.BeginTransaction();
-
-            //var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-            //processo.TempoPrazo = tempoPrazo;
-
-            //if (tempoPrazo == 0)
-            //{
-            //    TimeSpan diferenca = (TimeSpan)(processo.DataPrazo - DateTime.Today);
-
-            //    processo.TempoPrazo = diferenca.Days;
-
-            //    contexto.Entry(processo).State = EntityState.Modified;
-            //    contexto.SaveChanges();
-            //    trans.Commit();
-
-            //}
-            //else
-            //{
-            //    processo.TempoPrazo = tempoPrazo;
-
-            //    contexto.Entry(processo).State = EntityState.Modified;
-            //    contexto.SaveChanges();
-            //    trans.Commit();
-            //}
-            //#endregion
-
-
             return contexto.ProcessoTramitacao
-                .OrderByDescending(x => x.DataCriacao)
-                .Include(a => a.GerenciaOrigem)
-                .Include(a => a.GerenciaDestino)
-                .AsNoTracking()
-                .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso)); ;
+                              .OrderByDescending(x => x.DataCriacao)
+                              .Include(a => a.GerenciaOrigem)
+                              .Include(a => a.GerenciaDestino)
+                              .AsNoTracking()
+                              .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso));
         }
         public ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
         {
-            #region Buscar todas as tramitações do processo e atualiza o tempo de prazo
-
-            var processos = contexto.ProcessoTramitacao
-                .Where(x => x.NumeroProcesso.Equals(numeroProcesso) && x.DataEnvio.Equals(null))
-                .AsNoTracking().ToList();
-
-            foreach (var processo in processos)
-            {
-                using var trans = contexto.Database.BeginTransaction();
-
-                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-
-                if (tempoPrazo.diasUteisAtraso <= 0)
-                {
-                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
-                }
-                else
-                {
-                    processo.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
-                }
-
-                contexto.Entry(processo).State = EntityState.Modified;
-                contexto.SaveChanges();
-                trans.Commit();
-            }
-            #endregion
-
             return contexto.ProcessoTramitacao
                 .Where(x => x.NumeroProcesso.Equals(numeroProcesso))
                 .Include(a => a.GerenciaOrigem)
@@ -166,33 +53,6 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia)
         {
-            #region Buscar todas as tramitações do processo e atualiza o tempo de prazo
-
-            var processos = contexto.ProcessoTramitacao
-                .Where(x => x.IdOrgaoDestino.Equals(idGerencia) && x.DataEnvio.Equals(null))
-                .AsNoTracking().ToList();
-
-            foreach (var processo in processos)
-            {
-                using var trans = contexto.Database.BeginTransaction();
-
-                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
-
-                if (tempoPrazo.diasUteisAtraso <= 0)
-                {
-                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
-                }
-                else
-                {
-                    processo.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
-                }
-
-                contexto.Entry(processo).State = EntityState.Modified;
-                contexto.SaveChanges();
-                trans.Commit();
-            }
-            #endregion
-
             var ultimasTramitacoes = contexto.ProcessoTramitacao
           .Include(pt => pt.Processo)
               .Where(pt => pt.IdOrgaoDestino == idGerencia && pt.DataEnvio.Equals(null))
@@ -205,34 +65,41 @@ namespace SigProc.infra.dados.Repositorios
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
         {
             var ultimasTramitacoes = contexto.ProcessoTramitacao
-          .Include(pt => pt.Processo)
-              .Where(pt => pt.IdOrgaoDestino == idUsuario && pt.DataEnvio.Equals(null))
+          .Include(pt => pt.Processo).Include(x=>x.GerenciaOrigem)
+              .Where(pt => pt.DataEnvio.Equals(null))
               .GroupBy(pt => pt.IdProcesso)
               .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
           .ToList();
 
+            return ultimasTramitacoes;
+        }
+        public void AtualizaPazo()
+        {
+            #region Buscar todos as tramitações ativas e atualiza o tempo de prazo
 
-            foreach (var processo in ultimasTramitacoes)
+            var tramitacoes = contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).ToList();
+
+            foreach (var tramitacao in tramitacoes)
             {
                 using var trans = contexto.Database.BeginTransaction();
 
-                var tempoPrazo = ContarDiasUteis(DateTime.Today, processo.DataPrazo);
+                var tempoPrazo = ContarDiasUteis(DateTime.Today, tramitacao.DataPrazo);
 
                 if (tempoPrazo.diasUteisAtraso <= 0)
                 {
-                    processo.TempoPrazo = tempoPrazo.diasUteisRestantes;
+                    tramitacao.TempoPrazo = tempoPrazo.diasUteisRestantes;
                 }
                 else
                 {
-                    processo.TempoPrazo  =(tempoPrazo.diasUteisRestantes * -1);
+                    tramitacao.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
                 }
-             
-                    contexto.Entry(processo).State = EntityState.Modified;
-                    contexto.SaveChanges();
-                    trans.Commit();
-             
+
+                contexto.Entry(tramitacao).State = EntityState.Modified;
+                contexto.SaveChanges();
+                trans.Commit();
+
             }
-            return ultimasTramitacoes;
+            #endregion
         }
         public virtual (int diasUteisRestantes, int diasUteisAtraso) ContarDiasUteis(DateTime dataInicial, DateTime? dataFinal)
         {
@@ -287,13 +154,13 @@ namespace SigProc.infra.dados.Repositorios
                     diasAcrescentados++;
                 }
             }
-            
-            var dias = ContarDiasUteis(DateTime.Today,dataFutura);
+
+            var dias = ContarDiasUteis(DateTime.Today, dataFutura);
 
 
             if (dias.diasUteisAtraso <= 0)
             {
-                return (TimeSpan.FromDays(dias.diasUteisRestantes),(dataFutura));
+                return (TimeSpan.FromDays(dias.diasUteisRestantes), (dataFutura));
             }
             else
             {

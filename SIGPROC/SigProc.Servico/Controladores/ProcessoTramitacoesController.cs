@@ -21,7 +21,7 @@ namespace SigProc.Servico.Controladores
             _processoTramitacaoServico = processoTramitacaoServico;
             _mapper = mapper;
         }
-
+        /*
         [HttpPost("Cadastrar")]
         public IActionResult Post([FromBody] ProcessoTramitacaoModelo processoTramitacao)
         {
@@ -106,6 +106,7 @@ namespace SigProc.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar tramitacao!" });
             }
         }
+        */
 
         [HttpGet("BuscarPorID/{id}")]
         public IActionResult GetById(int id)

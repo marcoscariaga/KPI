@@ -44,15 +44,6 @@ namespace SigProc.Aplicacao.Servicos
         {
             return processoTramitacaoDomainService.ListarAtivos();
         }
-        public DadosDeTramitacao Testando(DadosDeTramitacaoSicop processoTramitacao)
-        {
-            return processoTramitacaoDomainService.Testando(processoTramitacao);
-        }
-
-        public ICollection<ProcessoTramitacao> Verificar(ProcessoTramitacao processoTramitacao)
-        {
-            return processoTramitacaoDomainService.Verificar(processoTramitacao);
-        }
     }
 
 }

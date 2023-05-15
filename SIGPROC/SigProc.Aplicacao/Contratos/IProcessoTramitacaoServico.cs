@@ -19,7 +19,5 @@ namespace SigProc.Aplicacao.Contratos
         ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso);
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia);
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario);
-        public DadosDeTramitacao Testando(DadosDeTramitacaoSicop processoTramitacao);
-        ICollection<ProcessoTramitacao>  Verificar(ProcessoTramitacao processoTramitacao);
     }
 }

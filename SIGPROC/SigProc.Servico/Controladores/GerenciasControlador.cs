@@ -31,24 +31,10 @@ namespace SisAgenda.Servico.Controladores
             //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
             try
             {
-                foreach (var item in gerencia)
-                {
-                    string s = item.Descricao;
-
-                    string[] subs = s.Split(new string[] { " - " }, StringSplitOptions.None);
-
-
-                    item.Descricao = subs[1].Trim();
-                    item.Sigla = subs[0].Trim();
-                    item.Email = $"{item.Sigla}gmail.com";
-                    item.Telefone = "21 2222-2222";
-                    item.Prazo = 7;
-                   var cadastro = _gerenciaServico.Inserir(_mapper.Map<Gerencia>(item));
-                }
-             
+                var cadastro = _gerenciaServico.Inserir(_mapper.Map<Gerencia>(gerencia));
 
                 //Log.ForContext("Action", $"CadastrarU").Information($"O usuário: {sUsuario}, cadastrou o usuário: {usuario.Nome}.");
-                return StatusCode(201,new {  mensagem = "Gerência cadastrado com sucesso!" } );
+                return StatusCode(201, new { mensagem = "Gerência cadastrado com sucesso!" });
             }
             catch (ValidationException ex)
             {
@@ -94,7 +80,7 @@ namespace SisAgenda.Servico.Controladores
             try
             {
                 var contato = _gerenciaServico.Excluir(id);
-                return StatusCode(200, new{ contato, mensagem = "Gerência inativado com sucesso!" });
+                return StatusCode(200, new { contato, mensagem = "Gerência inativado com sucesso!" });
             }
             catch (ArgumentException ex)
             {
