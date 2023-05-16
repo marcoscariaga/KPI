@@ -18,8 +18,8 @@ var configuration = new ConfigurationBuilder()
             .Build();
 
 builder.Services.AddControllers();
-builder.Services.AddHostedService<RotinaPrazoService>();
-builder.Services.AddHostedService<RotinaTramitacaoHostedServico>();
+//builder.Services.AddHostedService<RotinaPrazoService>();
+//builder.Services.AddHostedService<RotinaTramitacaoHostedServico>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
