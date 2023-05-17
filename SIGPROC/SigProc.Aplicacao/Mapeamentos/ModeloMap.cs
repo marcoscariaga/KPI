@@ -30,6 +30,7 @@ namespace SigProc.Aplicacao.Mapeamentos
             CreateMap<ProcessoTramitacaoModelo, ProcessoTramitacao>();
             CreateMap<TipoContratacaoModelo, TipoContratacao>();
             CreateMap<TipoProcessoModelo, TipoProcesso>();
+            CreateMap<EtapaProcessoModelo, EtapaProcesso>();
             CreateMap<TipoPrazoModelo, TipoPrazo>(); ;
             CreateMap<TipoUsuarioGerenciaModelo, TipoUsuarioGerencia>(); ;
             CreateMap<DadosDoProcessoSicopModelo, DadosDoProcessoSicop>().AfterMap((command, entity) =>

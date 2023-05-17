@@ -24,6 +24,7 @@ namespace SigProc.infra.dados.Contextos
         public DbSet<ProcessoTramitacao> ProcessoTramitacao { get; set; }
         public DbSet<TipoContratacao> TipoContratacao { get; set; }
         public DbSet<TipoProcesso> TipoProcesso { get; set; }
+        public DbSet<EtapaProcesso> EtapaProcesso { get; set; }
         public DbSet<TipoPrazo> TipoPrazo { get; set; }
         public DbSet<DadosDoProcessoSicop> DadosDoProcessoSicop { get; set; }
         public DbSet<DadosDeTramitacaoSicop> DadosDeTramitacaoSicop { get; set; }
@@ -47,6 +48,7 @@ namespace SigProc.infra.dados.Contextos
             modelBuilder.ApplyConfiguration(new DadosDeTramitacaoSicopMap());
             modelBuilder.ApplyConfiguration(new FeriadoMap());
             modelBuilder.ApplyConfiguration(new DespachoMap());
+            modelBuilder.ApplyConfiguration(new EtapaProcessoMap());
         }
     }
 }
