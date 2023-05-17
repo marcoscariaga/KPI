@@ -29,7 +29,7 @@ namespace SisAgenda.Servico.Controladores
             //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
             try
             {
-
+                processo.IdUsuarioCadastro = 1;
                 var cadastro = _processoServico.Inserir(_mapper.Map<Processo>(processo));
 
                 //Log.ForContext("Action", $"CadastrarU").Information($"O usuário: {sUsuario}, cadastrou o usuário: {usuario.Nome}.");

@@ -26,21 +26,21 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<ProcessoTramitacao> ListarTudo()
         {
-            return contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).Include(a => a.Processo).ToList();
+            return contexto.ProcessoTramitacao.Where(a => a.Status == true).Include(a => a.Processo).ToList();
         }
         public ICollection<ProcessoTramitacao> ListarAtivos()
         {
-            return contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).Include(a => a.Processo).ToList();
+            return contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).Include(a => a.Processo).Include(x => x.GerenciaDestino).Include(a => a.GerenciaOrigem).ToList();
         }
 
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
         {
             return contexto.ProcessoTramitacao
-                              .OrderByDescending(x => x.DataCriacao)
-                              .Include(a => a.GerenciaOrigem)
-                              .Include(a => a.GerenciaDestino)
-                              .AsNoTracking()
-                              .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso));
+                            .OrderByDescending(x => x.DataCriacao)
+                            .Include(a => a.GerenciaOrigem)
+                            .Include(a => a.GerenciaDestino)
+                            .AsNoTracking()
+                            .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso));
         }
         public ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
         {
@@ -65,10 +65,8 @@ namespace SigProc.infra.dados.Repositorios
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
         {
             var ultimasTramitacoes = contexto.ProcessoTramitacao
-          .Include(pt => pt.Processo).Include(x=>x.GerenciaOrigem)
+          .Include(pt => pt.Processo).Include(x => x.GerenciaOrigem).Include(x => x.GerenciaDestino)
               .Where(pt => pt.DataEnvio.Equals(null))
-              .GroupBy(pt => pt.IdProcesso)
-              .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
           .ToList();
 
             return ultimasTramitacoes;
@@ -91,7 +89,7 @@ namespace SigProc.infra.dados.Repositorios
                 }
                 else
                 {
-                    tramitacao.TempoPrazo = (tempoPrazo.diasUteisRestantes * -1);
+                    tramitacao.TempoPrazo = (tempoPrazo.diasUteisAtraso * -1);
                 }
 
                 contexto.Entry(tramitacao).State = EntityState.Modified;
@@ -165,6 +163,35 @@ namespace SigProc.infra.dados.Repositorios
             else
             {
                 return (TimeSpan.FromDays(dias.diasUteisAtraso * -1), dataFutura);
+            }
+        }
+        public virtual (TimeSpan diasRestantes, DateTime dataFutura) CalculaPrazoCadastro(DateTime dataTramitacao, int prazo)
+        {
+            var datasFeriados = ListarFeriados();
+
+            int diasParaAcrescentar = prazo;
+
+            DateTime dataFutura = dataTramitacao;
+            int diasAcrescentados = 0;
+            while (diasAcrescentados < diasParaAcrescentar)
+            {
+                dataFutura = dataFutura.AddDays(1);
+                if (dataFutura.DayOfWeek != DayOfWeek.Saturday && dataFutura.DayOfWeek != DayOfWeek.Sunday && !datasFeriados.Contains(dataFutura))
+                {
+                    diasAcrescentados++;
+                }
+            }
+
+            var dias = ContarDiasUteis(DateTime.Today, dataFutura);
+
+
+            if (dias.diasUteisAtraso <= 0)
+            {
+                return (TimeSpan.FromDays(dias.diasUteisRestantes), (dataFutura));
+            }
+            else
+            {
+                return (TimeSpan.FromDays(dias.diasUteisAtraso), dataFutura);
             }
         }
         public ICollection<DateTime> ListarFeriados()
