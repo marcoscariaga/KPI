@@ -46,25 +46,29 @@ namespace SigProc.infra.dados.Repositorios
             //}
             return processo;
         }
+        public Processo RetornaPorId(int id)
+        {
+            return contexto.Processo.Include(a => a.TipoContratacao).Include(a => a.TipoProcesso).Where(x => x.Id.Equals(id)).FirstOrDefault();
+        }
         public ICollection<Processo> ListarTudo()
         {
-            var processo = contexto.Processo.Where(a => a.Status == true).ToList();
+            var lista = contexto.Processo
+                     .Where(a => a.Status)
+                     .Select(item => new Processo
+                     {
+                         Id = item.Id,
+                         NumProcesso = item.NumProcesso,
+                         Requerente = item.Requerente,
+                         Assunto = item.Assunto,
+                         OrgaoOrigem = contexto.ProcessoTramitacao
+            .Where(pt => pt.NumeroProcesso.Equals(item.NumProcesso))
+            .OrderByDescending(pt => pt.DataCriacao)
+             .Select(pt => string.Concat(pt.GerenciaDestino.Descricao, " - ", pt.GerenciaDestino.Sigla))
+                             .FirstOrDefault()
+                     })
+                     .ToList();
 
-            var lista = new List<Processo>();
-            foreach (var item in processo)
-            {
-                var gerenciaOrigem = contexto.ProcessoTramitacao.OrderByDescending(x => x.DataCriacao).Include(a => a.GerenciaOrigem).AsNoTracking()
-                                    .FirstOrDefault(x => x.NumeroProcesso.Equals(item.NumProcesso));
-                var model = new Processo();
-
-                model.Id = item.Id;
-                model.NumProcesso = item.NumProcesso;
-                model.Requerente = item.Requerente;
-                model.Assunto = item.Assunto;
-                model.OrgaoOrigem = gerenciaOrigem.GerenciaOrigem.Sigla;
-                lista.Add(model);
-            }
-            return processo;
+            return lista;
         }
     }
 }

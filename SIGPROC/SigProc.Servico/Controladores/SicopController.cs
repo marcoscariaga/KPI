@@ -39,27 +39,27 @@ namespace SigProc.Servico.Controladores
             //if (processo.StatusLine == "Consulta Efetuada")
             //    return Ok(_appSicopProcesso.Inserir(processo));
 
-            var cadastraProcesso = new ProcessoModelo()
-            {
-                NumProcesso = processo.NumeroDoProcesso,
-                Requerente = processo.NomeDoRequerente,
-                Assunto = processo.CodigoAssunto,
-                TipoDoc = processo.TipoDoDocumento,
-                NumDoc = processo.NumeroDoTipoDoDocumento,
-                DataCadastroProc =processo.DataDeCadastroDeProcesso,
-                DataUltimaTramProc = processo.DataDeDespachoTramitacao,
-                OrgaoCadastro = processo.OrgaoDeOrigem,
-                OrgaoOrigem = processo.OrgaoOrigemTramitacao,
-                OrgaoDestino = processo.OrgaoDestinoTramitacao,
-                InfoComplementar = processo.InformacaoComplementar1 + processo.InformacaoComplementar2 + processo.InformacaoComplementar3,
-                Prioridade = "alta",
-                IdTipoContratacao = 1,
-                IdTipoProcesso = 1,
-                Observacao = "",
-                IdUsuarioCadastro = 1,
-                Status = true,
-            };
-            _appProcesso.Inserir(_mapper.Map<Processo>(cadastraProcesso));
+            //var cadastraProcesso = new ProcessoModelo()
+            //{
+            //    NumProcesso = processo.NumeroDoProcesso,
+            //    Requerente = processo.NomeDoRequerente,
+            //    Assunto = processo.CodigoAssunto,
+            //    TipoDoc = processo.TipoDoDocumento,
+            //    NumDoc = processo.NumeroDoTipoDoDocumento,
+            //    DataCadastroProc =processo.DataDeCadastroDeProcesso,
+            //    DataUltimaTramProc = processo.DataDeDespachoTramitacao,
+            //    OrgaoCadastro = processo.OrgaoDeOrigem,
+            //    OrgaoOrigem = processo.OrgaoOrigemTramitacao,
+            //    OrgaoDestino = processo.OrgaoDestinoTramitacao,
+            //    InfoComplementar = processo.InformacaoComplementar1 + processo.InformacaoComplementar2 + processo.InformacaoComplementar3,
+            //    Prioridade = "alta",
+            //    IdTipoContratacao = 1,
+            //    IdTipoProcesso = 1,
+            //    Observacao = "",
+            //    IdUsuarioCadastro = 1,
+            //    Status = true,
+            //};
+            //_appProcesso.Inserir(_mapper.Map<Processo>(cadastraProcesso));
 
             return Ok(processo);
         }
