@@ -1,6 +1,10 @@
+using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 using SigProc.Aplicacao.Servicos;
 using SigProc.Servico.Configuracao;
 using SigProc.Servico.Configurar;
+using System.Collections.ObjectModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +21,19 @@ var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .Build();
 
+Log.Logger = new LoggerConfiguration()
+       .Enrich.FromLogContext()
+                .Enrich.FromLogContext()
+                .WriteTo.MSSqlServer(
+                    connectionString: configuration.GetConnectionString("SIGPROC"),
+                    tableName: "Logs"
+                )
+                .CreateLogger();
+
+
 builder.Services.AddControllers();
-//builder.Services.AddHostedService<RotinaPrazoService>();
-//builder.Services.AddHostedService<RotinaTramitacaoHostedServico>();
+builder.Services.AddHostedService<RotinaPrazoService>();
+builder.Services.AddHostedService<RotinaTramitacaoHostedServico>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

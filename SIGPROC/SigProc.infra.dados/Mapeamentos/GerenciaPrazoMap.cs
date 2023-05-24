@@ -27,6 +27,9 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.HasOne<TipoProcesso>(c => c.TipoProcesso)
                .WithMany()
                .HasForeignKey(c => c.IdTipoProcesso);
+            builder.HasOne<EtapaProcesso>(c => c.EtapaProcesso)
+                .WithMany()
+                .HasForeignKey(c => c.IdEtapaProcesso);
             builder.Property(c => c.Prazo).IsRequired();
             builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.IdUsuarioCadastro);

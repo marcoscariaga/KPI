@@ -1,4 +1,5 @@
-﻿using ServiceSicop;
+﻿using Serilog;
+using ServiceSicop;
 using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos.ModeloEntrada;
 using SigProc.Domimio.Contratos.Servicos;
@@ -63,30 +64,64 @@ namespace SigProc.Aplicacao.Servicos
         }
         private DadosDoProcessoSicop consultar(string rotina, string metodo, Func<DadosDoProcessoSicop> acao, Action fim)
         {
-            Configurar();
-
-            if (naoConectado(servico.Connect().MessageClassName))
+            try
             {
-                return DadosDoProcessoSicop.ComMensagem(string.Format("Não foi possível estabelecer CONEXÃO com o SICOP para a operação '{0}' rotina: '{1}'.", metodo, rotina));
-            }
+                Configurar();
+                try
+                {
+                    if (naoConectado(servico.Connect().MessageClassName))
+                    {
+                        return DadosDoProcessoSicop.ComMensagem(string.Format("Não foi possível estabelecer CONEXÃO com o SICOP para a operação '{0}' rotina: '{1}'.", metodo, rotina));
+                    }
+                    try
+                    {
+                        var senha = "";
+                        var matricula = "";
+                        var novasenha = "";
+                        if (naoLogado(servico.TLogonSicop_WS(rotina, matricula, senha, novasenha).MessageClassName, metodo))
+                        {
 
-            var senha = "";
-            var matricula = "";
-            var novasenha = "";
-            if (naoLogado(servico.TLogonSicop_WS(rotina, matricula, senha, novasenha).MessageClassName, metodo))
+                            return DadosDoProcessoSicop.ComMensagem(string.Format("Não foi possível estabelecer o LOGIN no Sicop para a operação '{0}' rotina: '{1}'.", metodo, rotina));
+                        }
+                        try
+                        {
+                            var resultado = acao();
+
+                            if (resultado.StatusLine.ToLower().Equals("processo nao cadastrado"))
+                            {
+                                resultado.StatusLine = "Processo não cadastrado no Sicop.";
+                            }
+
+                            return resultado;
+                        }
+                        catch (Exception)
+                        {
+                            Log.ForContext("Acao", $"ProcessoSICOP").Information($"Processo não cadastrado no Sicop.");
+                            throw new Exception("Processo não cadastrado no Sicop");
+                        }
+                       
+                    }
+                    catch (Exception)
+                    {
+                        Log.ForContext("Acao", $"LoginSICOP").Information($"Não foi possível estabelecer o LOGIN no Sicop para a operação ConsultaProcesso_WS.");
+                        throw new Exception("Não foi possível estabelecer o LOGIN no Sicop para a operação ConsultaProcesso_WS.");
+                    }
+
+                   
+                }
+                catch (Exception)
+                {
+                    Log.ForContext("Acao", $"ConexãoSICOP").Information($"Não foi possível estabelecer CONEXÃO com o SICOP para a operação ConsultaProcesso_WS.");
+                    throw new Exception("Não foi possível estabelecer CONEXÃO com o SICOP para a operação ConsultaProcesso_WS.");
+                }
+               
+            }
+            catch (Exception)
             {
-
-                return DadosDoProcessoSicop.ComMensagem(string.Format("Não foi possível estabelecer o LOGIN no Sicop para a operação '{0}' rotina: '{1}'.", metodo, rotina));
-            }
-
-            var resultado = acao();
-
-            if (resultado.StatusLine.ToLower().Equals("processo nao cadastrado"))
-            {
-                resultado.StatusLine = "Processo não cadastrado no Sicop.";
-            }
-
-            return resultado;
+                Log.ForContext("Acao", $"ServicoSICOP").Information($"Serviço SICOP indisponível.");
+                throw new Exception("Serviço SICOP indisponível.");
+            }    
+            
         }
         public void Configurar()
         {

@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Win32;
+using Serilog;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,7 +53,9 @@ namespace SigProc.Aplicacao.Servicos
             //}
 
             //return Task.CompletedTask;
-            _timer = new Timer(Registrar, null, 0, 10000);
+            int dueTime = 3 * 60 * 60 * 1000;
+
+            _timer = new Timer(Registrar, null, dueTime, dueTime);
 
             return Task.CompletedTask;
         }
@@ -64,16 +68,26 @@ namespace SigProc.Aplicacao.Servicos
                 var processoTramitacaoRepositorio = scope.ServiceProvider.GetRequiredService<IProcessoTramitacaoRepositorio>();
 
                 var processos = processoRepositorio.ListarAtivos();
-
-                foreach (var processo in processos)
+                try
                 {
-                    var tramitacao = new ProcessoTramitacao()
+                    foreach (var processo in processos)
                     {
-                        NumeroProcesso = processo.NumProcesso,
-                        IdProcesso = processo.Id
-                    };
-                    processoTramitacaoServico.Atualizar(tramitacao);
+
+                        var tramitacao = new ProcessoTramitacao()
+                        {
+                            NumeroProcesso = processo.NumProcesso,
+                            IdProcesso = processo.Id
+                        };
+                        processoTramitacaoServico.Atualizar(tramitacao);
+                    }
+                    Log.ForContext("Acao", $"RotinaTramitacao").Information($"Rotina das tramitações concluída com sucesso.");
                 }
+                catch (Exception ex)
+                {
+                    Log.ForContext("Acao", $"RotinaTramitacao").Warning($"Falha no processo de rotina das tramitações.{ex.Message}");
+                    throw new Exception("Falha no processo de rotina das tramitações.");
+                }
+
             }
         }
 

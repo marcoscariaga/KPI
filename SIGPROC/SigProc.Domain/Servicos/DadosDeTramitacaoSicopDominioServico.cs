@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Serilog;
 using ServiceSicop;
 using SigProc.Domain.Contratos.Servicos;
 using SigProc.Domimio.Contratos.Dados;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SigProc.Domimio.Servicos
 {
-    public class DadosDeTramitacaoSicopDominioServico : BaseDominioServico<DadosDeTramitacaoSicop>, IDadosDeTramitacaoSicopDominioServico 
+    public class DadosDeTramitacaoSicopDominioServico : BaseDominioServico<DadosDeTramitacaoSicop>, IDadosDeTramitacaoSicopDominioServico
     {
         private readonly IDadosDeTramitacaoSicopRepositorio _repository;
         private IMapper _mapper;
@@ -64,27 +65,58 @@ namespace SigProc.Domimio.Servicos
 
         private DadosDeTramitacaoSicop consultar(string rotina, Func<DadosDeTramitacaoSicop> acao, Action fim)
         {
-            Configurar();
-
-            if (naoConectado(servico.Connect().MessageClassName))
+            try
             {
-                return DadosDeTramitacaoSicop.ComMensagem(string.Format("Não foi possível estabelecer CONEXÃO com o SICOP para a operação '{0}' rotina: '{1}'.", rotina));
+                Configurar();
+                try
+                {
+                    if (naoConectado(servico.Connect().MessageClassName))
+                    {
+                        return DadosDeTramitacaoSicop.ComMensagem(string.Format("Não foi possível estabelecer CONEXÃO com o SICOP para a operação '{0}' rotina: '{1}'.", rotina));
+                    }
+                    try
+                    {
+                        if (naoLogado(servico.TLogonSicop_WS("3110", "", "", "").MessageClassName))
+                        {
+
+                            return DadosDeTramitacaoSicop.ComMensagem(string.Format("Não foi possível estabelecer o LOGIN no Sicop para a operação '{0}' rotina: '{1}'.", rotina));
+                        }
+                        try
+                        {
+                            var resultado = acao();
+
+                            if (resultado.StatusLine.ToLower().Equals("processo nao cadastrado"))
+                            {
+                                resultado.StatusLine = "Processo não cadastrado no Sicop.";
+                            }
+
+                            return resultado;
+                        }
+                        catch (Exception)
+                        {
+                            Log.ForContext("Acao", $"ProcessoSICOP").Information($"Processo não cadastrado no Sicop.");
+                            throw new Exception("Processo não cadastrado no Sicop");
+                        }
+                        
+                    }
+                    catch (Exception)
+                    {
+                        Log.ForContext("Acao", $"LoginSICOP").Information($"Não foi possível estabelecer o LOGIN no Sicop para a operação ConsultaProcesso_WS.");
+                        throw new Exception("Não foi possível estabelecer o LOGIN no Sicop para a operação ConsultaProcesso_WS.");
+                    }
+                }
+                catch (Exception)
+                {
+                    Log.ForContext("Acao", $"ConexãoSICOP").Information($"Não foi possível estabelecer CONEXÃO com o SICOP para a operação ConsultaProcesso_WS.");
+                    throw new Exception("Não foi possível estabelecer CONEXÃO com o SICOP para a operação ConsultaProcesso_WS.");
+                }
+            }
+            catch (Exception)
+            {
+                Log.ForContext("Acao", $"ServicoSICOP").Information($"Serviço SICOP indisponível.");
+                throw new Exception("Serviço SICOP indisponível.");
             }
 
-            if (naoLogado(servico.TLogonSicop_WS("3110", "", "", "").MessageClassName))
-            {
-
-                return DadosDeTramitacaoSicop.ComMensagem(string.Format("Não foi possível estabelecer o LOGIN no Sicop para a operação '{0}' rotina: '{1}'.", rotina));
-            }
-
-            var resultado = acao();
-
-            if (resultado.StatusLine.ToLower().Equals("processo nao cadastrado"))
-            {
-                resultado.StatusLine = "Processo não cadastrado no Sicop.";
-            }
-
-            return resultado;
         }
         public void Configurar()
         {

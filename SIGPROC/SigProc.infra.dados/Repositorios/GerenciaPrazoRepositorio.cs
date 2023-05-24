@@ -31,9 +31,35 @@ namespace SigProc.infra.dados.Repositorios
         }
         public GerenciaPrazo Inserir(GerenciaPrazo objeto)
         {
-            var tipoContratacao = contexto.GerenciaPrazo.AsNoTracking().Where(x=>x.Status == true).FirstOrDefault(x => x.IdTipoContratacao.Equals(objeto.IdTipoContratacao) && x.IdGerencia.Equals(objeto.IdGerencia));
-            if (tipoContratacao != null)
-                throw new ArgumentException("Tipo de contratação já cadastrada nessa gerência!");
+            if (objeto.IdTipoContratacao != null || objeto.IdEtapaProcesso != null || objeto.IdTipoProcesso != null)
+            {
+                var verifica = contexto.GerenciaPrazo
+                    .AsNoTracking()
+                    .Where(x => x.Status == true && x.IdGerencia.Equals(objeto.IdGerencia))
+                    .FirstOrDefault(x =>
+                        (objeto.IdTipoContratacao != null && x.IdTipoContratacao.Equals(objeto.IdTipoContratacao)) ||
+                        (objeto.IdEtapaProcesso != null && x.IdEtapaProcesso.Equals(objeto.IdEtapaProcesso)) ||
+                        (objeto.IdTipoProcesso != null && x.IdTipoProcesso.Equals(objeto.IdTipoProcesso))
+                    );
+
+                if (verifica != null)
+                {
+                    throw new ArgumentException("Esse prazo já cadastrado nessa gerência!");
+                }
+            }
+            else
+            {
+                var verifica = contexto.GerenciaPrazo
+                   .AsNoTracking()
+                   .Where(x => x.Status == true && x.IdGerencia.Equals(objeto.IdGerencia))
+                   .FirstOrDefault(x =>
+                       (objeto.IdTipoPrazo != null && x.IdTipoPrazo.Equals(objeto.IdTipoPrazo))
+                   );
+                if (verifica != null)
+                {
+                    throw new ArgumentException("Esse prazo já cadastrado nessa gerência!");
+                }
+            }
 
             //var tipoProcesso = contexto.GerenciaPrazo.AsNoTracking().FirstOrDefault(x => x.IdTipoProcesso.Equals(objeto.IdTipoProcesso) && x.IdGerencia.Equals(objeto.IdGerencia));
             //if (tipoProcesso != null)

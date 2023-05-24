@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos.ModeloEntrada;
 using SigProc.Domain.Entidades;
@@ -27,7 +28,7 @@ namespace SigProc.Servico.Controllers
             try
             {
                 var cadastro = _usuarioServico.Inserir(_mapper.Map<Usuario>(usuario));
-
+  
                 return StatusCode(201, new { cadastro, mensagem = "Usuário cadastrado com sucesso!" });
             }
             catch (ValidationException ex)
@@ -85,18 +86,22 @@ namespace SigProc.Servico.Controllers
             try
             {
                 var usuarios = _usuarioServico.ListarTudo();
+             
+
                 if (usuarios.Count == 0)
                     return NoContent();
 
+                Log.ForContext("Acao", $"Usuarios.Consultar").Information($"Acessado pelo usuário: {User.Identity.Name}.");
                 return StatusCode(200, usuarios);
             }
             catch (ArgumentException ex)
             {
+                Log.ForContext("Acao", $"Usuarios.Consultar").Information($"Acessado pelo usuário: {User.Identity.Name}. erro: {ex.Message}");
                 return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
             }
             catch (Exception ex)
             {
-
+                Log.ForContext("Acao", $"Usuarios.Consultar").Information($"Acessado pelo usuário: {User.Identity.Name}. erro: {ex.Message}");
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
             }
         }

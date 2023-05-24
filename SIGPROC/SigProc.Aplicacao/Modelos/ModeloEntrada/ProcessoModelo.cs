@@ -22,6 +22,7 @@ namespace SigProc.Aplicacao.Modelos
         public string Prioridade { get; set; }
         public int IdTipoContratacao { get; set; }
         public int IdTipoProcesso { get; set; }
+        public int IdEtapaProcesso { get; set; }
         public string Observacao { get; set; }
         public int IdUsuarioCadastro { get; set; }
         public bool Status { get; set; }

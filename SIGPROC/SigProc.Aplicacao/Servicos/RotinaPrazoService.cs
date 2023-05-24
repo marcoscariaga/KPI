@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using SigProc.Dominio.Contratos.Dados;
 
 namespace SigProc.Aplicacao.Servicos
@@ -43,7 +44,8 @@ namespace SigProc.Aplicacao.Servicos
             //}
 
             //return Task.CompletedTask;
-            _timer = new Timer(Registrar, null, 0, 10000);
+            int dueTime = (3 * 60 * 60 + 30 * 60) * 1000;
+            _timer = new Timer(Registrar, null, dueTime, dueTime);
 
             return Task.CompletedTask;
         }
@@ -52,8 +54,16 @@ namespace SigProc.Aplicacao.Servicos
             using (var scope = ServiceProvider.CreateScope())
             {
                 var processoTramitacaoRepositorio = scope.ServiceProvider.GetRequiredService<IProcessoTramitacaoRepositorio>();
-
-                processoTramitacaoRepositorio.AtualizaPazo();
+                try
+                {
+                    processoTramitacaoRepositorio.AtualizaPazo();
+                    Log.ForContext("Acao", $"RotinaPrazo").Information($"Rotina dos prazos concluída com sucesso.");
+                }
+                catch (Exception)
+                {
+                    Log.ForContext("Acao", $"RotinaPrazo").Warning($"Falha no processo de rotina dos prazos.");
+                    throw new Exception("Falha no processo de rotina dos prazos.");
+                }
             }
         }
 

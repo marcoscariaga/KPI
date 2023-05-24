@@ -11,6 +11,7 @@ namespace SigProc.Dominio.Entidades
     {
         public int IdGerencia { get; set; }
         public int IdTipoPrazo { get; set; }
+        public int? IdEtapaProcesso { get; set; }
         public int? IdTipoContratacao { get; set; }
         public int? IdTipoProcesso { get; set; }
         public int Prazo { get; set; }
@@ -20,6 +21,6 @@ namespace SigProc.Dominio.Entidades
         public virtual TipoContratacao TipoContratacao { get; set; }
         public virtual TipoProcesso TipoProcesso { get; set; }
         public virtual TipoPrazo TipoPrazo { get; set; }
-
+        public virtual EtapaProcesso EtapaProcesso { get; set; }
     }
 }
