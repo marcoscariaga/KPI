@@ -17,36 +17,25 @@ namespace SigProc.Aplicacao.Servicos
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            //var horarios = new List<TimeSpan>
-            //{
-            //    new TimeSpan(21, 0, 0), // 20:00
-            //    new TimeSpan(02, 30, 0), // 02:00
-            //    new TimeSpan(06, 0, 0), // 06:00
-            //    new TimeSpan(18, 45, 0) // 18:45
-            //};
-
-            //foreach (var horario in horarios)
-            //{
-            //    // Define a hora de início
-            //    var startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, horario.Hours, horario.Minutes, horario.Seconds);
-
-            //    // Verifica se a hora de início já passou hoje, caso contrário, define para amanhã
-            //    if (DateTime.Now > startDateTime)
-            //    {
-            //        startDateTime = startDateTime.AddDays(1);
-            //    }
-
-            //    // Calcula o tempo restante até a hora de início
-            //    var timeToStart = startDateTime - DateTime.Now;
-
-            //    // Cria o timer para o horário atual
-            //    _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromDays(1));
-            //}
-
-            //return Task.CompletedTask;
-            int dueTime = (3 * 60 * 60 + 30 * 60) * 1000;
-            _timer = new Timer(Registrar, null, dueTime, dueTime);
-
+            var horarios = new List<TimeSpan>
+            {
+                new TimeSpan(02, 30, 0), // 02:00
+                new TimeSpan(06, 0, 0), // 06:00
+            };
+            foreach (var horario in horarios)
+            {
+                // Define a hora de início
+                var startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, horario.Hours, horario.Minutes, horario.Seconds);
+                // Verifica se a hora de início já passou hoje, caso contrário, define para amanhã
+                if (DateTime.Now > startDateTime)
+                {
+                    startDateTime = startDateTime.AddDays(1);
+                }
+                // Calcula o tempo restante até a hora de início
+                var timeToStart = startDateTime - DateTime.Now;
+                // Cria o timer para o horário atual
+                _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromDays(1));
+            }
             return Task.CompletedTask;
         }
         private void Registrar(object state)
