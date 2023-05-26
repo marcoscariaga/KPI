@@ -71,7 +71,7 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpDelete("ExcluirEtapaProcesso/{id}")]
-        public IActionResult DeleteTipoProceso(int id)
+        public IActionResult DeleteStatusProceso(int id)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpGet("ConsultarEtapaProcesso")]
-        public IActionResult ListarTudoTipoProcesso()
+        public IActionResult ListarTudoEtapaProcesso()
         {
             try
             {
