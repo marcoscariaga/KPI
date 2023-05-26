@@ -22,44 +22,24 @@ namespace SigProc.Aplicacao.Servicos
                 new TimeSpan(02, 30, 0), // 02:00
                 new TimeSpan(06, 0, 0), // 06:00
             };
-<<<<<<< HEAD
 
-=======
->>>>>>> 15262cc8e5fdaa8961c278dff010910f89fc70c6
             foreach (var horario in horarios)
             {
                 // Define a hora de início
                 var startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, horario.Hours, horario.Minutes, horario.Seconds);
-<<<<<<< HEAD
 
-=======
->>>>>>> 15262cc8e5fdaa8961c278dff010910f89fc70c6
                 // Verifica se a hora de início já passou hoje, caso contrário, define para amanhã
                 if (DateTime.Now > startDateTime)
                 {
                     startDateTime = startDateTime.AddDays(1);
                 }
-<<<<<<< HEAD
-
                 // Calcula o tempo restante até a hora de início
                 var timeToStart = startDateTime - DateTime.Now;
 
-                // Cria o timer para o horário atual
                 _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromDays(1));
+               
             }
-
-=======
-                // Calcula o tempo restante até a hora de início
-                var timeToStart = startDateTime - DateTime.Now;
-                // Cria o timer para o horário atual
-                _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromDays(1));
-            }
->>>>>>> 15262cc8e5fdaa8961c278dff010910f89fc70c6
             return Task.CompletedTask;
-            //int dueTime = (3 * 60 * 60 + 30 * 60) * 1000;
-            //_timer = new Timer(Registrar, null, dueTime, dueTime);
-
-            //return Task.CompletedTask;
         }
         private void Registrar(object state)
         {
