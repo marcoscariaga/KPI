@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SigProc.infra.dados.Contextos;
 
@@ -11,9 +12,11 @@ using SigProc.infra.dados.Contextos;
 namespace SigProc.infra.dados.Migrations
 {
     [DbContext(typeof(SqlServidorContexto))]
-    partial class SqlServidorContextoModelSnapshot : ModelSnapshot
+    [Migration("20230526145754_statusProcesso")]
+    partial class statusProcesso
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1089,9 +1092,6 @@ namespace SigProc.infra.dados.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IdStatusProcesso")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdTipoContratacao")
                         .HasColumnType("int");
 
@@ -1145,8 +1145,6 @@ namespace SigProc.infra.dados.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdStatusProcesso");
 
                     b.HasIndex("IdTipoContratacao");
 
@@ -1206,9 +1204,6 @@ namespace SigProc.infra.dados.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MatriculaRecebedor")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Mensagem")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NumeroProcesso")
@@ -1471,10 +1466,6 @@ namespace SigProc.infra.dados.Migrations
 
             modelBuilder.Entity("SigProc.Dominio.Entidades.Processo", b =>
                 {
-                    b.HasOne("SigProc.Dominio.Entidades.StatusProcesso", "StatusProcesso")
-                        .WithMany()
-                        .HasForeignKey("IdStatusProcesso");
-
                     b.HasOne("SigProc.Dominio.Entidades.TipoContratacao", "TipoContratacao")
                         .WithMany()
                         .HasForeignKey("IdTipoContratacao")
@@ -1492,8 +1483,6 @@ namespace SigProc.infra.dados.Migrations
                         .HasForeignKey("IdUsuarioCadastro")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("StatusProcesso");
 
                     b.Navigation("TipoContratacao");
 
