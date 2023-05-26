@@ -21,12 +21,14 @@ namespace SigProc.Dominio.Entidades
         public string? MatriculaDigitador { get; set; }
         public string NumeroProcesso { get; set; }
         public string? Despacho { get; set; }
+        public string? Mensagem { get; set; }
 
         public int Prazo { get; set; }
         public int? TempoPrazo { get; set; }
         public int Guia { get; set; }
         public int Sequencia { get; set; }
         public int? TempoEnvio { get; set; }
+        
 
 
         [Column(TypeName = "date")]

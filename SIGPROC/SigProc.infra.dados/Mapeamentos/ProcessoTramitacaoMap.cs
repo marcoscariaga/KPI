@@ -50,6 +50,12 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.Property(c => c.DataCriacao);
             builder.Property(c => c.DataExclusao);
             builder.Property(c => c.DataEdicao);
+
+            builder.Property(c => c.Mensagem);
+            builder.Property(c => c.DataCriacao);
+            builder.Property(c => c.DataExclusao);
+            builder.Property(c => c.DataEdicao);
+
         }
     }
 }
