@@ -214,5 +214,25 @@ namespace SigProc.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar tramitacao!" });
             }
         }
+        [HttpGet("AtualizaTramitacoes/{numeroProcesso}")]
+        public IActionResult AtualizaTramitacoes(string numeroProcesso)
+        {
+            try
+            {
+                var processoTramitacao = _processoTramitacaoServico.BuscarTramitacoesPorNumeroProcesso(numeroProcesso).FirstOrDefault();
+
+
+                return StatusCode(200, _processoTramitacaoServico.Atualizar(processoTramitacao)); ;
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = $"Erro ao buscar tramitacao!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar tramitacao!" });
+            }
+        }
     }
 }

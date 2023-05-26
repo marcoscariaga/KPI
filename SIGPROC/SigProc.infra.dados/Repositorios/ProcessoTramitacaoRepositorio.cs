@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Serilog;
 using SigProc.Domain.Entidades;
 using SigProc.Domimio.Contratos.Dados;
 using SigProc.Domimio.Entidades;
@@ -46,6 +47,7 @@ namespace SigProc.infra.dados.Repositorios
         {
             return contexto.ProcessoTramitacao
                 .Where(x => x.NumeroProcesso.Equals(numeroProcesso))
+                .OrderByDescending(x=> x.Sequencia)
                 .Include(a => a.GerenciaOrigem)
                 .Include(a => a.GerenciaDestino)
                 .Include(a => a.Processo)
@@ -74,29 +76,39 @@ namespace SigProc.infra.dados.Repositorios
         public void AtualizaPazo()
         {
             #region Buscar todos as tramitações ativas e atualiza o tempo de prazo
-
-            var tramitacoes = contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).ToList();
-
-            foreach (var tramitacao in tramitacoes)
+            try
             {
-                using var trans = contexto.Database.BeginTransaction();
+                var tramitacoes = contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).ToList();
 
-                var tempoPrazo = ContarDiasUteis(DateTime.Today, tramitacao.DataPrazo);
-
-                if (tempoPrazo.diasUteisAtraso <= 0)
+                foreach (var tramitacao in tramitacoes)
                 {
-                    tramitacao.TempoPrazo = tempoPrazo.diasUteisRestantes;
-                }
-                else
-                {
-                    tramitacao.TempoPrazo = (tempoPrazo.diasUteisAtraso * -1);
-                }
+                    using var trans = contexto.Database.BeginTransaction();
 
-                contexto.Entry(tramitacao).State = EntityState.Modified;
-                contexto.SaveChanges();
-                trans.Commit();
+                    var tempoPrazo = ContarDiasUteis(DateTime.Today, tramitacao.DataPrazo);
 
+                    if (tempoPrazo.diasUteisAtraso <= 0)
+                    {
+                        tramitacao.TempoPrazo = tempoPrazo.diasUteisRestantes;
+                    }
+                    else
+                    {
+                        tramitacao.TempoPrazo = (tempoPrazo.diasUteisAtraso * -1);
+                    }
+
+                    contexto.Entry(tramitacao).State = EntityState.Modified;
+                    contexto.SaveChanges();
+                    trans.Commit();
+
+                }
+                Log.ForContext("Acao", $"AtualizaPazo").Warning($"Prazos atualizado com sucesso");
             }
+            catch (Exception ex)
+            {
+                Log.ForContext("Acao", $"AtualizaPazo").Warning($"Falha na atualização dos prazos das tramitações.{ex.Message}");
+                throw new Exception("Falha na atualização dos prazos das tramitações.");
+            }
+
+            
             #endregion
         }
         public virtual (int diasUteisRestantes, int diasUteisAtraso) ContarDiasUteis(DateTime dataInicial, DateTime? dataFinal)

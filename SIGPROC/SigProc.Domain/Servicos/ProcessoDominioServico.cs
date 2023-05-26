@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Serilog;
 using ServiceSicop;
 using SigProc.Domain.Contratos.Servicos;
 using SigProc.Domimio.Contratos.Dados;
@@ -50,9 +51,10 @@ namespace SigProc.Dominio.Servicos
             
                 _processoTramitacao.Inserir(processoTramitacao);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _repositorio.Deletar(processo);
+                Log.ForContext("Acao", $"InserirProcesso").Warning($"Erro ao cadastrar a tramitação, tente novamente.{ex.Message}");
                 throw new ArgumentException($"Erro ao cadastrar a tramitação, tente novamente.");
             }
 
