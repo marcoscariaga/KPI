@@ -11,9 +11,10 @@ namespace SigProc.Dominio.Entidades
     {
         public int IdGerencia { get; set; }
         public int IdTipoPrazo { get; set; }
-        public int? IdEtapaProcesso { get; set; }
+        
         public int? IdTipoContratacao { get; set; }
         public int? IdTipoProcesso { get; set; }
+        public int? IdEtapaProcesso { get; set; }
         public int Prazo { get; set; }
         public int IdUsuarioCadastro { get; set; }
 

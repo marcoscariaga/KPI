@@ -27,23 +27,34 @@ namespace SigProc.Aplicacao.Servicos
         public Task StartAsync(CancellationToken cancellationToken)
         {
             var horarios = new List<TimeSpan>
+<<<<<<< HEAD
             { 
+=======
+            {
+>>>>>>> 15262cc8e5fdaa8961c278dff010910f89fc70c6
                 new TimeSpan(17, 00, 0), // 17:00
                 new TimeSpan(21, 0, 0), // 21:00
                 new TimeSpan(03, 30, 0), // 03:30
                 new TimeSpan(06, 30, 0), // 06:00
             };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 15262cc8e5fdaa8961c278dff010910f89fc70c6
             foreach (var horario in horarios)
             {
                 // Define a hora de início
                 var startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, horario.Hours, horario.Minutes, horario.Seconds);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 15262cc8e5fdaa8961c278dff010910f89fc70c6
                 // Verifica se a hora de início já passou hoje, caso contrário, define para amanhã
                 if (DateTime.Now > startDateTime)
                 {
                     startDateTime = startDateTime.AddDays(1);
                 }
+<<<<<<< HEAD
 
                 // Calcula o tempo restante até a hora de início
                 var timeToStart = startDateTime - DateTime.Now;
@@ -52,6 +63,13 @@ namespace SigProc.Aplicacao.Servicos
                 _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromDays(1));
             }
 
+=======
+                // Calcula o tempo restante até a hora de início
+                var timeToStart = startDateTime - DateTime.Now;
+                // Cria o timer para o horário atual
+                _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromDays(1));
+            }
+>>>>>>> 15262cc8e5fdaa8961c278dff010910f89fc70c6
             return Task.CompletedTask;
             //int dueTime = 3 * 60 * 60 * 1000;
 
