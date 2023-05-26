@@ -372,6 +372,12 @@ namespace SigProc.Dominio.Servicos
 
             return dadosTramitacao;
         }
+
+        public ProcessoTramitacao SalvarMensagem(ProcessoTramitacao processoTramitacao)
+        {
+            return _repositorio.Atualizar(processoTramitacao);
+        }
+
         public class ItemTramitacaoSicop
         {
             public string Item { get; set; }

@@ -44,6 +44,11 @@ namespace SigProc.Aplicacao.Servicos
         {
             return processoTramitacaoDomainService.ListarAtivos();
         }
+
+        public ProcessoTramitacao SalvarMensagem(ProcessoTramitacao processoTramitacao)
+        {
+            return processoTramitacaoDomainService.SalvarMensagem(processoTramitacao);
+        }
     }
 
 }

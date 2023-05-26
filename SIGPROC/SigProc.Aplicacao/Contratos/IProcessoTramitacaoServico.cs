@@ -15,6 +15,7 @@ namespace SigProc.Aplicacao.Contratos
     public interface IProcessoTramitacaoServico : IBaseDominioServico<ProcessoTramitacao>
     {
         public ICollection<ProcessoTramitacao> ListarAtivos();
+        ProcessoTramitacao SalvarMensagem(ProcessoTramitacao processoTramitacao);
         ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso);
         ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso);
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia);

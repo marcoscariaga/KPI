@@ -21,92 +21,95 @@ namespace SigProc.Servico.Controladores
             _processoTramitacaoServico = processoTramitacaoServico;
             _mapper = mapper;
         }
-        /*
-        [HttpPost("Cadastrar")]
-        public IActionResult Post([FromBody] ProcessoTramitacaoModelo processoTramitacao)
+     
+        [HttpPost("CadastrarMensagem")]
+        public IActionResult CadastrarMensagem([FromBody] ProcessoTramitacaoModelo processoTramitacao)
         {
-            //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
+            
             try
             {
-                var cadastro = _processoTramitacaoServico.Inserir(_mapper.Map<ProcessoTramitacao>(processoTramitacao));
-
-                //Log.ForContext("Action", $"CadastrarU").Information($"O usuário: {sUsuario}, cadastrou o usuário: {usuario.Nome}.");
-                return StatusCode(201, new { cadastro, mensagem = "Tramitacao cadastrado com sucesso!" });
+                var tramitacao = _processoTramitacaoServico.RetornaPorId(processoTramitacao.IdTramitacao);
+                if (processoTramitacao == null)
+                    return NoContent();
+                tramitacao.Mensagem = processoTramitacao.Mensagem;
+                _processoTramitacaoServico.SalvarMensagem(tramitacao);
+                return StatusCode(201, new { mensagem = "Mensagem cadastrada com sucesso!" });
             }
             catch (ValidationException ex)
             {
-                //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
-                return StatusCode(400, new { ex.Errors, mensagem = "Erro ao cadastrar tramitacao!" });
+               
+                return StatusCode(400, new { ex.Errors, mensagem = "Erro ao cadastrar mensagem!" });
             }
             catch (ArgumentException ex)
             {
-                //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar tramitacao!" });
+              
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar mensagem!" });
             }
             catch (Exception ex)
             {
-                //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar tramitacaoprocesso!" });
+               
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar mensagem!" });
             }
         }
-        [HttpPut("Editar")]
-        public IActionResult Editar([FromBody] ProcessoTramitacao processoTramitacao)
-        {
-            try
-            {
-                var contato = _processoTramitacaoServico.Atualizar(processoTramitacao);
-                return StatusCode(200, new { contato, mensagem = "Tramitacao editada com sucesso!" });
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao editar tramitacao!" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao editar tramitacao!" });
-            }
-        }
+        /*
+     [HttpPut("Editar")]
+     public IActionResult Editar([FromBody] ProcessoTramitacao processoTramitacao)
+     {
+         try
+         {
+             var contato = _processoTramitacaoServico.Atualizar(processoTramitacao);
+             return StatusCode(200, new { contato, mensagem = "Tramitacao editada com sucesso!" });
+         }
+         catch (ArgumentException ex)
+         {
+             return StatusCode(400, new { ex.Message, mensagem = "Erro ao editar tramitacao!" });
+         }
+         catch (Exception ex)
+         {
+             return StatusCode(500, new { ex.Message, mensagem = "Erro ao editar tramitacao!" });
+         }
+     }
 
-        [HttpDelete("Excluir/{id}")]
-        public IActionResult Delete(int id)
-        {
-            try
-            {
-                var contato = _processoTramitacaoServico.Excluir(id);
-                return StatusCode(200, new { contato, mensagem = "Tramitacao inativado com sucesso!" });
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao inativar tramitacao!" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao inativar tramitacao!" });
-            }
-        }
+     [HttpDelete("Excluir/{id}")]
+     public IActionResult Delete(int id)
+     {
+         try
+         {
+             var contato = _processoTramitacaoServico.Excluir(id);
+             return StatusCode(200, new { contato, mensagem = "Tramitacao inativado com sucesso!" });
+         }
+         catch (ArgumentException ex)
+         {
+             return StatusCode(400, new { ex.Message, mensagem = "Erro ao inativar tramitacao!" });
+         }
+         catch (Exception ex)
+         {
+             return StatusCode(500, new { ex.Message, mensagem = "Erro ao inativar tramitacao!" });
+         }
+     }
 
-        [HttpGet("Consultar")]
-        public IActionResult ListarTudo()
-        {
-            try
-            {
-                var processoTramitacao = _processoTramitacaoServico.ListarAtivos();
-                if (processoTramitacao.Count == 0)
-                    return NoContent();
+     [HttpGet("Consultar")]
+     public IActionResult ListarTudo()
+     {
+         try
+         {
+             var processoTramitacao = _processoTramitacaoServico.ListarAtivos();
+             if (processoTramitacao.Count == 0)
+                 return NoContent();
 
-                return StatusCode(200, processoTramitacao);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar tramitacao!" });
-            }
-            catch (Exception ex)
-            {
+             return StatusCode(200, processoTramitacao);
+         }
+         catch (ArgumentException ex)
+         {
+             return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar tramitacao!" });
+         }
+         catch (Exception ex)
+         {
 
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar tramitacao!" });
-            }
-        }
-        */
+             return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar tramitacao!" });
+         }
+     }
+     */
 
         [HttpGet("BuscarPorID/{id}")]
         public IActionResult GetById(int id)
