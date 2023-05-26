@@ -36,7 +36,7 @@ namespace SigProc.infra.dados.Mapeamentos
                .HasForeignKey(c => c.IdTipoProcesso);
             builder.HasOne<StatusProcesso>(c => c.StatusProcesso)
                .WithMany()
-               .HasForeignKey(c => c.StatusProcesso);
+               .HasForeignKey(c => c.IdStatusProcesso);
             builder.HasOne<Usuario>(c => c.Usuario)
                .WithMany()
                .HasForeignKey(c => c.IdUsuarioCadastro);
