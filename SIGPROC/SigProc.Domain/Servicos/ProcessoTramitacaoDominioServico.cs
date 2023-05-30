@@ -125,7 +125,7 @@ namespace SigProc.Dominio.Servicos
             return (processoTramitacao);
         }
 
-        public ProcessoTramitacao Atualizar(ProcessoTramitacao processoTramitacao)
+        public ProcessoTramitacao AtualizaTramitacao(ProcessoTramitacao processoTramitacao)
         {
             var idProcesso = processoTramitacao.IdProcesso;
             var numeroProcesso = processoTramitacao.NumeroProcesso;
@@ -288,7 +288,15 @@ namespace SigProc.Dominio.Servicos
 
             return (processoTramitacao);
         }
+        public ProcessoTramitacao AtualizaTramitacoesEtapaProcesso(ProcessoTramitacao processoTramitacao)
+        {
+            var tempoRestanteTramitacaoSicop = _repositorio.CalculaPrazo((DateTime)processoTramitacao.DataRecebimento, processoTramitacao.Prazo);
 
+            processoTramitacao.TempoPrazo = tempoRestanteTramitacaoSicop.diasRestantes.Days;
+            processoTramitacao.DataPrazo = tempoRestanteTramitacaoSicop.dataFutura;
+
+            return _repositorio.Atualizar(processoTramitacao);
+        }
 
         public ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso)
         {

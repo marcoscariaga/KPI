@@ -24,6 +24,7 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<IDadosDeTramitacaoSicopServico, DadosDeTramitacaoSicopServico>(); 
             builder.Services.AddTransient<IFeriadoServico, FeriadoServico>();
             builder.Services.AddTransient<IDespachoServico, DespachoServico>();
+            builder.Services.AddTransient<IMensagemServico, MensagemServico>();
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

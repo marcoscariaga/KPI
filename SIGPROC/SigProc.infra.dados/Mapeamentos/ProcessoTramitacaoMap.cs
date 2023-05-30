@@ -31,6 +31,10 @@ namespace SigProc.infra.dados.Mapeamentos
                .WithMany()
                .HasForeignKey(c => c.IdProcesso).IsRequired();
 
+            builder.HasOne<Mensagem>(c => c.Mensagem)
+                 .WithMany()
+                 .HasForeignKey(c => c.IdMensagem);
+
             builder.Property(c => c.MatriculaDigitador);
             builder.Property(c => c.NumeroProcesso);
             builder.Property(c => c.Despacho);
@@ -51,7 +55,6 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.Property(c => c.DataExclusao);
             builder.Property(c => c.DataEdicao);
 
-            builder.Property(c => c.Mensagem);
             builder.Property(c => c.DataCriacao);
             builder.Property(c => c.DataExclusao);
             builder.Property(c => c.DataEdicao);

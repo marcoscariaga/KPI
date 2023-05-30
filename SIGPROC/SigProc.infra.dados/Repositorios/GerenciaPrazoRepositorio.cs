@@ -22,7 +22,7 @@ namespace SigProc.infra.dados.Repositorios
 
         public ICollection<GerenciaPrazo> ListarAtivos()
         {
-            return contexto.GerenciaPrazo.Where(a => a.Status == true).ToList();
+            return contexto.GerenciaPrazo.Where(a => a.Status == true).Include(x=>x.EtapaProcesso).ToList();
         }
 
         public ICollection<GerenciaPrazo> RetornaPorIdGerencia(int id_gerencia)

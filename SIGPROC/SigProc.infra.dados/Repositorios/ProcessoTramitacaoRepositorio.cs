@@ -25,6 +25,7 @@ namespace SigProc.infra.dados.Repositorios
         {
             contexto = sqlServerContext;
         }
+
         public ICollection<ProcessoTramitacao> ListarTudo()
         {
             return contexto.ProcessoTramitacao.Where(a => a.Status == true).Include(a => a.Processo).Include(a => a.Processo.StatusProcesso).ToList();
@@ -101,7 +102,7 @@ namespace SigProc.infra.dados.Repositorios
                     trans.Commit();
 
                 }
-                Log.ForContext("Acao", $"AtualizaPazo").Warning($"Prazos atualizado com sucesso");
+                Log.ForContext("Acao", $"AtualizaPazo").Information($"Prazos atualizado com sucesso");
             }
             catch (Exception ex)
             {

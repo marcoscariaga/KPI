@@ -27,7 +27,7 @@ namespace SigProc.Aplicacao.Mapeamentos
             CreateMap<GerenciaUsuarioModelo, GerenciaUsuario>();
             CreateMap<GerenciaPrazoUpdateModelo, GerenciaPrazo>();
             CreateMap<ProcessoModelo, Processo>();
-            CreateMap<ProcessoTramitacaoModelo, ProcessoTramitacao>();
+            CreateMap<MensagemModelo, Mensagem>();
             CreateMap<TipoContratacaoModelo, TipoContratacao>();
             CreateMap<TipoProcessoModelo, TipoProcesso>();
             CreateMap<EtapaProcessoModelo, EtapaProcesso>();

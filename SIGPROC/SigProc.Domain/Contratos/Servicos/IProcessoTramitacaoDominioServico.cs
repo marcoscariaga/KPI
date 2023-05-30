@@ -11,7 +11,9 @@ namespace SigProc.Dominio.Contratos.Servicos
         ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso);
         ICollection<ProcessoTramitacao> BuscarTramitacoesPorNumeroProcesso(string numeroProcesso);
         ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia);
-        ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario);
+        ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario); 
         ProcessoTramitacao SalvarMensagem(ProcessoTramitacao processoTramitacao);
+        ProcessoTramitacao AtualizaTramitacao(ProcessoTramitacao processoTramitacao);
+        ProcessoTramitacao AtualizaTramitacoesEtapaProcesso(ProcessoTramitacao processoTramitacao);
     }
 }

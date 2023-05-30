@@ -36,8 +36,8 @@ namespace SigProc.Aplicacao.Servicos
                 // Calcula o tempo restante até a hora de início
                 var timeToStart = startDateTime - DateTime.Now;
 
-                _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromDays(1));
-               
+                _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromHours(5));
+
             }
             return Task.CompletedTask;
         }

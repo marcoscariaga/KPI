@@ -16,12 +16,12 @@ namespace SigProc.Dominio.Entidades
         public int? IdOrgaoDestino { get; set; }
        // public int? IdDespacho { get; set; }
         public int IdProcesso { get; set; }
+        public int? IdMensagem { get; set; }
 
         public string? MatriculaRecebedor { get; set; }
         public string? MatriculaDigitador { get; set; }
         public string NumeroProcesso { get; set; }
         public string? Despacho { get; set; }
-        public string? Mensagem { get; set; }
 
         public int Prazo { get; set; }
         public int? TempoPrazo { get; set; }
@@ -45,6 +45,6 @@ namespace SigProc.Dominio.Entidades
         public virtual Processo Processo { get; set; }
         public virtual Gerencia GerenciaOrigem { get; set; }
         public virtual Gerencia GerenciaDestino { get; set; }
-       // public virtual Despacho Despacho { get; set; }
+        public virtual Mensagem Mensagem { get; set; }
     }
 }

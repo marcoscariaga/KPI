@@ -31,7 +31,7 @@ namespace SigProc.Aplicacao.Servicos
                 new TimeSpan(17, 00, 0), // 17:00
                 new TimeSpan(21, 0, 0), // 21:00
                 new TimeSpan(03, 30, 0), // 03:30
-                new TimeSpan(06, 30, 0), // 06:00
+                new TimeSpan(09, 16, 0), // 06:00
             };
 
             foreach (var horario in horarios)
@@ -47,7 +47,7 @@ namespace SigProc.Aplicacao.Servicos
                 // Calcula o tempo restante até a hora de início
                 var timeToStart = startDateTime - DateTime.Now;
 
-                _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromDays(1));
+                _timer = new Timer(Registrar, null, timeToStart, TimeSpan.FromHours(4));
 
             }
             return Task.CompletedTask;
@@ -72,7 +72,7 @@ namespace SigProc.Aplicacao.Servicos
                             NumeroProcesso = processo.NumProcesso,
                             IdProcesso = processo.Id
                         };
-                        processoTramitacaoServico.Atualizar(tramitacao);
+                        processoTramitacaoServico.AtualizaTramitacao(tramitacao);
                     }
                     Log.ForContext("Acao", $"RotinaTramitacao").Information($"Rotina das tramitações concluída com sucesso.");
                 }

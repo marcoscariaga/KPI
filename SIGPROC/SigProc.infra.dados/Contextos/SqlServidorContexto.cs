@@ -32,6 +32,7 @@ namespace SigProc.infra.dados.Contextos
         public DbSet<TipoUsuarioGerencia> TipoUsuarioGerencia { get; set; }
         public DbSet<Feriado> Feriado { get; set; }
         public DbSet<Despacho> Despacho { get; set; }
+        public DbSet<Mensagem> Mensagem { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,6 +52,7 @@ namespace SigProc.infra.dados.Contextos
             modelBuilder.ApplyConfiguration(new FeriadoMap());
             modelBuilder.ApplyConfiguration(new DespachoMap());
             modelBuilder.ApplyConfiguration(new EtapaProcessoMap());
+            modelBuilder.ApplyConfiguration(new MensagemMap());
         }
     }
 }

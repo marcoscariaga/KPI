@@ -15,41 +15,12 @@ namespace SigProc.Servico.Controladores
     {
         private readonly IProcessoTramitacaoServico _processoTramitacaoServico;
         private IMapper _mapper;
-
-        public ProcessoTramitacoesController(IProcessoTramitacaoServico processoTramitacaoServico, IMapper mapper)
+        private readonly IGerenciaPrazoServico _gerenciaPrazoServico;
+        public ProcessoTramitacoesController(IProcessoTramitacaoServico processoTramitacaoServico, IMapper mapper, IGerenciaPrazoServico gerenciaPrazoServico)
         {
             _processoTramitacaoServico = processoTramitacaoServico;
             _mapper = mapper;
-        }
-     
-        [HttpPost("CadastrarMensagem")]
-        public IActionResult CadastrarMensagem([FromBody] ProcessoTramitacaoModelo processoTramitacao)
-        {
-            
-            try
-            {
-                var tramitacao = _processoTramitacaoServico.RetornaPorId(processoTramitacao.IdTramitacao);
-                if (processoTramitacao == null)
-                    return NoContent();
-                tramitacao.Mensagem = processoTramitacao.Mensagem;
-                _processoTramitacaoServico.SalvarMensagem(tramitacao);
-                return StatusCode(201, new { mensagem = "Mensagem cadastrada com sucesso!" });
-            }
-            catch (ValidationException ex)
-            {
-               
-                return StatusCode(400, new { ex.Errors, mensagem = "Erro ao cadastrar mensagem!" });
-            }
-            catch (ArgumentException ex)
-            {
-              
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar mensagem!" });
-            }
-            catch (Exception ex)
-            {
-               
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar mensagem!" });
-            }
+            _gerenciaPrazoServico = gerenciaPrazoServico;
         }
         /*
      [HttpPut("Editar")]
@@ -225,7 +196,33 @@ namespace SigProc.Servico.Controladores
                 var processoTramitacao = _processoTramitacaoServico.BuscarTramitacoesPorNumeroProcesso(numeroProcesso).FirstOrDefault();
 
 
-                return StatusCode(200, _processoTramitacaoServico.Atualizar(processoTramitacao)); ;
+                return StatusCode(200, _processoTramitacaoServico.AtualizaTramitacao(processoTramitacao)); 
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = $"Erro ao buscar tramitacao!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar tramitacao!" });
+            }
+        }
+
+        [HttpPost("AtualizaTramitacoesEtapaProcesso")]
+        public IActionResult AtualizaTramitacoesEtapaProcesso(TramitacaoEtapaProcesso tramitacaoEtapa)
+        {
+            try
+            {
+                var processoTramitacao = _gerenciaPrazoServico.ListarAtivos().FirstOrDefault(x=>x.IdEtapaProcesso.Equals(tramitacaoEtapa.IdEtapa) && x.IdGerencia.Equals(tramitacaoEtapa.IdOrgaoDestino));
+                var tramitação = _processoTramitacaoServico.RetornaPorId(tramitacaoEtapa.IdTramitacao);
+                tramitação.Prazo = processoTramitacao.Prazo;
+                if (processoTramitacao == null)
+                {
+                    return NoContent();
+                }
+
+                return StatusCode(200, _processoTramitacaoServico.AtualizaTramitacoesEtapaProcesso(tramitação)); 
             }
             catch (ArgumentException ex)
             {

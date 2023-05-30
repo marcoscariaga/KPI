@@ -18,10 +18,12 @@ namespace SisAgenda.Servico.Controladores
     {
         private readonly IEtapaProcessoServico _etapaProcessoServico;
         private IMapper _mapper;
-        public EtapaController(IEtapaProcessoServico etapaProcessoServico, IMapper mapper)
+        private readonly IGerenciaPrazoServico _gerenciaPrazoServico;
+        public EtapaController(IEtapaProcessoServico etapaProcessoServico, IMapper mapper, IGerenciaPrazoServico gerenciaPrazoServico)
         {
             _etapaProcessoServico = etapaProcessoServico;
             _mapper = mapper;
+            _gerenciaPrazoServico = gerenciaPrazoServico;
         }
 
         // ***************** ETAPA PROCESSO *****************
@@ -127,146 +129,27 @@ namespace SisAgenda.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar a etapa do Processo!" });
             }
         }
+        [HttpGet("ConsultarEtapaProcessoPorGerencia/{id}")]
+        public IActionResult ConsultarEtapaProcessoPorGerencia(int id)
+        {
+            try
+            {
+                var etapaProcessoConsultar = _gerenciaPrazoServico.ListarAtivos().Where(x => x.IdGerencia == id && x.IdEtapaProcesso != null).ToList(); 
+                if (etapaProcessoConsultar.Count == 0)
+                    return NoContent();
+                return StatusCode(200, etapaProcessoConsultar);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar a etapa do Processo!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar a etapa Processo!" });
+            }
+        }
+       
     }
 }
-
-
-
-/* using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
-using AutoMapper;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Authorization;
-using SigProc.Dominio.Entidades;
-using SigProc.Aplicacao.Contratos;
-using SigProc.Aplicacao.Modelos;
-using SigProc.Aplicacao.Servicos;
-
-namespace SisAgenda.Servico.Controladores
-{
-    //[Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EtapasController : ControllerBase
-    {
-        private readonly IEtapasServico _etapasServico;
-        private IMapper _mapper;
-        public EtapasController(IEtapasServico etapasServico, IMapper mapper)
-        {
-            _etapasServico = etapasServico;
-            _mapper = mapper;
-        }
-
-        [HttpPost("Cadastrar")]
-        public IActionResult Post([FromBody] EtapasModelo etapas)
-        {
-            //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
-            try
-            {
-
-                var cadastro = _etapasServico.Inserir(_mapper.Map<EtapasController>(etapas));
-
-                //Log.ForContext("Action", $"CadastrarU").Information($"O usuário: {sUsuario}, cadastrou o usuário: {usuario.Nome}.");
-                return StatusCode(201, new { cadastro, mensagem = "Etapas cadastrada com sucesso!" });
-            }
-            catch (ValidationException ex)
-            {
-                //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
-                return StatusCode(400, new { ex.Errors, mensagem = "Erro ao cadastrar etapas!" });
-            }
-            catch (ArgumentException ex)
-            {
-                //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar etapas!" });
-            }
-            catch (Exception ex)
-            {
-                //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar etapas!" });
-            }
-        }
-
-        [HttpPut("Editar")]
-        public IActionResult Editar([FromBody] EtapasController etapas)
-        {
-            try
-            {
-                var contato = _etapasServico.Atualizar(etapas);
-                return StatusCode(200, new { contato, mensagem = "Etapa editada com sucesso!" });
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao editar etapas!" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao editar etapas!" });
-            }
-        }
-
-        [HttpDelete("Excluir/{id}")]
-        public IActionResult Delete(int id)
-        {
-            try
-            {
-                var contato = _etapasServico.Excluir(id);
-                return StatusCode(200, new { contato, mensagem = "Etapa inativada com sucesso!" });
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao inativar etapa!" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao inativar etapa!" });
-            }
-        }
-
-        [HttpGet("Consultar")]
-        public IActionResult ListarTudo()
-        {
-            try
-            {
-                var etapas = _etapasServico.ListarTudo();
-                if (etapas.Count == 0)
-                    return NoContent();
-
-                return StatusCode(200, etapas);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar etapas!" });
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar etapas!" });
-            }
-        }
-        [HttpGet("BuscarPorID/{id}")]
-        public IActionResult GetById(int id)
-        {
-            try
-            {
-                var etapas = _etapasServico.RetornaPorId(id);
-                if (etapas == null)
-                    return NoContent();
-
-                return StatusCode(200, etapas);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar etapa!" });
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar etapa!" });
-            }
-        }
-    }
-}
-*/
 
 
