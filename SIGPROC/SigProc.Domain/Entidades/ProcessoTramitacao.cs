@@ -14,7 +14,7 @@ namespace SigProc.Dominio.Entidades
     {
         public int? IdOrgaoOrigem { get; set; }
         public int? IdOrgaoDestino { get; set; }
-       // public int? IdDespacho { get; set; }
+        public int? IdEtapaProcesso { get; set; }
         public int IdProcesso { get; set; }
         public int? IdMensagem { get; set; }
 
@@ -46,5 +46,6 @@ namespace SigProc.Dominio.Entidades
         public virtual Gerencia GerenciaOrigem { get; set; }
         public virtual Gerencia GerenciaDestino { get; set; }
         public virtual Mensagem Mensagem { get; set; }
+        public virtual EtapaProcesso EtapaProcesso { get; set; }
     }
 }

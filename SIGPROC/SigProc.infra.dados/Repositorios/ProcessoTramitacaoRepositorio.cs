@@ -28,11 +28,11 @@ namespace SigProc.infra.dados.Repositorios
 
         public ICollection<ProcessoTramitacao> ListarTudo()
         {
-            return contexto.ProcessoTramitacao.Where(a => a.Status == true).Include(a => a.Processo).Include(a => a.Processo.StatusProcesso).ToList();
+            return contexto.ProcessoTramitacao.Where(a => a.Status == true).Include(a => a.Processo).Include(a => a.Processo.StatusProcesso).Include(a => a.EtapaProcesso).ToList();
         }
         public ICollection<ProcessoTramitacao> ListarAtivos()
         {
-            return contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).Include(a => a.Processo).Include(a => a.Processo.StatusProcesso).Include(x => x.GerenciaDestino).Include(a => a.GerenciaOrigem).ToList();
+            return contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).Include(a => a.Processo).Include(a => a.Processo.StatusProcesso).Include(x => x.GerenciaDestino).Include(a => a.GerenciaOrigem).Include(a => a.EtapaProcesso).ToList();
         }
 
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
@@ -41,6 +41,7 @@ namespace SigProc.infra.dados.Repositorios
                             .OrderByDescending(x => x.DataCriacao)
                             .Include(a => a.GerenciaOrigem)
                             .Include(a => a.GerenciaDestino)
+                            .Include(a => a.EtapaProcesso)
                             .AsNoTracking()
                             .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso));
         }
@@ -53,12 +54,13 @@ namespace SigProc.infra.dados.Repositorios
                 .Include(a => a.GerenciaDestino)
                 .Include(a => a.Processo)
                 .Include(a => a.Processo.StatusProcesso)
+                .Include(a => a.EtapaProcesso)
                 .AsNoTracking().ToList();
         }
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia)
         {
             var ultimasTramitacoes = contexto.ProcessoTramitacao
-          .Include(pt => pt.Processo).Include(a => a.Processo.StatusProcesso)
+          .Include(pt => pt.Processo).Include(a => a.Processo.StatusProcesso).Include(a => a.EtapaProcesso)
               .Where(pt => pt.IdOrgaoDestino == idGerencia && pt.DataEnvio.Equals(null))
               .GroupBy(pt => pt.IdProcesso)
               .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
@@ -69,7 +71,7 @@ namespace SigProc.infra.dados.Repositorios
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
         {
             var ultimasTramitacoes = contexto.ProcessoTramitacao
-          .Include(pt => pt.Processo).Include(a => a.Processo.StatusProcesso).Include(x => x.GerenciaOrigem).Include(x => x.GerenciaDestino)
+          .Include(pt => pt.Processo).Include(a => a.Processo.StatusProcesso).Include(x => x.GerenciaOrigem).Include(x => x.GerenciaDestino).Include(a => a.EtapaProcesso)
               .Where(pt => pt.DataEnvio.Equals(null))
           .ToList();
 

@@ -35,6 +35,10 @@ namespace SigProc.infra.dados.Mapeamentos
                  .WithMany()
                  .HasForeignKey(c => c.IdMensagem);
 
+            builder.HasOne<EtapaProcesso>(c => c.EtapaProcesso)
+               .WithMany()
+               .HasForeignKey(c => c.IdEtapaProcesso);
+
             builder.Property(c => c.MatriculaDigitador);
             builder.Property(c => c.NumeroProcesso);
             builder.Property(c => c.Despacho);

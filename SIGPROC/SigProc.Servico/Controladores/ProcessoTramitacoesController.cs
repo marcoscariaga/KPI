@@ -217,6 +217,7 @@ namespace SigProc.Servico.Controladores
                 var processoTramitacao = _gerenciaPrazoServico.ListarAtivos().FirstOrDefault(x=>x.IdEtapaProcesso.Equals(tramitacaoEtapa.IdEtapa) && x.IdGerencia.Equals(tramitacaoEtapa.IdOrgaoDestino));
                 var tramitação = _processoTramitacaoServico.RetornaPorId(tramitacaoEtapa.IdTramitacao);
                 tramitação.Prazo = processoTramitacao.Prazo;
+                tramitação.IdEtapaProcesso = tramitacaoEtapa.IdEtapa;
                 if (processoTramitacao == null)
                 {
                     return NoContent();
