@@ -16,7 +16,7 @@ namespace SigProc.Aplicacao.Modelos
         public int IdGerencia { get; set; }
         public int? IdProcesso { get; set; }
         public int IdUsuario { get; set; }
-        public int? IdStatusProcesso { get; set; }
+        public string? StatusProcesso { get; set; }
 
     }
 

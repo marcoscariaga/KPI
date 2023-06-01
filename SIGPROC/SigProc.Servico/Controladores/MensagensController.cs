@@ -7,6 +7,7 @@ using FluentValidation;
 using SigProc.Aplicacao.Servicos;
 using SigProc.Domain.Entidades;
 using SigProc.Domimio.Entidades;
+using SigProc.infra.dados.Mapeamentos;
 
 namespace SigProc.Servico.Controladores
 {
@@ -16,13 +17,17 @@ namespace SigProc.Servico.Controladores
     {
         private readonly IProcessoTramitacaoServico _processoTramitacaoServico;
         private readonly IMensagemServico _mensagemServico;
+        private readonly IStatusProcessoServico _statusServico;
+        private readonly IProcessoServico _processoServico;
         private IMapper _mapper;
 
-        public MensagensController(IProcessoTramitacaoServico processoTramitacaoServico, IMensagemServico mensagemServico, IMapper mapper)
+        public MensagensController(IProcessoTramitacaoServico processoTramitacaoServico, IMensagemServico mensagemServico, IMapper mapper, IStatusProcessoServico statusServico, IProcessoServico processoServico)
         {
             _processoTramitacaoServico = processoTramitacaoServico;
             _mensagemServico = mensagemServico;
             _mapper = mapper;
+            _statusServico = statusServico;
+            _processoServico = processoServico;
         }
         [HttpPost("CadastrarMensagemTramitacao")]
         public IActionResult CadastrarMensagemTramitacao([FromBody] MensagemModelo mensagem)
@@ -72,6 +77,43 @@ namespace SigProc.Servico.Controladores
                 var mensagem = _mensagemServico.BuscarMensagemPorIdProcesso(id);
 
                 return StatusCode(200, mensagem);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar mensagem!" });
+            }
+        }
+        [HttpPost("CadastrarStatusCancelamentoEncerramento")]
+        public IActionResult CadastrarStatusCancelamentoEncerramento([FromBody] MensagemModelo mensagem)
+        {
+            try
+            {
+                if (mensagem.Descricao != null)
+                {
+                    var status = _statusServico.ListarTudo().Where(x => x.Descricao.Equals(mensagem.StatusProcesso)).FirstOrDefault();
+                    var processo = _processoServico.RetornaPorId((int)mensagem.IdProcesso);
+                    processo.IdStatusProcesso = status.Id;
+
+                    Mensagem mensagemCad = new Mensagem
+                    {
+                        IdTramitacao = mensagem.IdTramitacao,
+                        Descricao = mensagem.Descricao,
+                        IdGerencia = mensagem.IdGerencia,
+                        IdProcesso = mensagem.IdProcesso,
+                        IdUsuario = mensagem.IdUsuario,
+                        IdStatusProcesso = status.Id
+                    };
+                    _mensagemServico.Inserir(mensagemCad);
+
+                    return StatusCode(200, mensagemCad);
+                }
+                else {
+                    return Ok(new { mensagem = "Informe uma mensagem para mudança de status!" });
+                }
+               
+
+                return StatusCode(200);
             }
             catch (Exception ex)
             {
