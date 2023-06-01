@@ -30,5 +30,10 @@ namespace SigProc.Domimio.Servicos
         {
             return _repositorio.BuscarMensagemPorIdTramitacao(idTramitacao);
         }
+
+        public Mensagem BuscarUltimaMensagemPorIdProcesso(int id)
+        {
+            return _repositorio.BuscarUltimaMensagemPorIdProcesso(id);
+        }
     }
 }

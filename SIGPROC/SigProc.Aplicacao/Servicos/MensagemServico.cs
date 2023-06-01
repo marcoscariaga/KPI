@@ -28,5 +28,11 @@ namespace SigProc.Aplicacao.Servicos
         {
             return _mensagemDomainService.BuscarMensagemPorIdTramitacao(idTramitacao);
         }
+
+        public Mensagem BuscarUltimaMensagemPorIdProcesso(int id)
+        {
+            return _mensagemDomainService.BuscarUltimaMensagemPorIdProcesso(id);
+        }
+
     }
 }

@@ -32,5 +32,16 @@ namespace SigProc.infra.dados.Repositorios
             return contexto.Mensagem.Where(a => a.IdTramitacao.Equals(idTramitacao)).Include(x => x.Gerencia).Include(x => x.Usuario).ToList();
 
         }
+
+        public Mensagem BuscarUltimaMensagemPorIdProcesso(int id)
+        {
+            return contexto.Mensagem
+                .Where(a => a.IdProcesso.Equals(id))
+                .Include(x => x.Gerencia)
+                .Include(x => x.ProcessoTramitacao)
+                .Include(x => x.ProcessoTramitacao.EtapaProcesso)
+                .OrderByDescending(x => x.DataCriacao)
+                .FirstOrDefault();
+        }
     }
 }

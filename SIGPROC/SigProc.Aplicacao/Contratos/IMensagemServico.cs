@@ -1,4 +1,5 @@
 ﻿using SigProc.Domain.Contratos.Servicos;
+using SigProc.Domain.Entidades;
 using SigProc.Domimio.Entidades;
 using SigProc.Dominio.Entidades;
 using System;
@@ -13,5 +14,6 @@ namespace SigProc.Aplicacao.Contratos
     {
         ICollection<Mensagem> BuscarMensagemPorIdTramitacao(int idTramitacao);
         ICollection<Mensagem> BuscarMensagemPorIdProcesso(int idProcesso);
+        Mensagem BuscarUltimaMensagemPorIdProcesso(int id);
     }
 }

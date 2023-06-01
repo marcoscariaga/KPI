@@ -13,5 +13,6 @@ namespace SigProc.Domimio.Contratos.Servicos
     {
         ICollection<Mensagem> BuscarMensagemPorIdTramitacao(int idTramitacao);
         ICollection<Mensagem> BuscarMensagemPorIdProcesso(int idProcesso);
+        public Mensagem BuscarUltimaMensagemPorIdProcesso(int id);
     }
 }
