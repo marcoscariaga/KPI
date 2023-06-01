@@ -42,6 +42,8 @@ namespace SigProc.infra.dados.Repositorios
                             .Include(a => a.GerenciaOrigem)
                             .Include(a => a.GerenciaDestino)
                             .Include(a => a.EtapaProcesso)
+                            .Include(a => a.Processo)
+                            .Include(a => a.Processo.StatusProcesso)
                             .AsNoTracking()
                             .FirstOrDefault(x => x.NumeroProcesso.Equals(numeroProcesso));
         }
