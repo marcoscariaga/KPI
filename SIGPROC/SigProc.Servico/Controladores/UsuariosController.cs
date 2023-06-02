@@ -96,12 +96,12 @@ namespace SigProc.Servico.Controllers
             }
             catch (ArgumentException ex)
             {
-                Log.ForContext("Acao", $"Usuarios.Consultar").Information($"Acessado pelo usuário: {User.Identity.Name}. erro: {ex.Message}");
+                Log.ForContext("Acao", $"Usuarios.Consultar").Warning($"Acessado pelo usuário: {User.Identity.Name}. erro: {ex.Message}");
                 return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
             }
             catch (Exception ex)
             {
-                Log.ForContext("Acao", $"Usuarios.Consultar").Information($"Acessado pelo usuário: {User.Identity.Name}. erro: {ex.Message}");
+                Log.ForContext("Acao", $"Usuarios.Consultar").Warning($"Acessado pelo usuário: {User.Identity.Name}. erro: {ex.Message}");
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar usuário!" });
             }
         }
