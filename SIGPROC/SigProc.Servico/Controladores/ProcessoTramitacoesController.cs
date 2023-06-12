@@ -22,66 +22,61 @@ namespace SigProc.Servico.Controladores
             _mapper = mapper;
             _gerenciaPrazoServico = gerenciaPrazoServico;
         }
-        /*
-     [HttpPut("Editar")]
-     public IActionResult Editar([FromBody] ProcessoTramitacao processoTramitacao)
-     {
-         try
-         {
-             var contato = _processoTramitacaoServico.Atualizar(processoTramitacao);
-             return StatusCode(200, new { contato, mensagem = "Tramitacao editada com sucesso!" });
-         }
-         catch (ArgumentException ex)
-         {
-             return StatusCode(400, new { ex.Message, mensagem = "Erro ao editar tramitacao!" });
-         }
-         catch (Exception ex)
-         {
-             return StatusCode(500, new { ex.Message, mensagem = "Erro ao editar tramitacao!" });
-         }
-     }
-
-     [HttpDelete("Excluir/{id}")]
-     public IActionResult Delete(int id)
-     {
-         try
-         {
-             var contato = _processoTramitacaoServico.Excluir(id);
-             return StatusCode(200, new { contato, mensagem = "Tramitacao inativado com sucesso!" });
-         }
-         catch (ArgumentException ex)
-         {
-             return StatusCode(400, new { ex.Message, mensagem = "Erro ao inativar tramitacao!" });
-         }
-         catch (Exception ex)
-         {
-             return StatusCode(500, new { ex.Message, mensagem = "Erro ao inativar tramitacao!" });
-         }
-     }
-
-     [HttpGet("Consultar")]
-     public IActionResult ListarTudo()
-     {
-         try
-         {
-             var processoTramitacao = _processoTramitacaoServico.ListarAtivos();
-             if (processoTramitacao.Count == 0)
-                 return NoContent();
-
-             return StatusCode(200, processoTramitacao);
-         }
-         catch (ArgumentException ex)
-         {
-             return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar tramitacao!" });
-         }
-         catch (Exception ex)
-         {
-
-             return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar tramitacao!" });
-         }
-     }
-     */
-
+/*
+    [HttpPut("Editar")]
+    public IActionResult Editar([FromBody] ProcessoTramitacao processoTramitacao)
+        {
+            try
+        {
+            var contato = _processoTramitacaoServico.Atualizar(processoTramitacao);
+            return StatusCode(200, new { contato, mensagem = "Tramitacao editada com sucesso!" });
+        }
+            catch (ArgumentException ex)
+        {
+            return StatusCode(400, new { ex.Message, mensagem = "Erro ao editar tramitacao!" });
+        }
+            catch (Exception ex)
+        {
+            return StatusCode(500, new { ex.Message, mensagem = "Erro ao editar tramitacao!" });
+        }
+    }
+    [HttpDelete("Excluir/{id}")]
+    public IActionResult Delete(int id)
+    {
+        try
+    {
+        var contato = _processoTramitacaoServico.Excluir(id);
+        return StatusCode(200, new { contato, mensagem = "Tramitacao inativado com sucesso!" });
+    }
+        catch (ArgumentException ex)
+    {
+        return StatusCode(400, new { ex.Message, mensagem = "Erro ao inativar tramitacao!" });
+    }
+        catch (Exception ex)
+    {
+        return StatusCode(500, new { ex.Message, mensagem = "Erro ao inativar tramitacao!" });
+    }
+    }
+    [HttpGet("Consultar")]
+    public IActionResult ListarTudo()
+    {
+        try
+    {
+        var processoTramitacao = _processoTramitacaoServico.ListarAtivos();
+        if (processoTramitacao.Count == 0)
+        return NoContent();
+        return StatusCode(200, processoTramitacao);
+    }
+        catch (ArgumentException ex)
+    {
+        return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar tramitacao!" });
+    }
+        catch (Exception ex)
+    {
+        return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar tramitacao!" });
+    }
+    }
+*/
         [HttpGet("BuscarPorID/{id}")]
         public IActionResult GetById(int id)
         {

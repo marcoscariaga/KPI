@@ -8,10 +8,10 @@
                     s => s.AddPolicy("DefaultPolicy", builder =>
                     {
                         builder.AllowAnyOrigin() //qualquer dominio
-                               .AllowAnyMethod() //qualquer método (POST, PUT, DELETE, GET...)
-                               .AllowAnyHeader(); //qualquer parametro de cabeçalho
+                                .AllowAnyMethod() //qualquer método (POST, PUT, DELETE, GET...)
+                                .AllowAnyHeader(); //qualquer parametro de cabeçalho
                     }
-                        )
+                    )
                 );
         }
         public static void UseCorsSetup(WebApplication app)

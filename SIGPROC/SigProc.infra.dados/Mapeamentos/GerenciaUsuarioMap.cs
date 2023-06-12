@@ -17,28 +17,28 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.HasKey(c => c.Id);
 
             builder.HasOne<Gerencia>(c => c.Gerencia)
-               .WithMany()
-               .HasForeignKey(c => c.IdGerencia)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.NoAction);
+                .WithMany()
+                .HasForeignKey(c => c.IdGerencia)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne<TipoUsuarioGerencia>(c => c.TipoUsuarioGerencia)
-               .WithMany()
-               .HasForeignKey(c => c.IdTipoUsuarioGerencia)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.NoAction);
+                .WithMany()
+                .HasForeignKey(c => c.IdTipoUsuarioGerencia)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne<Usuario>(c => c.UsuarioGerencia)
-               .WithMany()
-               .HasForeignKey(c => c.IdUsuarioGerencia)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.NoAction);
+                .WithMany()
+                .HasForeignKey(c => c.IdUsuarioGerencia)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne<Usuario>(c => c.UsuarioCadastro)
-               .WithMany()
-               .HasForeignKey(c => c.IdUsuarioCadastro)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.NoAction);
+                .WithMany()
+                .HasForeignKey(c => c.IdUsuarioCadastro)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
 
 
             builder.Property(c => c.Status).IsRequired();

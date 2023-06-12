@@ -30,7 +30,7 @@ namespace SigProc.infra.dados.Repositorios
         {
             var processo = contexto.Processo.Where(a => a.Status == true).ToList();
 
-           // var lista = new List<Processo>();
+        // var lista = new List<Processo>();
             //foreach (var item in processo)
             //{
             //    var gerenciaOrigem = contexto.ProcessoTramitacao.OrderByDescending(x => x.DataCriacao).Include(a => a.GerenciaOrigem).AsNoTracking()
@@ -53,20 +53,20 @@ namespace SigProc.infra.dados.Repositorios
         public ICollection<Processo> ListarTudo()
         {
             var lista = contexto.Processo
-                     .Where(a => a.Status)
-                     .Select(item => new Processo
-                     {
-                         Id = item.Id,
-                         NumProcesso = item.NumProcesso,
-                         Requerente = item.Requerente,
-                         Assunto = item.Assunto,
-                         OrgaoOrigem = contexto.ProcessoTramitacao
+                .Where(a => a.Status)
+                .Select(item => new Processo
+                {
+                    Id = item.Id,
+                    NumProcesso = item.NumProcesso,
+                    Requerente = item.Requerente,
+                    Assunto = item.Assunto,
+                    OrgaoOrigem = contexto.ProcessoTramitacao
             .Where(pt => pt.NumeroProcesso.Equals(item.NumProcesso))
             .OrderByDescending(pt => pt.DataCriacao)
-             .Select(pt => string.Concat(pt.GerenciaDestino.Descricao, " - ", pt.GerenciaDestino.Sigla))
-                             .FirstOrDefault()
-                     })
-                     .ToList();
+            .Select(pt => string.Concat(pt.GerenciaDestino.Descricao, " - ", pt.GerenciaDestino.Sigla))
+            .FirstOrDefault()
+            })
+            .ToList();
 
             return lista;
         }

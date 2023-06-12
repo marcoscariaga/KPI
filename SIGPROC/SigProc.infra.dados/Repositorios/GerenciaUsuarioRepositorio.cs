@@ -40,14 +40,14 @@ namespace SigProc.infra.dados.Repositorios
             .Where(x => x.IdUsuarioGerencia == idUsuario)
             .Join(contexto.ProcessoTramitacao
                     .Where(pt => pt.DataEnvio == null),
-                  gu => gu.IdGerencia,
-                  pt => pt.IdOrgaoDestino,
-                  (gu, pt) => new { GerenciaUsuario = gu, ProcessoTramitacao = pt })
+                gu => gu.IdGerencia,
+                pt => pt.IdOrgaoDestino,
+                (gu, pt) => new { GerenciaUsuario = gu, ProcessoTramitacao = pt })
             .GroupBy(x => x.GerenciaUsuario.IdGerencia)
             .Select(x => x.FirstOrDefault())
             .ToList();
 
-           var lista = new List<GerenciaUsuario>();
+        var lista = new List<GerenciaUsuario>();
             foreach (var item in resultado)
             {
                 var model = new GerenciaUsuario();

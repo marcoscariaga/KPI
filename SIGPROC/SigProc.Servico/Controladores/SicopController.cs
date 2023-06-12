@@ -188,7 +188,7 @@ namespace SigProc.Servico.Controladores
             //if (tramitacao.StatusLine == "Consulta efetuada. Tecle (ENTER) p/mais Informacoes.") ;
             //return Ok(_appSicopTramitacao.Inserir(tramitacao));
             
-           // var teste = _appProcessoTramitacao.Testando(tramitacao);
+            // var teste = _appProcessoTramitacao.Testando(tramitacao);
 
             return Ok(tramitacao);
         }

@@ -26,14 +26,14 @@ namespace SigProc.Infra.Seguranca.Servico
             {
                 //criando a identificação do usuario para o AspNet
                 Subject = new ClaimsIdentity(new Claim[]
-             {
+            {
                 new Claim(ClaimTypes.Name, username) //nome do usuario
-             }),
+            }),
                 //definindo a data de expiração do Token
                 Expires = DateTime.UtcNow.AddHours(12),
                 //criptografia do Token a chave secreta (evitar falsificação)
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-             SecurityAlgorithms.HmacSha256Signature)
+            SecurityAlgorithms.HmacSha256Signature)
             };
             //retornando o TOKEN
             var token = tokenHandler.CreateToken(tokenDescription);

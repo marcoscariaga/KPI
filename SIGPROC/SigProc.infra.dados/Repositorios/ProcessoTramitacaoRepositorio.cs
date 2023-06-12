@@ -25,7 +25,6 @@ namespace SigProc.infra.dados.Repositorios
         {
             contexto = sqlServerContext;
         }
-
         public ICollection<ProcessoTramitacao> ListarTudo()
         {
             return contexto.ProcessoTramitacao.Where(a => a.Status == true).Include(a => a.Processo).Include(a => a.Processo.StatusProcesso).Include(a => a.EtapaProcesso).ToList();
@@ -34,7 +33,6 @@ namespace SigProc.infra.dados.Repositorios
         {
             return contexto.ProcessoTramitacao.Where(a => a.Status == true && a.DataEnvio == null).Include(a => a.Processo).Include(a => a.Processo.StatusProcesso).Include(x => x.GerenciaDestino).Include(a => a.GerenciaOrigem).Include(a => a.EtapaProcesso).ToList();
         }
-
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
         {
             return contexto.ProcessoTramitacao
@@ -62,20 +60,19 @@ namespace SigProc.infra.dados.Repositorios
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorIdGerenciaAtual(int idGerencia)
         {
             var ultimasTramitacoes = contexto.ProcessoTramitacao
-          .Include(pt => pt.Processo).Include(a => a.Processo.StatusProcesso).Include(a => a.EtapaProcesso)
-              .Where(pt => pt.IdOrgaoDestino == idGerencia && pt.DataEnvio.Equals(null))
-              .GroupBy(pt => pt.IdProcesso)
-              .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
-          .ToList();
-
+        .Include(pt => pt.Processo).Include(a => a.Processo.StatusProcesso).Include(a => a.EtapaProcesso)
+        .Where(pt => pt.IdOrgaoDestino == idGerencia && pt.DataEnvio.Equals(null))
+        .GroupBy(pt => pt.IdProcesso)
+        .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
+        .ToList();
             return ultimasTramitacoes;
         }
         public ICollection<ProcessoTramitacao> BuscarUltimaTramitacaoPorUsuarioGerencial(int idUsuario)
         {
             var ultimasTramitacoes = contexto.ProcessoTramitacao
-          .Include(pt => pt.Processo).Include(a => a.Processo.StatusProcesso).Include(x => x.GerenciaOrigem).Include(x => x.GerenciaDestino).Include(a => a.EtapaProcesso)
-              .Where(pt => pt.DataEnvio.Equals(null))
-          .ToList();
+        .Include(pt => pt.Processo).Include(a => a.Processo.StatusProcesso).Include(x => x.GerenciaOrigem).Include(x => x.GerenciaDestino).Include(a => a.EtapaProcesso)
+        .Where(pt => pt.DataEnvio.Equals(null))
+        .ToList();
 
             return ultimasTramitacoes;
         }
@@ -133,7 +130,7 @@ namespace SigProc.infra.dados.Repositorios
                 {
                     if (data.DayOfWeek != DayOfWeek.Saturday && data.DayOfWeek != DayOfWeek.Sunday && !datasFeriados.Contains(data.Date))
                     {
-                        diasUteisAtraso++;
+                    diasUteisAtraso++;
                     }
                 }
             }
@@ -147,7 +144,7 @@ namespace SigProc.infra.dados.Repositorios
                     DateTime data = dataAtual.AddDays(i);
                     if (data.DayOfWeek != DayOfWeek.Saturday && data.DayOfWeek != DayOfWeek.Sunday && !datasFeriados.Contains(data.Date))
                     {
-                        diasUteisRestantes++;
+                    diasUteisRestantes++;
                     }
                 }
             }

@@ -22,8 +22,8 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.Property(c => c.Telefone);
             builder.Property(c => c.Prazo);
             builder.HasOne<Usuario>(c => c.Usuario)
-               .WithMany()
-               .HasForeignKey(c => c.IdUsuarioResp).OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(c => c.IdUsuarioResp).OnDelete(DeleteBehavior.Restrict);
             builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.DataCriacao);
             builder.Property(c => c.DataExclusao);

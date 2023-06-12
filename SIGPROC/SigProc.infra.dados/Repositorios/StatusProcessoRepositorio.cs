@@ -16,12 +16,10 @@ namespace SigProc.infra.dados.Repositorios
     public class StatusProcessoRepositorio : BaseRepositorio<StatusProcesso>, IStatusProcessoRepositorio
     {
         private readonly SqlServidorContexto contexto;
-
         public StatusProcessoRepositorio(SqlServidorContexto sqlServerContext) : base(sqlServerContext)
         {
             contexto = sqlServerContext;
         }
-
         public ICollection<StatusProcesso> ListarAtivos()
         {
             return contexto.StatusProcesso.Where(a => a.Status == true).ToList();

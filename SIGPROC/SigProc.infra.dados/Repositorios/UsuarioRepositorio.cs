@@ -21,12 +21,12 @@ namespace SigProc.infra.dados.Repositorios
         }
         public Usuario BuscarPorCpf(string cpf)
             => contexto.Usuario
-                 .AsNoTracking()
+                .AsNoTracking()
                 .FirstOrDefault(x => x.Cpf.Equals(cpf));
 
         public Usuario BuscarPorEmail(string email)
             => contexto.Usuario
-                 .AsNoTracking()
+                .AsNoTracking()
                 .FirstOrDefault(x => x.Email.Equals(email));
 
         public Usuario Get(string email, string senha)

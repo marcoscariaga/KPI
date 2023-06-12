@@ -22,7 +22,7 @@ var configuration = new ConfigurationBuilder()
             .Build();
 
 Log.Logger = new LoggerConfiguration()
-       .Enrich.FromLogContext()
+    .Enrich.FromLogContext()
                 .Enrich.FromLogContext()
                 .WriteTo.MSSqlServer(
                     connectionString: configuration.GetConnectionString("SIGPROC"),

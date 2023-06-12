@@ -29,17 +29,17 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.Property(c => c.Prioridade);
             builder.Property(c => c.Observacao);
             builder.HasOne<TipoContratacao>(c => c.TipoContratacao)
-               .WithMany()
-               .HasForeignKey(c => c.IdTipoContratacao);
+                .WithMany()
+                .HasForeignKey(c => c.IdTipoContratacao);
             builder.HasOne<TipoProcesso>(c => c.TipoProcesso)
-               .WithMany()
-               .HasForeignKey(c => c.IdTipoProcesso);
+                .WithMany()
+                .HasForeignKey(c => c.IdTipoProcesso);
             builder.HasOne<StatusProcesso>(c => c.StatusProcesso)
-               .WithMany()
-               .HasForeignKey(c => c.IdStatusProcesso);
+                .WithMany()
+                .HasForeignKey(c => c.IdStatusProcesso);
             builder.HasOne<Usuario>(c => c.Usuario)
-               .WithMany()
-               .HasForeignKey(c => c.IdUsuarioCadastro);
+                .WithMany()
+                .HasForeignKey(c => c.IdUsuarioCadastro);
             builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.DataCriacao);
             builder.Property(c => c.DataExclusao);

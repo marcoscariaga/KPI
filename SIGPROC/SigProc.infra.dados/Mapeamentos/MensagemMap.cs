@@ -24,19 +24,19 @@ namespace SigProc.infra.dados.Mapeamentos
 
             builder.Property(c => c.Descricao).IsRequired();
             builder.Property(c => c.IdProcesso); 
-                         builder.Property(c => c.IdStatusProcesso); 
+            builder.Property(c => c.IdStatusProcesso); 
 
             builder.HasOne<ProcessoTramitacao>(c => c.ProcessoTramitacao)
-              .WithMany()
-              .HasForeignKey(c => c.IdTramitacao).OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(c => c.IdTramitacao).OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Gerencia>(c => c.Gerencia)
-             .WithMany()
-             .HasForeignKey(c => c.IdGerencia).OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(c => c.IdGerencia).OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Usuario>(c => c.Usuario)
-             .WithMany()
-             .HasForeignKey(c => c.IdUsuario).OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(c => c.IdUsuario).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

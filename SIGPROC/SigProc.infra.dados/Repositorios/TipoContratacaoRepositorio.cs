@@ -14,12 +14,10 @@ namespace SigProc.infra.dados.Repositorios
     public class TipoContratacaoRepositorio : BaseRepositorio<TipoContratacao>, ITipoContratacaoRepositorio
     {
         private readonly SqlServidorContexto contexto;
-
         public TipoContratacaoRepositorio(SqlServidorContexto sqlServerContext) : base(sqlServerContext)
         {
             contexto = sqlServerContext;
         }
-
         public ICollection<TipoContratacao> ListarAtivos()
         {
             return contexto.TipoContratacao.Where(a => a.Status == true).ToList();

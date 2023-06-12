@@ -14,12 +14,10 @@ namespace SigProc.infra.dados.Repositorios
     public class TipoUsuarioGerenciaRepositorio : BaseRepositorio<TipoUsuarioGerencia>, ITipoUsuarioGerenciaRepositorio
     {
         private readonly SqlServidorContexto contexto;
-
         public TipoUsuarioGerenciaRepositorio(SqlServidorContexto sqlServerContext) : base(sqlServerContext)
         {
             contexto = sqlServerContext;
         }
-
         public ICollection<TipoUsuarioGerencia> ListarAtivos()
         {
             return contexto.TipoUsuarioGerencia.Where(a => a.Status == true).ToList();

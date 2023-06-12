@@ -27,7 +27,7 @@ namespace SigProc.infra.dados.Repositorios
         }
         public Gerencia BuscarPorSiglaGerencia(string sigla)
             => contexto.Gerencia
-                 .AsNoTracking()
+                .AsNoTracking()
                 .FirstOrDefault(x => x.Sigla.Equals(sigla));
     }
 }

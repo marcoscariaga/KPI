@@ -16,23 +16,18 @@ namespace SigProc.infra.dados.Repositorios
     public class MensagemRepositorio : BaseRepositorio<Mensagem>, IMensagemRepositorio
     {
         private readonly SqlServidorContexto contexto;
-
         public MensagemRepositorio(SqlServidorContexto sqlServerContext) : base(sqlServerContext)
         {
             contexto = sqlServerContext;
         }
-
         public ICollection<Mensagem> BuscarMensagemPorIdProcesso(int idProcesso)
         {
             return contexto.Mensagem.Where(a => a.IdProcesso.Equals(idProcesso) && a.IdStatusProcesso != null).Include(x=>x.Gerencia).Include(x => x.Usuario).ToList();
         }
-
         public ICollection<Mensagem> BuscarMensagemPorIdTramitacao(int idTramitacao)
         {
             return contexto.Mensagem.Where(a => a.IdTramitacao.Equals(idTramitacao)).Include(x => x.Gerencia).Include(x => x.Usuario).ToList();
-
         }
-
         public Mensagem BuscarUltimaMensagemPorIdProcesso(int id)
         {
             return contexto.Mensagem

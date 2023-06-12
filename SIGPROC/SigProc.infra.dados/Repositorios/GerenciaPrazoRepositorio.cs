@@ -50,11 +50,11 @@ namespace SigProc.infra.dados.Repositorios
             else
             {
                 var verifica = contexto.GerenciaPrazo
-                   .AsNoTracking()
-                   .Where(x => x.Status == true && x.IdGerencia.Equals(objeto.IdGerencia))
-                   .FirstOrDefault(x =>
-                       (objeto.IdTipoPrazo != null && x.IdTipoPrazo.Equals(objeto.IdTipoPrazo))
-                   );
+                    .AsNoTracking()
+                    .Where(x => x.Status == true && x.IdGerencia.Equals(objeto.IdGerencia))
+                    .FirstOrDefault(x =>
+                    (objeto.IdTipoPrazo != null && x.IdTipoPrazo.Equals(objeto.IdTipoPrazo))
+                    );
                 if (verifica != null)
                 {
                     throw new ArgumentException("Esse prazo já cadastrado nessa gerência!");

@@ -15,7 +15,7 @@ namespace SigProc.Aplicacao.Mapeamentos
 {
     public class ModeloMap : Profile
     {
-         public ModeloMap()
+        public ModeloMap()
         {
             CreateMap<UsuarioModelo, Usuario>().AfterMap((command, entity) =>
             {

@@ -16,12 +16,10 @@ namespace SigProc.infra.dados.Repositorios
     public class TipoProcessoRepositorio : BaseRepositorio<TipoProcesso>, ITipoProcessoRepositorio
     {
         private readonly SqlServidorContexto contexto;
-
         public TipoProcessoRepositorio(SqlServidorContexto sqlServerContext) : base(sqlServerContext)
         {
             contexto = sqlServerContext;
         }
-
         public ICollection<TipoProcesso> ListarAtivos()
         {
             return contexto.TipoProcesso.Where(a => a.Status == true).ToList();

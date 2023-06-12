@@ -18,26 +18,26 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.HasKey(c => c.Id);
 
             builder.HasOne<Gerencia>(c => c.GerenciaOrigem)
-                 .WithMany()
-                 .HasForeignKey(c => c.IdOrgaoOrigem)
-                 .OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(c => c.IdOrgaoOrigem)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Gerencia>(c => c.GerenciaDestino)
-               .WithMany()
-               .HasForeignKey(c => c.IdOrgaoDestino)
-               .OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(c => c.IdOrgaoDestino)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Processo>(c => c.Processo)
-               .WithMany()
-               .HasForeignKey(c => c.IdProcesso).IsRequired();
+                .WithMany()
+                .HasForeignKey(c => c.IdProcesso).IsRequired();
 
             builder.HasOne<Mensagem>(c => c.Mensagem)
-                 .WithMany()
-                 .HasForeignKey(c => c.IdMensagem);
+                .WithMany()
+                .HasForeignKey(c => c.IdMensagem);
 
             builder.HasOne<EtapaProcesso>(c => c.EtapaProcesso)
-               .WithMany()
-               .HasForeignKey(c => c.IdEtapaProcesso);
+                .WithMany()
+                .HasForeignKey(c => c.IdEtapaProcesso);
 
             builder.Property(c => c.MatriculaDigitador);
             builder.Property(c => c.NumeroProcesso);
