@@ -176,45 +176,67 @@ namespace SigProc.Servico.Controladores
         {
             try
             {
-                var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Join(_gerenciaServico.ListarTudo(), p => p.IdOrgaoDestino, ip2 => ip2.Id, (p, ip2) => new { p, ip2 })
+                var gerencias = _gerenciaServico.ListarTudo().Select(g => g.Sigla).ToList();
+
+                var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos()
+                    .Join(_gerenciaServico.ListarTudo(), p => p.IdOrgaoDestino, ip2 => ip2.Id, (p, ip2) => new { p, ip2 })
                     .Where(x => x.p.DataEnvio == null)
                     .OrderByDescending(x => x.p.Sequencia)
                     .ToList();
+
                 var listagemTramitacao = new List<TotalDashboardModelo>();
 
-                foreach (var tramitacao in tramitacoesPorGerencia)
+                foreach (var gerencia in gerencias)
                 {
-                    if (tramitacao.p.Processo.Prioridade == "alta")
-                    {
-                        var model = new TotalDashboardModelo();
-                        model.Prioridade = "Alta";
-                        model.Gerencia = tramitacao.p.GerenciaDestino.Sigla;
-                        model.Quantidade += 1;
+                    var altaCount = 0;
+                    var mediaCount = 0;
+                    var baixaCount = 0;
 
-                        listagemTramitacao.Add(model);
+                    foreach (var tramitacao in tramitacoesPorGerencia.Where(x => x.p.GerenciaDestino.Sigla == gerencia))
+                    {
+                        if (tramitacao.p.Processo.Prioridade == "alta")
+                        {
+                            altaCount++;
+                        }
+                        else if (tramitacao.p.Processo.Prioridade == "media")
+                        {
+                            mediaCount++;
+                        }
+                        else if (tramitacao.p.Processo.Prioridade == "baixa")
+                        {
+                            baixaCount++;
+                        }
                     }
-                    if (tramitacao.p.Processo.Prioridade == "media")
-                    {
-                        var model = new TotalDashboardModelo();
-                        model.Prioridade = "Média";
-                        model.Gerencia = tramitacao.p.GerenciaDestino.Sigla;
-                        model.Quantidade += 1;
 
-                        listagemTramitacao.Add(model);
+                    if (altaCount > 0)
+                    {
+                        var altaModel = new TotalDashboardModelo();
+                        altaModel.Prioridade = "Alta";
+                        altaModel.Gerencia = gerencia;
+                        altaModel.Quantidade = altaCount;
+                        listagemTramitacao.Add(altaModel);
                     }
-                    if (tramitacao.p.Processo.Prioridade == "baixa")
-                    {
-                        var model = new TotalDashboardModelo();
-                        model.Prioridade = "Baixa";
-                        model.Gerencia = tramitacao.p.GerenciaDestino.Sigla;
-                        model.Quantidade += 1;
 
-                        listagemTramitacao.Add(model);
+                    if (mediaCount > 0)
+                    {
+                        var mediaModel = new TotalDashboardModelo();
+                        mediaModel.Prioridade = "Média";
+                        mediaModel.Gerencia = gerencia;
+                        mediaModel.Quantidade = mediaCount;
+                        listagemTramitacao.Add(mediaModel);
+                    }
+
+                    if (baixaCount > 0)
+                    {
+                        var baixaModel = new TotalDashboardModelo();
+                        baixaModel.Prioridade = "Baixa";
+                        baixaModel.Gerencia = gerencia;
+                        baixaModel.Quantidade = baixaCount;
+                        listagemTramitacao.Add(baixaModel);
                     }
                 }
 
                 return StatusCode(200, listagemTramitacao);
-
             }
             catch (ArgumentException ex)
             {
@@ -222,10 +244,75 @@ namespace SigProc.Servico.Controladores
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
             }
         }
+
+
+
+
+
+
+
+
+
+
+        //Prioridade por gerencia
+        //[HttpGet("TotalPrioridadePorGerencia/{idUsuario}")]
+        //public IActionResult TotalProPrioridadePorGerencia(int idUsuario)
+        //{
+        //    try
+        //    {
+        //        var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Join(_gerenciaServico.ListarTudo(), p => p.IdOrgaoDestino, ip2 => ip2.Id, (p, ip2) => new { p, ip2 })
+        //            .Where(x => x.p.DataEnvio == null)
+        //            .OrderByDescending(x => x.p.Sequencia)
+        //            .ToList();
+        //        var listagemTramitacao = new List<TotalDashboardModelo>();
+
+        //        foreach (var tramitacao in tramitacoesPorGerencia)
+        //        {
+        //            if (tramitacao.p.Processo.Prioridade == "alta")
+        //            {
+        //                var model = new TotalDashboardModelo();
+        //                model.Prioridade = "Alta";
+        //                model.Gerencia = tramitacao.p.GerenciaDestino.Sigla;
+        //                model.Quantidade += 1;
+
+        //                listagemTramitacao.Add(model);
+        //            }
+        //            if (tramitacao.p.Processo.Prioridade == "media")
+        //            {
+        //                var model = new TotalDashboardModelo();
+        //                model.Prioridade = "Média";
+        //                model.Gerencia = tramitacao.p.GerenciaDestino.Sigla;
+        //                model.Quantidade += 1;
+
+        //                listagemTramitacao.Add(model);
+        //            }
+        //            if (tramitacao.p.Processo.Prioridade == "baixa")
+        //            {
+        //                var model = new TotalDashboardModelo();
+        //                model.Prioridade = "Baixa";
+        //                model.Gerencia = tramitacao.p.GerenciaDestino.Sigla;
+        //                model.Quantidade += 1;
+
+        //                listagemTramitacao.Add(model);
+        //            }
+        //        }
+
+        //        return StatusCode(200, listagemTramitacao);
+
+        //    }
+        //    catch (ArgumentException ex)
+        //    {
+        //        return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
+        //    }
+        //}
         [HttpGet("TotalPrioridade/{idUsuario}")]
         public IActionResult TotalProPrioridade(int idUsuario)
         {
