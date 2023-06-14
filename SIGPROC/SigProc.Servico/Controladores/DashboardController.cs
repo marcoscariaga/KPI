@@ -31,7 +31,6 @@ namespace SigProc.Servico.Controladores
             try
             {
                 var tramitacoes = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario);
-
                 var model = new PrazosPorGerencia()
                 {
                     TotalProcessos = tramitacoes.Count(),
@@ -47,12 +46,11 @@ namespace SigProc.Servico.Controladores
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
             }
         }
 
-        //Codigo novo
+        //Codigo novo mostra no Dashboard todos os processos agrupados por gerencia
         [HttpGet("TotalProcessosPorGerencia/{idUsuario}")]
         public IActionResult TotalProcessosPorGerencia(int idUsuario)
         {
@@ -63,7 +61,6 @@ namespace SigProc.Servico.Controladores
                     .Where(x => x.p.DataEnvio == null)
                     .OrderByDescending(x => x.p.Sequencia)
                     .ToList();
-
                 var listagemTramitacao = tramitacoesPorGerencia
                     .GroupBy(x => x.p.GerenciaDestino.Sigla) // Agrupa por gerência
                     .Select(g => new TotalProcessoPorGerencia
@@ -78,7 +75,6 @@ namespace SigProc.Servico.Controladores
                         }
                     })
                     .ToList();
-
                 // Adiciona a contagem total de processos de todas as gerências
                 var contagens = new PrazosPorGerencia
                 {
@@ -87,15 +83,12 @@ namespace SigProc.Servico.Controladores
                     PrazoVencimento1Dia = listagemTramitacao.Sum(x => x.PrazosPorGerencias.PrazoVencimento1Dia),
                     PrazoAtrasado = listagemTramitacao.Sum(x => x.PrazosPorGerencias.PrazoAtrasado)
                 };
-
                 var totalProcessos = new TotalProcessoPorGerencia
                 {
                     Gerencia = "Total",
                     PrazosPorGerencias = contagens
                 };
-
                 listagemTramitacao.Add(totalProcessos);
-
                 return StatusCode(200, listagemTramitacao);
             }
             catch (ArgumentException ex)
@@ -123,7 +116,6 @@ namespace SigProc.Servico.Controladores
         //        var quantidadePrazoVencimento1Dia = 0;
         //        var quantidadePrazoAtrasado = 0;
         //        var quantidadeTotaProcessos = 0;
-
         //        if (tramitacoesPorGerencia.Count() != 0)
         //        {
         //            var contagem = new PrazosPorGerencia()
@@ -133,19 +125,15 @@ namespace SigProc.Servico.Controladores
         //                PrazoVencimento1Dia = tramitacoesPorGerencia.Count(x => x.p.TempoPrazo >= 0 && x.p.TempoPrazo <= 1),
         //                PrazoAtrasado = tramitacoesPorGerencia.Count(x => x.p.TempoPrazo < 0),
         //            };
-
         //            var model = new TotalProcessoPorGerencia();
         //            model.Gerencia = tramitacoesPorGerencia[0].p.GerenciaDestino.Sigla;
         //            model.PrazosPorGerencias = contagem;
-
         //            quantidadePrazoEmDia += model.PrazosPorGerencias.PrazoEmDia;
         //            quantidadePrazoVencimento1Dia += model.PrazosPorGerencias.PrazoVencimento1Dia;
         //            quantidadePrazoAtrasado += model.PrazosPorGerencias.PrazoAtrasado;
         //            quantidadeTotaProcessos += model.PrazosPorGerencias.TotalProcessos;
-
         //            listagemTramitacao.Add(model);
         //        }
-
         //        var contagens = new PrazosPorGerencia()
         //        {
         //            TotalProcessos = quantidadeTotaProcessos,
@@ -157,7 +145,6 @@ namespace SigProc.Servico.Controladores
         //        totalProcessos.Gerencia = "Total";
         //        totalProcessos.PrazosPorGerencias = contagens;
         //        listagemTramitacao.Add(totalProcessos);
-
         //        return StatusCode(200, listagemTramitacao);
         //    }
         //    catch (ArgumentException ex)
@@ -166,32 +153,29 @@ namespace SigProc.Servico.Controladores
         //    }
         //    catch (Exception ex)
         //    {
-
         //        return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
         //    }
         //}
 
+
+        //Mostra no Dashboard todas Prioridades agrupadas por Gerencia
         [HttpGet("TotalPrioridadePorGerencia/{idUsuario}")]
         public IActionResult TotalProPrioridadePorGerencia(int idUsuario)
         {
             try
             {
                 var gerencias = _gerenciaServico.ListarTudo().Select(g => g.Sigla).ToList();
-
                 var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos()
                     .Join(_gerenciaServico.ListarTudo(), p => p.IdOrgaoDestino, ip2 => ip2.Id, (p, ip2) => new { p, ip2 })
                     .Where(x => x.p.DataEnvio == null)
                     .OrderByDescending(x => x.p.Sequencia)
                     .ToList();
-
                 var listagemTramitacao = new List<TotalDashboardModelo>();
-
                 foreach (var gerencia in gerencias)
                 {
                     var altaCount = 0;
                     var mediaCount = 0;
                     var baixaCount = 0;
-
                     foreach (var tramitacao in tramitacoesPorGerencia.Where(x => x.p.GerenciaDestino.Sigla == gerencia))
                     {
                         if (tramitacao.p.Processo.Prioridade == "alta")
@@ -207,7 +191,6 @@ namespace SigProc.Servico.Controladores
                             baixaCount++;
                         }
                     }
-
                     if (altaCount > 0)
                     {
                         var altaModel = new TotalDashboardModelo();
@@ -216,7 +199,6 @@ namespace SigProc.Servico.Controladores
                         altaModel.Quantidade = altaCount;
                         listagemTramitacao.Add(altaModel);
                     }
-
                     if (mediaCount > 0)
                     {
                         var mediaModel = new TotalDashboardModelo();
@@ -225,7 +207,6 @@ namespace SigProc.Servico.Controladores
                         mediaModel.Quantidade = mediaCount;
                         listagemTramitacao.Add(mediaModel);
                     }
-
                     if (baixaCount > 0)
                     {
                         var baixaModel = new TotalDashboardModelo();
@@ -235,7 +216,6 @@ namespace SigProc.Servico.Controladores
                         listagemTramitacao.Add(baixaModel);
                     }
                 }
-
                 return StatusCode(200, listagemTramitacao);
             }
             catch (ArgumentException ex)
@@ -248,16 +228,7 @@ namespace SigProc.Servico.Controladores
             }
         }
 
-
-
-
-
-
-
-
-
-
-        //Prioridade por gerencia
+        //Prioridade por gerencia código antigo mostra todas as prioridades
         //[HttpGet("TotalPrioridadePorGerencia/{idUsuario}")]
         //public IActionResult TotalProPrioridadePorGerencia(int idUsuario)
         //{
@@ -268,7 +239,6 @@ namespace SigProc.Servico.Controladores
         //            .OrderByDescending(x => x.p.Sequencia)
         //            .ToList();
         //        var listagemTramitacao = new List<TotalDashboardModelo>();
-
         //        foreach (var tramitacao in tramitacoesPorGerencia)
         //        {
         //            if (tramitacao.p.Processo.Prioridade == "alta")
@@ -277,7 +247,6 @@ namespace SigProc.Servico.Controladores
         //                model.Prioridade = "Alta";
         //                model.Gerencia = tramitacao.p.GerenciaDestino.Sigla;
         //                model.Quantidade += 1;
-
         //                listagemTramitacao.Add(model);
         //            }
         //            if (tramitacao.p.Processo.Prioridade == "media")
@@ -286,7 +255,6 @@ namespace SigProc.Servico.Controladores
         //                model.Prioridade = "Média";
         //                model.Gerencia = tramitacao.p.GerenciaDestino.Sigla;
         //                model.Quantidade += 1;
-
         //                listagemTramitacao.Add(model);
         //            }
         //            if (tramitacao.p.Processo.Prioridade == "baixa")
@@ -295,13 +263,10 @@ namespace SigProc.Servico.Controladores
         //                model.Prioridade = "Baixa";
         //                model.Gerencia = tramitacao.p.GerenciaDestino.Sigla;
         //                model.Quantidade += 1;
-
         //                listagemTramitacao.Add(model);
         //            }
         //        }
-
         //        return StatusCode(200, listagemTramitacao);
-
         //    }
         //    catch (ArgumentException ex)
         //    {
@@ -309,7 +274,6 @@ namespace SigProc.Servico.Controladores
         //    }
         //    catch (Exception ex)
         //    {
-
         //        return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
         //    }
         //}
@@ -322,14 +286,11 @@ namespace SigProc.Servico.Controladores
                 var quantidadeAlta = 0;
                 var quantidadeMedia = 0;
                 var quantidadeBaixa = 0;
-
-
                 var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.DataEnvio == null)
                     .GroupBy(pt => pt.IdProcesso)
                     .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
                     .FirstOrDefault())
                     .ToList();
-
                 foreach (var tramitacao in tramitacoesPorGerencia)
                 {
                     if (tramitacao.Processo.Prioridade == "alta")
@@ -345,7 +306,6 @@ namespace SigProc.Servico.Controladores
                         quantidadeBaixa += 1;
                     }
                 }
-
                 var model = new Prazo()
                 {
                     Alta = quantidadeAlta,
@@ -353,10 +313,7 @@ namespace SigProc.Servico.Controladores
                     Baixa = quantidadeBaixa,
                     Total = quantidadeAlta + quantidadeMedia + quantidadeBaixa,
                 };
-
-
                 return StatusCode(200, model);
-
             }
             catch (ArgumentException ex)
             {
@@ -364,7 +321,6 @@ namespace SigProc.Servico.Controladores
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
             }
         }
