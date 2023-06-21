@@ -28,13 +28,15 @@ namespace SigProc.Servico.Controladores
         [HttpGet("TotalProcessosPrazos/{idUsuario}")]
         public IActionResult TotalProcessosPrazos(int idUsuario)
         {
+            //var soma = PrazoEmDia + PrazoVencimento1Dia;
             try
             {
                 var tramitacoes = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario);
                 var model = new PrazosPorGerencia()
                 {
+                    
                     TotalProcessos = tramitacoes.Count(),
-                    PrazoEmDia = tramitacoes.Count(x => x.TempoPrazo > 1),
+                    PrazoEmDia = tramitacoes.Count(x => x.TempoPrazo > 1) + tramitacoes.Count(x => x.TempoPrazo >= 0 && x.TempoPrazo <= 1),
                     PrazoVencimento1Dia = tramitacoes.Count(x => x.TempoPrazo >= 0 && x.TempoPrazo <= 1),
                     PrazoAtrasado = tramitacoes.Count(x => x.TempoPrazo < 0),
                 };
