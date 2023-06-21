@@ -26,5 +26,6 @@ namespace SigProc.Aplicacao.Modelos
         public string Observacao { get; set; }
         public int IdUsuarioCadastro { get; set; }
         public bool Status { get; set; }
+        public int IdStatusProcesso { get; set; } = 1;
     }
 }
