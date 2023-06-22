@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos.ModeloSaida;
 using SigProc.Aplicacao.Servicos;
 using SigProc.Dominio.Entidades;
+using SigProc.infra.dados.Migrations;
 
 namespace SigProc.Servico.Controladores
 {
@@ -16,6 +19,7 @@ namespace SigProc.Servico.Controladores
         private readonly IProcessoTramitacaoServico _tramitacaoServico;
         private readonly IGerenciaUsuarioServico _gerenciaUsuarioServico;
         private readonly IGerenciaServico _gerenciaServico;
+        private IStatusProcessoServico _idStatusProcesso;
 
         public DashboardController(IProcessoServico processoServico, IProcessoTramitacaoServico tramitacaoServico, IGerenciaUsuarioServico gerenciaUsuarioServico, IGerenciaServico gerenciaServico)
         {
@@ -24,22 +28,27 @@ namespace SigProc.Servico.Controladores
             _gerenciaUsuarioServico = gerenciaUsuarioServico;
             _gerenciaServico = gerenciaServico;
         }
-
         [HttpGet("TotalProcessosPrazos/{idUsuario}")]
         public IActionResult TotalProcessosPrazos(int idUsuario)
         {
-            //var soma = PrazoEmDia + PrazoVencimento1Dia;
             try
             {
                 var tramitacoes = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario);
+                var totalProcessosSemStatus4 = tramitacoes.Count(x => x.Processo.IdStatusProcesso != 4);
+
+                // Filtra as tramitações excluindo aquelas com idStatusProcesso igual a 4
+                tramitacoes = tramitacoes.Where(x => x.Processo.IdStatusProcesso != 4).ToList();
+
                 var model = new PrazosPorGerencia()
                 {
-                    
+
                     TotalProcessos = tramitacoes.Count(),
+                    TotalProcessosSemStatus4 = totalProcessosSemStatus4,
                     PrazoEmDia = tramitacoes.Count(x => x.TempoPrazo > 1) + tramitacoes.Count(x => x.TempoPrazo >= 0 && x.TempoPrazo <= 1),
                     PrazoVencimento1Dia = tramitacoes.Count(x => x.TempoPrazo >= 0 && x.TempoPrazo <= 1),
                     PrazoAtrasado = tramitacoes.Count(x => x.TempoPrazo < 0),
                 };
+
                 return StatusCode(200, model);
             }
             catch (ArgumentException ex)
@@ -51,6 +60,42 @@ namespace SigProc.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
             }
         }
+
+
+
+
+
+
+
+
+
+
+        //[HttpGet("TotalProcessosPrazos/{idUsuario}")]
+        //public IActionResult TotalProcessosPrazos(int idUsuario)
+        //{
+        //    //var soma = PrazoEmDia + PrazoVencimento1Dia;
+        //    try
+        //    {
+        //        var tramitacoes = _tramitacaoServico.BuscarUltimaTramitacaoPorUsuarioGerencial(idUsuario);
+        //        var model = new PrazosPorGerencia()
+        //        {
+
+        //            TotalProcessos = tramitacoes.Count(),
+        //            PrazoEmDia = tramitacoes.Count(x => x.TempoPrazo > 1) + tramitacoes.Count(x => x.TempoPrazo >= 0 && x.TempoPrazo <= 1),
+        //            PrazoVencimento1Dia = tramitacoes.Count(x => x.TempoPrazo >= 0 && x.TempoPrazo <= 1),
+        //            PrazoAtrasado = tramitacoes.Count(x => x.TempoPrazo < 0),
+        //        };
+        //        return StatusCode(200, model);
+        //    }
+        //    catch (ArgumentException ex)
+        //    {
+        //        return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
+        //    }
+        //}
 
         //Codigo novo mostra no Dashboard todos os processos agrupados por gerencia
         [HttpGet("TotalProcessosPorGerencia/{idUsuario}")]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SigProc.Dominio.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,10 +22,13 @@ namespace SigProc.Aplicacao.Modelos.ModeloSaida
 
     public class PrazosPorGerencia
     {
+        public List<ProcessoTramitacao> tramitacoes;
+
         public int TotalProcessos { get; set; }
         public int PrazoEmDia { get; set; }
         public int PrazoVencimento1Dia { get; set; }
         public int PrazoAtrasado { get; set; }
+        public int TotalProcessosSemStatus4 { get; set; }
     }
 
     public class Prazo
