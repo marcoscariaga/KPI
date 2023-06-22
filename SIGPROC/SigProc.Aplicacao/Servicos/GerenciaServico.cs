@@ -20,8 +20,25 @@ namespace SigProc.Aplicacao.Servicos
 
         public object Atualizar(GerenciaUpdateModelo gerenciaUpdate)
         {
-            throw new NotImplementedException();
+            Gerencia gerenciaExistente = gerenciaDomainService.ObterPorId(gerenciaUpdate.Sigla) ;
+
+            if (gerenciaExistente == null)
+            {
+                throw new Exception("Gerencia não encontrada.");
+            }
+
+            gerenciaExistente.Descricao = gerenciaUpdate.Descricao;
+            gerenciaExistente.Sigla = gerenciaUpdate.Sigla;
+            gerenciaExistente.Prazo = gerenciaUpdate.Prazo;
+            gerenciaExistente.Email = gerenciaUpdate.Email;
+            gerenciaExistente.Telefone = gerenciaUpdate.Telefone;
+
+            gerenciaDomainService.Atualizar(gerenciaExistente);
+
+            return new { Sucesso = true, Mensagem = "Gerencia atualizada com sucesso." };
         }
+
+
 
         public ICollection<Gerencia> ListarAtivos()
         {
