@@ -1,4 +1,5 @@
 ﻿using SigProc.Aplicacao.Contratos;
+using SigProc.Aplicacao.Modelos;
 using SigProc.Dominio.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
 using System;
@@ -15,6 +16,11 @@ namespace SigProc.Aplicacao.Servicos
         public GerenciaServico(IGerenciaDominioServico gerenciaDomainService) : base(gerenciaDomainService)
         {
             this.gerenciaDomainService = gerenciaDomainService;
+        }
+
+        public object Atualizar(GerenciaUpdateModelo gerenciaUpdate)
+        {
+            throw new NotImplementedException();
         }
 
         public ICollection<Gerencia> ListarAtivos()

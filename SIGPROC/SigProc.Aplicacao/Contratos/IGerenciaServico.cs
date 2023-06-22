@@ -1,4 +1,5 @@
-﻿using SigProc.Domain.Contratos.Servicos;
+﻿using SigProc.Aplicacao.Modelos;
+using SigProc.Domain.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace SigProc.Aplicacao.Contratos
 {
     public interface IGerenciaServico : IBaseDominioServico<Gerencia>
     {
+        object Atualizar(GerenciaUpdateModelo gerenciaUpdate);
         public ICollection<Gerencia> ListarAtivos();
     }
 }

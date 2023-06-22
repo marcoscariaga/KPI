@@ -9,6 +9,7 @@ using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos;
 using System;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using SigProc.Aplicacao.Servicos;
 
 namespace SisAgenda.Servico.Controladores
 {
@@ -26,7 +27,7 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpPost("Cadastrar")]
-        public IActionResult Post([FromBody] GerenciaModelo[] gerencia)
+        public IActionResult Post([FromBody] GerenciaUpdateModelo[] gerencia)
         {
             //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
             try
@@ -54,15 +55,18 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpPut("Editar")]
-        public IActionResult Editar([FromBody] Gerencia gerencia)
+        public IActionResult Editar([FromBody] GerenciaUpdateModelo gerenciaUpdate)
         {
             try
             {
-                if (gerencia.Prazo <= 0)
+                if (gerenciaUpdate.Prazo <= 0)
                     return StatusCode(400, new { mensagem = "Informe o prazo da gerência!" });
 
-                var contato = _gerenciaServico.Atualizar(_mapper.Map<Gerencia>(gerencia));
-                return StatusCode(200, new { contato, mensagem = "Gerência editada com sucesso!" });
+                var gerenciaAtualizar = _gerenciaServico.Atualizar(gerenciaUpdate);
+                return StatusCode(200, new { gerenciaAtualizar, mensagem = "Gerência editada com sucesso!" });
+
+              //  var contato = _gerenciaServico.Atualizar(_mapper.Map<Gerencia>(gerencia));
+              //  return StatusCode(200, new { contato, mensagem = "Gerência editada com sucesso!" });
             }
             catch (ArgumentException ex)
             {
