@@ -1,4 +1,5 @@
-﻿using SigProc.Domain.Contratos.Servicos;
+﻿using SigProc.Aplicacao.Modelos;
+using SigProc.Domain.Contratos.Servicos;
 using SigProc.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace SigProc.Aplicacao.Contratos
     public interface IProcessoServico : IBaseDominioServico<Processo>
     {
         public ICollection<Processo> ListarAtivos();
+
     }
 }
