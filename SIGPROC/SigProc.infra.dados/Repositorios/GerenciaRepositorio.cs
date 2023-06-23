@@ -29,15 +29,5 @@ namespace SigProc.infra.dados.Repositorios
             => contexto.Gerencia
                 .AsNoTracking()
                 .FirstOrDefault(x => x.Sigla.Equals(sigla));
-
-        public void Salvar()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Gerencia ObterPorId(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

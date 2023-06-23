@@ -13,7 +13,5 @@ namespace SigProc.Dominio.Contratos.Dados
     {
         ICollection<Gerencia> ListarAtivos();
         Gerencia BuscarPorSiglaGerencia(string sigla);
-        void Salvar();
-        Gerencia ObterPorId(int id);
     }
 }

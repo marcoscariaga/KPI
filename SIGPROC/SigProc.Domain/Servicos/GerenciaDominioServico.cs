@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SigProc.Domain.Contratos.Servicos;
+﻿using SigProc.Domain.Contratos.Servicos;
 using SigProc.Domain.Entidades;
 using SigProc.Dominio.Contratos.Dados;
 using SigProc.Dominio.Contratos.Servicos;
@@ -11,6 +8,7 @@ using System.Diagnostics;
 
 namespace SigProc.Dominio.Servicos
 {
+
     public class GerenciaDominioServico : BaseDominioServico<Gerencia>, IGerenciaDominioServico
     {
         private readonly IGerenciaRepositorio _repositorio;
@@ -30,19 +28,22 @@ namespace SigProc.Dominio.Servicos
         {
             return _repositorio.ListarAtivos();
         }
-
         public Gerencia Inserir(Gerencia objeto)
         {
             if (objeto.Prazo <= 0)
                 throw new ArgumentException("Informe o prazo da gerência!");
 
-            var verificaCodigo = _repositorio.ListarTudo().FirstOrDefault(x => x.Codigo == objeto.Codigo && x.Sigla == objeto.Sigla);
+            var verificaCodigo = _repositorio.ListarTudo().Where(x=>x.Codigo == objeto.Codigo && x.Sigla == objeto.Sigla).FirstOrDefault(); 
             if (verificaCodigo != null)
-                throw new ArgumentException("A gerência já está cadastrada no sistema.");
+                throw new ArgumentException($"A gerência já está cadastrada no sistema.");
 
+
+            
+            #region Cadastro da Gerência
             var gerencia = _repositorio.Inserir(objeto);
-
+            #endregion
             GerenciaPrazo prazo = new GerenciaPrazo();
+            #region Cadastro do prazo da Gerência
             try
             {
                 prazo.IdGerencia = gerencia.Id;
@@ -53,15 +54,18 @@ namespace SigProc.Dominio.Servicos
 
                 _repositorioPrazo.Inserir(prazo);
             }
+
             catch (Exception)
             {
                 _repositorio.Deletar(gerencia);
-                throw;
             }
 
+            #endregion
+
+            #region Associação entre a gerencia e usuário
             try
             {
-                var tipoUsuario = _repositorioTipoUsuaruiGerencia.ListarAtivos().FirstOrDefault(x => x.Descricao.ToLower().Equals("gerente"));
+                var tipoUsuario = _repositorioTipoUsuaruiGerencia.ListarAtivos().Where(x => x.Descricao.ToLower().Equals("gerente")).FirstOrDefault();
 
                 GerenciaUsuario usuario = new GerenciaUsuario()
                 {
@@ -70,61 +74,19 @@ namespace SigProc.Dominio.Servicos
                     IdTipoUsuarioGerencia = tipoUsuario.Id,
                     IdUsuarioCadastro = objeto.IdUsuarioResp,
                     Status = true,
-                };
-
+            };
+                #endregion
                 _repositorioGerenciaUsuario.Inserir(usuario);
+                return gerencia;
             }
+
             catch (Exception)
             {
                 _repositorio.Deletar(gerencia);
                 _repositorioPrazo.Deletar(prazo);
-                throw;
             }
-
             return gerencia;
         }
-        public Gerencia Atualizar(Gerencia objeto)
-        {
-            if (objeto.Id <= 0)
-                throw new ArgumentException("O ID da gerência é inválido!");
 
-            if (objeto.Prazo <= 0)
-                throw new ArgumentException("Informe o prazo da gerência!");
-
-            var verificaCodigo = _repositorio.ListarTudo().FirstOrDefault(x =>
-                x.Codigo == objeto.Codigo &&
-                x.Sigla == objeto.Sigla &&
-                x.Id != objeto.Id
-            );
-            if (verificaCodigo != null)
-                throw new ArgumentException("Já existe uma gerência cadastrada com o mesmo código e sigla!");
-
-            var gerenciaAtual = _repositorio.ObterPorId(objeto.Id);
-            if (gerenciaAtual == null)
-                throw new ArgumentException("A gerência não existe!");
-
-            gerenciaAtual.Codigo = objeto.Codigo;
-            gerenciaAtual.Sigla = objeto.Sigla;
-            gerenciaAtual.Descricao = objeto.Descricao;
-            gerenciaAtual.Prazo = objeto.Prazo;
-
-            _repositorio.Atualizar(gerenciaAtual);
-            _repositorio.Salvar(); // Salva as alterações no repositório
-
-            return gerenciaAtual;
-        }
-
-
-
-
-        public ICollection<Gerencia> Atualizar()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Gerencia ObterPorId(object id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
