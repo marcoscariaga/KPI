@@ -22,6 +22,7 @@ namespace SigProc.Aplicacao.Mapeamentos
                 entity.Id = 0;
             });
             CreateMap<AutenticacaoModelo, Usuario>();
+            CreateMap<GerenciaModelo, Gerencia>();
             CreateMap<GerenciaUpdateModelo, Gerencia>();
             CreateMap<GerenciaPrazoModelo, GerenciaPrazo>();
             CreateMap<GerenciaUsuarioModelo, GerenciaUsuario>();

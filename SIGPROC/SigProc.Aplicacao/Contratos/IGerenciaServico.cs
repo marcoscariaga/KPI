@@ -11,7 +11,8 @@ namespace SigProc.Aplicacao.Contratos
 {
     public interface IGerenciaServico : IBaseDominioServico<Gerencia>
     {
-        object Atualizar(GerenciaUpdateModelo gerenciaUpdate);
-        public ICollection<Gerencia> ListarAtivos();
+        //Gerencia Atualizar(GerenciaUpdateModelo gerenciaUpdate);
+        ICollection<Gerencia> ListarAtivos();
+        //public ICollection<Gerencia> ListarAtivos();
     }
 }

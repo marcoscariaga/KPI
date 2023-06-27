@@ -17,6 +17,7 @@ namespace SigProc.Dominio.Entidades
         public string? Email { get; set; }
         public string? Telefone { get; set; }
         public int IdUsuarioResp { get; set; }
+      //  public string? Status { get; set; }
 
         public virtual Usuario Usuario { get; set; }
 

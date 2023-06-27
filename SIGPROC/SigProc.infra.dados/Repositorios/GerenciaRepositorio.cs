@@ -23,7 +23,7 @@ namespace SigProc.infra.dados.Repositorios
 
         public ICollection<Gerencia> ListarAtivos()
         {
-            return contexto.Gerencia.Where(a => a.Status == true).ToList();
+            return contexto.Gerencia.Where(a => a.Status.Equals (true)).ToList();
         }
         public Gerencia BuscarPorSiglaGerencia(string sigla)
             => contexto.Gerencia

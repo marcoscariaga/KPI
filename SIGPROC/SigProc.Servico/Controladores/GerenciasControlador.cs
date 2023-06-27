@@ -27,7 +27,7 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpPost("Cadastrar")]
-        public IActionResult Post([FromBody] GerenciaUpdateModelo[] gerencia)
+        public IActionResult Post([FromBody] GerenciaModelo[] gerencia)
         {
             //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
             try
@@ -59,14 +59,9 @@ namespace SisAgenda.Servico.Controladores
         {
             try
             {
-                if (gerenciaUpdate.Prazo <= 0)
-                    return StatusCode(400, new { mensagem = "Informe o prazo da gerência!" });
-
-                var gerenciaAtualizar = _gerenciaServico.Atualizar(gerenciaUpdate);
-                return StatusCode(200, new { gerenciaAtualizar, mensagem = "Gerência editada com sucesso!" });
-
-              //  var contato = _gerenciaServico.Atualizar(_mapper.Map<Gerencia>(gerencia));
-              //  return StatusCode(200, new { contato, mensagem = "Gerência editada com sucesso!" });
+                //var gerenciaAtualizada = gerenciaUpdate;
+                var gerenciaAtualizada = _gerenciaServico.Atualizar(_mapper.Map<Gerencia>(gerenciaUpdate));
+                return StatusCode(200, new { gerenciaAtualizada, mensagem = "Gerência editada com sucesso!" });
             }
             catch (ArgumentException ex)
             {
@@ -77,6 +72,31 @@ namespace SisAgenda.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao editar gerência!" });
             }
         }
+
+
+        //[HttpPut("Editar")]
+        //public IActionResult Editar([FromBody] GerenciaUpdateModelo gerenciaUpdate)
+        //{
+        //    try
+        //    {
+        //        if (gerenciaUpdate.Prazo <= 0)
+        //            return StatusCode(400, new { mensagem = "Informe o prazo da gerência!" });
+
+        //        var gerenciaAtualizar = _gerenciaServico.Atualizar(gerenciaUpdate);
+        //        return StatusCode(200, new { gerenciaAtualizar, mensagem = "Gerência editada com sucesso!" });
+
+        //      //  var contato = _gerenciaServico.Atualizar(_mapper.Map<Gerencia>(gerencia));
+        //      //  return StatusCode(200, new { contato, mensagem = "Gerência editada com sucesso!" });
+        //    }
+        //    catch (ArgumentException ex)
+        //    {
+        //        return StatusCode(400, new { ex.Message, mensagem = "Erro ao editar gerência!" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, new { ex.Message, mensagem = "Erro ao editar gerência!" });
+        //    }
+        //}
 
         [HttpDelete("Excluir/{id}")]
         public IActionResult Delete(int id)

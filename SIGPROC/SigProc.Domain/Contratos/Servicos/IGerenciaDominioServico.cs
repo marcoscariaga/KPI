@@ -7,5 +7,6 @@ namespace SigProc.Dominio.Contratos.Servicos
     public interface IGerenciaDominioServico : IBaseDominioServico<Gerencia>
     {
         public ICollection<Gerencia> ListarAtivos();
+        //Gerencia RetornaPorId(object id);
     }
 }

@@ -18,15 +18,35 @@ namespace SigProc.Aplicacao.Servicos
             this.gerenciaDomainService = gerenciaDomainService;
         }
 
-        public object Atualizar(GerenciaUpdateModelo gerenciaUpdate)
-        {
-            throw new NotImplementedException();
-        }
+        //public Gerencia Atualizar(GerenciaUpdateModelo gerenciaUpdate)
+        //{
+        //    var gerenciaExistente = gerenciaDomainService.RetornaPorId(gerenciaUpdate.Id);
+        //    if (gerenciaExistente == null)
+        //    {
+        //        throw new ArgumentException("Gerência não encontrada");
+        //    }
+
+        //    gerenciaExistente.Sigla = gerenciaUpdate.Sigla;
+        //    gerenciaExistente.Descricao = gerenciaUpdate.Descricao;
+        //    gerenciaExistente.Email = gerenciaUpdate.Email;
+        //    gerenciaExistente.Prazo = gerenciaUpdate.Prazo;
+        //    gerenciaExistente.Status = gerenciaUpdate.Status;
+        //    gerenciaExistente.Telefone = gerenciaUpdate.Telefone;
+
+        //    gerenciaDomainService.Atualizar(gerenciaExistente);
+
+        //    return gerenciaExistente;
+        //}
+
+
+
 
         public ICollection<Gerencia> ListarAtivos()
         {
             return gerenciaDomainService.ListarAtivos();
         }
+
+
     }
 
 }
