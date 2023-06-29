@@ -57,9 +57,9 @@ namespace SigProc.Servico.Controladores
             try
             {
                 var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Join(_gerenciaServico.ListarTudo(), p => p.IdOrgaoDestino, ip2 => ip2.Id, (p, ip2) => new { p, ip2 })
-                                                                                 .Where(x => x.p.DataEnvio == null)
-                                                                                 .OrderByDescending(x => x.p.Sequencia)
-                                                                                 .ToList();
+                    .Where(x => x.p.DataEnvio == null)
+                    .OrderByDescending(x => x.p.Sequencia)
+                    .ToList();
                 var listagemTramitacao = new List<TotalProcessoPorGerencia>();
                 var quantidadePrazoEmDia = 0;
                 var quantidadePrazoVencimento1Dia = 0;
