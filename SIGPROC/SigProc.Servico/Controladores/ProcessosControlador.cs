@@ -54,7 +54,7 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpPut("Editar")]
-        public IActionResult Editar([FromBody] ProcessoModelo processoModelo)
+        public IActionResult Editar([FromBody] ProcessoUpdateModelo processoModelo)
         {
             try
             {

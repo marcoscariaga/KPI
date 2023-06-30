@@ -10,6 +10,7 @@ namespace SigProc.Aplicacao.Modelos
 {
     public class ProcessoUpdateModelo
     {
+        public int? Id { get; set; }
         public string NumProcesso { get; set; }
         public string Requerente { get; set; }
         public string Assunto { get; set; }
@@ -26,7 +27,9 @@ namespace SigProc.Aplicacao.Modelos
         public int IdTipoProcesso { get; set; }
         public string Observacao { get; set; }
         public int IdUsuarioCadastro { get; set; }
-        public int IdStatusProcesso { get; set; } = 1;
+        public int IdStatusProcesso { get; set; }
+        public bool Status { get; set; }
+        
 
         //public string? Usuario  { get; set; }
         //public string? TipoContratacao { get; set; }
