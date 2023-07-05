@@ -30,6 +30,7 @@ namespace SigProc.Aplicacao.Mapeamentos
             CreateMap<ProcessoModelo, Processo>();
             CreateMap<ProcessoUpdateModelo, Processo>();
             CreateMap<MensagemModelo, Mensagem>();
+            CreateMap<PrioridadeModelo, Prioridade>();
             CreateMap<TipoContratacaoModelo, TipoContratacao>();
             CreateMap<TipoProcessoModelo, TipoProcesso>();
             CreateMap<EtapaProcessoModelo, EtapaProcesso>();

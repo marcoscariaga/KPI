@@ -33,6 +33,7 @@ namespace SigProc.infra.dados.Contextos
         public DbSet<Feriado> Feriado { get; set; }
         public DbSet<Despacho> Despacho { get; set; }
         public DbSet<Mensagem> Mensagem { get; set; }
+        public DbSet<Prioridade> Prioridade { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
