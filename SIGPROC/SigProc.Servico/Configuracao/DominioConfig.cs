@@ -29,8 +29,6 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<IFeriadoDominioServico, FeriadoDominioServico>();
             builder.Services.AddTransient<IDespachoDominioServico, DespachoDominioServico>();
             builder.Services.AddTransient<IMensagemDominioServico, MensagemDominioServico>();
-            builder.Services.AddTransient<IPrioridadeDominioServico, PrioridadeDominioServico>();
-
         }
     }
 }

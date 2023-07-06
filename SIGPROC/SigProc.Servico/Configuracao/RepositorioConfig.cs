@@ -30,8 +30,6 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<IFeriadoRepositorio, FeriadoRepositorio>();
             builder.Services.AddTransient<IDespachoRepositorio, DespachoRepositorio>();
             builder.Services.AddTransient<IMensagemRepositorio, MensagemRepositorio>();
-            builder.Services.AddTransient<IPrioridadeRepositorio, PrioridadeRepositorio>();
-
 
             var connectionString = builder.Configuration.GetConnectionString("SIGPROC");
             builder.Services.AddDbContext<SqlServidorContexto>
