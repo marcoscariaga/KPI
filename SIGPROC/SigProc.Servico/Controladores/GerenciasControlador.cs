@@ -19,10 +19,13 @@ namespace SisAgenda.Servico.Controladores
     public class GerenciasController : ControllerBase
     {
         private readonly IGerenciaServico _gerenciaServico;
+        private readonly IUsuarioServico _usuarioServico;
         private IMapper _mapper;
-        public GerenciasController(IGerenciaServico gerenciaServico, IMapper mapper)
+
+        public GerenciasController(IGerenciaServico gerenciaServico, IUsuarioServico usuarioServico, IMapper mapper)
         {
             _gerenciaServico = gerenciaServico;
+            _usuarioServico = usuarioServico;
             _mapper = mapper;
         }
 
@@ -144,6 +147,28 @@ namespace SisAgenda.Servico.Controladores
             try
             {
                 var gerencia = _gerenciaServico.RetornaPorId(id);
+                if (gerencia == null)
+                    return NoContent();
+
+                return StatusCode(200, gerencia);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
+            }
+        }
+
+        [HttpGet("BuscarPorIDUsuario/{id}")]
+        public IActionResult GetByIdUsuario(int id)
+        {
+            try
+            {
+                var gerencia = _gerenciaServico.ListarTudo().Where(a => a.IdUsuarioResp == id);
                 if (gerencia == null)
                     return NoContent();
 
