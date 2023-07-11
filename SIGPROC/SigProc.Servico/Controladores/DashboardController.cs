@@ -243,8 +243,8 @@ namespace SigProc.Servico.Controladores
         }
 
         //Total por prioridade
-        [HttpGet("TotalPorPrioridade/{Prioridade}")]
-        public IActionResult TotalPorPrioridade(string Prioridade)
+        [HttpGet("TotalPorPrioridade")]
+        public IActionResult TotalPorPrioridade()
         {
             try
             {
@@ -254,44 +254,42 @@ namespace SigProc.Servico.Controladores
                     .OrderByDescending(x => x.p.Sequencia)
                     .ToList();
 
-                var altaCount = 0;
-                var mediaCount = 0;
-                var baixaCount = 0;
+                var altaProcessos = tramitacoes
+                    .Where(t => t.p.Processo.Prioridade == "alta")
+                    .Select(t => t.p)
+                    .ToList();
 
-                foreach (var tramitacao in tramitacoes)
-                {
-                    if (tramitacao.p.Processo.Prioridade == "alta")
-                    {
-                        altaCount++;
-                    }
-                    else if (tramitacao.p.Processo.Prioridade == "media")
-                    {
-                        mediaCount++;
-                    }
-                    else if (tramitacao.p.Processo.Prioridade == "baixa")
-                    {
-                        baixaCount++;
-                    }
-                }
+                var mediaProcessos = tramitacoes
+                    .Where(t => t.p.Processo.Prioridade == "media")
+                    .Select(t => t.p)
+                    .ToList();
 
-                var listagemTramitacao = new List<TotalDashboardModelo>();
+                var baixaProcessos = tramitacoes
+                    .Where(t => t.p.Processo.Prioridade == "baixa")
+                    .Select(t => t.p)
+                    .ToList();
+
+                var processosPorPrioridade = new List<TotalDashboardModelo>();
 
                 var altaModel = new TotalDashboardModelo();
                 altaModel.Prioridade = "Alta";
-                altaModel.Quantidade = altaCount;
-                listagemTramitacao.Add(altaModel);
+                altaModel.Processos = altaProcessos;
+                altaModel.Quantidade = altaProcessos.Count;
+                processosPorPrioridade.Add(altaModel);
 
                 var mediaModel = new TotalDashboardModelo();
                 mediaModel.Prioridade = "Média";
-                mediaModel.Quantidade = mediaCount;
-                listagemTramitacao.Add(mediaModel);
+                mediaModel.Processos = mediaProcessos;
+                mediaModel.Quantidade = mediaProcessos.Count;
+                processosPorPrioridade.Add(mediaModel);
 
                 var baixaModel = new TotalDashboardModelo();
                 baixaModel.Prioridade = "Baixa";
-                baixaModel.Quantidade = baixaCount;
-                listagemTramitacao.Add(baixaModel);
+                baixaModel.Processos = baixaProcessos;
+                baixaModel.Quantidade = baixaProcessos.Count;
+                processosPorPrioridade.Add(baixaModel);
 
-                return StatusCode(200, listagemTramitacao);
+                return StatusCode(200, processosPorPrioridade);
             }
             catch (ArgumentException ex)
             {
@@ -302,6 +300,7 @@ namespace SigProc.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
             }
         }
+
 
 
 
