@@ -129,6 +129,28 @@ namespace SisAgenda.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar processo!" });
             }
         }
+
+        // Efetua uma busca por prioridade
+        [HttpGet("BuscarPorPrioridade")]
+        public IActionResult BuscarPorPrioridade()
+        {
+            try
+            {
+                var processos = _processoServico.ListarTudo().OrderBy(x => x.Prioridade);
+
+                return StatusCode(200, processos);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao consultar processos por prioridade!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao consultar processos por prioridade!" });
+            }
+        }
+
+
         [HttpGet("BuscarPorID/{id}")]
         public IActionResult GetById(int id)
         {

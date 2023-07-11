@@ -242,44 +242,67 @@ namespace SigProc.Servico.Controladores
             }
         }
 
-        [HttpGet("TotalPrioridade")]
-        public IActionResult TotalPorPrioridade()
+        //Total por prioridade
+        [HttpGet("TotalPorPrioridade/{idUsuario}")]
+        public IActionResult TotalPorPrioridade(int idUsuario)
         {
             try
             {
-                var tramitacoesAtivas = _tramitacaoServico.ListarAtivos();
-                var prioridades = tramitacoesAtivas
-                    .Select(t => t.Processo.Prioridade)
-                    .Distinct()
+                var tramitacoes = _tramitacaoServico.ListarAtivos()
+                    .Join(_gerenciaServico.ListarTudo(), p => p.IdOrgaoDestino, ip2 => ip2.Id, (p, ip2) => new { p, ip2 })
+                    .Where(x => x.p.DataEnvio == null)
+                    .OrderByDescending(x => x.p.Sequencia)
                     .ToList();
+
+                var altaCount = 0;
+                var mediaCount = 0;
+                var baixaCount = 0;
+
+                foreach (var tramitacao in tramitacoes)
+                {
+                    if (tramitacao.p.Processo.Prioridade == "alta")
+                    {
+                        altaCount++;
+                    }
+                    else if (tramitacao.p.Processo.Prioridade == "media")
+                    {
+                        mediaCount++;
+                    }
+                    else if (tramitacao.p.Processo.Prioridade == "baixa")
+                    {
+                        baixaCount++;
+                    }
+                }
 
                 var listagemTramitacao = new List<TotalDashboardModelo>();
 
-                foreach (var prioridade in prioridades)
-                {
-                    var tramitacoesPorPrioridade = tramitacoesAtivas
-                        .Where(t => t.Processo.Prioridade == prioridade)
-                        .ToList();
+                var altaModel = new TotalDashboardModelo();
+                altaModel.Prioridade = "Alta";
+                altaModel.Quantidade = altaCount;
+                listagemTramitacao.Add(altaModel);
 
-                    var totalPorPrioridade = tramitacoesPorPrioridade.Count;
+                var mediaModel = new TotalDashboardModelo();
+                mediaModel.Prioridade = "Média";
+                mediaModel.Quantidade = mediaCount;
+                listagemTramitacao.Add(mediaModel);
 
-                    var model = new TotalDashboardModelo();
-                    model.Prioridade = prioridade;
-                    model.Quantidade = totalPorPrioridade;
-                    listagemTramitacao.Add(model);
-                }
+                var baixaModel = new TotalDashboardModelo();
+                baixaModel.Prioridade = "Baixa";
+                baixaModel.Quantidade = baixaCount;
+                listagemTramitacao.Add(baixaModel);
 
                 return StatusCode(200, listagemTramitacao);
             }
             catch (ArgumentException ex)
             {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar as prioridades!" });
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar as prioridades!" });
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
             }
         }
+
 
 
 
