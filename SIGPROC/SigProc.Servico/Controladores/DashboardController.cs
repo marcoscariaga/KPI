@@ -243,8 +243,8 @@ namespace SigProc.Servico.Controladores
         }
 
         //Total por prioridade
-        [HttpGet("TotalPorPrioridade/{idUsuario}")]
-        public IActionResult TotalPorPrioridade(int idUsuario)
+        [HttpGet("TotalPorPrioridade/{Prioridade}")]
+        public IActionResult TotalPorPrioridade(string Prioridade)
         {
             try
             {
@@ -306,6 +306,7 @@ namespace SigProc.Servico.Controladores
 
 
 
+
         //Prioridade por gerencia código antigo mostra todas as prioridades
         //[HttpGet("TotalPrioridadePorGerencia/{idUsuario}")]
         //public IActionResult TotalProPrioridadePorGerencia(int idUsuario)
@@ -355,53 +356,7 @@ namespace SigProc.Servico.Controladores
         //        return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
         //    }
         //}
-        [HttpGet("TotalPrioridade/{idUsuario}")]
-        public IActionResult TotalProPrioridade(int idUsuario)
-        {
-            try
-            {
-                var listagemTramitacao = new List<TotalDashboardModelo>();
-                var quantidadeAlta = 0;
-                var quantidadeMedia = 0;
-                var quantidadeBaixa = 0;
-                var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.DataEnvio == null)
-                    .GroupBy(pt => pt.IdProcesso)
-                    .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
-                    .FirstOrDefault())
-                    .ToList();
-                foreach (var tramitacao in tramitacoesPorGerencia)
-                {
-                    if (tramitacao.Processo.Prioridade == "alta")
-                    {
-                        quantidadeAlta += 1;
-                    }
-                    if (tramitacao.Processo.Prioridade == "media")
-                    {
-                        quantidadeMedia += 1;
-                    }
-                    if (tramitacao.Processo.Prioridade == "baixa")
-                    {
-                        quantidadeBaixa += 1;
-                    }
-                }
-                var model = new Prazo()
-                {
-                    Alta = quantidadeAlta,
-                    Media = quantidadeMedia,
-                    Baixa = quantidadeBaixa,
-                    Total = quantidadeAlta + quantidadeMedia + quantidadeBaixa,
-                };
-                return StatusCode(200, model);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
-            }
-        }
+
     }
 }
 
