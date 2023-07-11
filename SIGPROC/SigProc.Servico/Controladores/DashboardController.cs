@@ -242,6 +242,47 @@ namespace SigProc.Servico.Controladores
             }
         }
 
+        [HttpGet("TotalPrioridade")]
+        public IActionResult TotalPorPrioridade()
+        {
+            try
+            {
+                var tramitacoesAtivas = _tramitacaoServico.ListarAtivos();
+                var prioridades = tramitacoesAtivas
+                    .Select(t => t.Processo.Prioridade)
+                    .Distinct()
+                    .ToList();
+
+                var listagemTramitacao = new List<TotalDashboardModelo>();
+
+                foreach (var prioridade in prioridades)
+                {
+                    var tramitacoesPorPrioridade = tramitacoesAtivas
+                        .Where(t => t.Processo.Prioridade == prioridade)
+                        .ToList();
+
+                    var totalPorPrioridade = tramitacoesPorPrioridade.Count;
+
+                    var model = new TotalDashboardModelo();
+                    model.Prioridade = prioridade;
+                    model.Quantidade = totalPorPrioridade;
+                    listagemTramitacao.Add(model);
+                }
+
+                return StatusCode(200, listagemTramitacao);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar as prioridades!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar as prioridades!" });
+            }
+        }
+
+
+
         //Prioridade por gerencia código antigo mostra todas as prioridades
         //[HttpGet("TotalPrioridadePorGerencia/{idUsuario}")]
         //public IActionResult TotalProPrioridadePorGerencia(int idUsuario)
