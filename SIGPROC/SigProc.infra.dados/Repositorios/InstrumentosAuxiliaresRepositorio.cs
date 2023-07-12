@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace SigProc.infra.dados.Repositorios
 {
-    public class InstrumentosAuxRepositorio : BaseRepositorio<InstrumentosAux>, IInstrumentosAuxRepositorio
+    public class InstrumentosAuxiliaresRepositorio : BaseRepositorio<InstrumentosAuxiliares>, IInstrumentosAuxiliaresRepositorio
     {
         private readonly SqlServidorContexto contexto;
-        public InstrumentosAuxRepositorio(SqlServidorContexto sqlServerContext) : base(sqlServerContext)
+        public InstrumentosAuxiliaresRepositorio(SqlServidorContexto sqlServerContext) : base(sqlServerContext)
         {
             contexto = sqlServerContext;
         }
-        public ICollection<InstrumentosAux> ListarAtivos()
+        public ICollection<InstrumentosAuxiliares> ListarAtivos()
         {
             
         }

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace SigProc.infra.dados.Mapeamentos
 {
-    public class InstrumentosAuxMap : IEntityTypeConfiguration<InstrumentosAux>
+    public class InstrumentosAuxiliaresMap : IEntityTypeConfiguration<InstrumentosAuxiliares>
     {
-        public void Configure(EntityTypeBuilder<InstrumentosAux> builder)
+        public void Configure(EntityTypeBuilder<InstrumentosAuxiliares> builder)
         {
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Descricao).IsRequired();

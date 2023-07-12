@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SigProc.Dominio.Entidades
 {
-    public class InstrumentosAux : Base
+    public class InstrumentosAuxiliares : Base
     {
         public  string Descricao { get; set; }
     }

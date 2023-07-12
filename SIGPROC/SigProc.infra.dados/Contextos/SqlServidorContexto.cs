@@ -24,7 +24,7 @@ namespace SigProc.infra.dados.Contextos
         public DbSet<ProcessoTramitacao> ProcessoTramitacao { get; set; }
         public DbSet<TipoContratacao> TipoContratacao { get; set; }
         public DbSet<ParaContratacao> ParaContratacao { get; set; }
-        public DbSet<InstrumentosAux> InstrumentosAux { get; set; }
+        public DbSet<InstrumentosAuxiliares> InstrumentosAuxiliares { get; set; }
         public DbSet<TipoProcesso> TipoProcesso { get; set; }
         public DbSet<EtapaProcesso> EtapaProcesso { get; set; }
         public DbSet<StatusProcesso> StatusProcesso { get; set; }

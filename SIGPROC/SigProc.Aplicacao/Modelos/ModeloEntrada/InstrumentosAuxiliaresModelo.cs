@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SigProc.Aplicacao.Modelos
 {
-    public class InstrumentosAuxModelo
+    public class InstrumentosAuxiliaresModelo
     {
         public string Descricao { get; set; }
     }

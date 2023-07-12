@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace SigProc.Dominio.Contratos.Dados
 {
-    public interface IInstrumentosAuxRepositorio : IBaseRepositorio<InstrumentosAux>
+    public interface IInstrumentosAuxiliaresRepositorio : IBaseRepositorio<InstrumentosAuxiliares>
     {
-        ICollection<InstrumentosAux> ListarAtivos();
+        ICollection<InstrumentosAuxiliares> ListarAtivos();
     }
 }
