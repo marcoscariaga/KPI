@@ -20,7 +20,7 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<InstrumentosAuxiliares> ListarAtivos()
         {
-            
+            return contexto.InstrumentosAuxiliares.Where(a => a.Status == true).ToList();
         }
     }
 }
