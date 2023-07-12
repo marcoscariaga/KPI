@@ -243,6 +243,7 @@ namespace SigProc.Servico.Controladores
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         //Total por prioridade
 <<<<<<< HEAD
         [HttpGet("TotalPorPrioridadde")]
@@ -251,6 +252,10 @@ namespace SigProc.Servico.Controladores
         [HttpGet("TotalPorPrioridade/{idUsuario}")]
         public IActionResult TotalPorPrioridade(int idUsuario)
 >>>>>>> parent of d8a5842 (update)
+=======
+        [HttpGet("TotalPrioridade")]
+        public IActionResult TotalPorPrioridade()
+>>>>>>> parent of 0d9d592 (Atualização de TotalPrioridade)
 =======
         [HttpGet("TotalPrioridade")]
         public IActionResult TotalPorPrioridade()
@@ -264,6 +269,7 @@ namespace SigProc.Servico.Controladores
                     .Distinct()
                     .ToList();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var altaProcessos = tramitacoes
                     .Where(t => t.p.Processo.Prioridade == "alta")
@@ -301,6 +307,23 @@ namespace SigProc.Servico.Controladores
                 processosPorPrioridade.Add(baixaModel);
 =======
                 var listagemTramitacao = new List<TotalDashboardModelo>();
+=======
+                var listagemTramitacao = new List<TotalDashboardModelo>();
+
+                foreach (var prioridade in prioridades)
+                {
+                    var tramitacoesPorPrioridade = tramitacoesAtivas
+                        .Where(t => t.Processo.Prioridade == prioridade)
+                        .ToList();
+
+                    var totalPorPrioridade = tramitacoesPorPrioridade.Count;
+
+                    var model = new TotalDashboardModelo();
+                    model.Prioridade = prioridade;
+                    model.Quantidade = totalPorPrioridade;
+                    listagemTramitacao.Add(model);
+                }
+>>>>>>> parent of 0d9d592 (Atualização de TotalPrioridade)
 
                 foreach (var prioridade in prioridades)
                 {
@@ -332,12 +355,15 @@ namespace SigProc.Servico.Controladores
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 
 
 =======
 >>>>>>> parent of d8a5842 (update)
+=======
+>>>>>>> parent of 0d9d592 (Atualização de TotalPrioridade)
 =======
 >>>>>>> parent of 0d9d592 (Atualização de TotalPrioridade)
         //Prioridade por gerencia código antigo mostra todas as prioridades
