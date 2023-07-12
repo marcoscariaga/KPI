@@ -242,6 +242,7 @@ namespace SigProc.Servico.Controladores
             }
         }
 
+<<<<<<< HEAD
         //Total por prioridade
 <<<<<<< HEAD
         [HttpGet("TotalPorPrioridadde")]
@@ -250,15 +251,20 @@ namespace SigProc.Servico.Controladores
         [HttpGet("TotalPorPrioridade/{idUsuario}")]
         public IActionResult TotalPorPrioridade(int idUsuario)
 >>>>>>> parent of d8a5842 (update)
+=======
+        [HttpGet("TotalPrioridade")]
+        public IActionResult TotalPorPrioridade()
+>>>>>>> parent of 0d9d592 (Atualização de TotalPrioridade)
         {
             try
             {
-                var tramitacoes = _tramitacaoServico.ListarAtivos()
-                    .Join(_gerenciaServico.ListarTudo(), p => p.IdOrgaoDestino, ip2 => ip2.Id, (p, ip2) => new { p, ip2 })
-                    .Where(x => x.p.DataEnvio == null)
-                    .OrderByDescending(x => x.p.Sequencia)
+                var tramitacoesAtivas = _tramitacaoServico.ListarAtivos();
+                var prioridades = tramitacoesAtivas
+                    .Select(t => t.Processo.Prioridade)
+                    .Distinct()
                     .ToList();
 
+<<<<<<< HEAD
                 var altaProcessos = tramitacoes
                     .Where(t => t.p.Processo.Prioridade == "alta")
                     .Select(t => t.p)
@@ -293,27 +299,47 @@ namespace SigProc.Servico.Controladores
                 baixaModel.Processos = baixaProcessos;
                 baixaModel.Quantidade = baixaProcessos.Count;
                 processosPorPrioridade.Add(baixaModel);
+=======
+                var listagemTramitacao = new List<TotalDashboardModelo>();
+
+                foreach (var prioridade in prioridades)
+                {
+                    var tramitacoesPorPrioridade = tramitacoesAtivas
+                        .Where(t => t.Processo.Prioridade == prioridade)
+                        .ToList();
+
+                    var totalPorPrioridade = tramitacoesPorPrioridade.Count;
+
+                    var model = new TotalDashboardModelo();
+                    model.Prioridade = prioridade;
+                    model.Quantidade = totalPorPrioridade;
+                    listagemTramitacao.Add(model);
+                }
+>>>>>>> parent of 0d9d592 (Atualização de TotalPrioridade)
 
                 return StatusCode(200, processosPorPrioridade);
             }
             catch (ArgumentException ex)
             {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar as prioridades!" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar as prioridades!" });
             }
         }
 
 
 
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 
 
 =======
 >>>>>>> parent of d8a5842 (update)
+=======
+>>>>>>> parent of 0d9d592 (Atualização de TotalPrioridade)
         //Prioridade por gerencia código antigo mostra todas as prioridades
         //[HttpGet("TotalPrioridadePorGerencia/{idUsuario}")]
         //public IActionResult TotalProPrioridadePorGerencia(int idUsuario)
