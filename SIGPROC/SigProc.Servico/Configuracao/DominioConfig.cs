@@ -19,6 +19,8 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<IProcessoDominioServico, ProcessoDominioServico>();
             builder.Services.AddTransient<IProcessoTramitacaoDominioServico, ProcessoTramitacaoDominioServico>();
             builder.Services.AddTransient<ITipoContratacaoDominioServico, TipoContratacaoDominioServico>();
+            builder.Services.AddTransient<IParaContratacaoDominioServico, ParaContratacaoDominioServico>();
+            builder.Services.AddTransient<IInstrumentosAuxDominioServico, InstrumentosAuxDominioServico>();
             builder.Services.AddTransient<ITipoProcessoDominioServico, TipoProcessoDominioServico>();
             builder.Services.AddTransient<IEtapaProcessoDominioServico, EtapaProcessoDominioServico>();
             builder.Services.AddTransient<IStatusProcessoDominioServico, StatusProcessoDominioServico>();

@@ -30,6 +30,7 @@ namespace SigProc.Dominio.Entidades
 
         public virtual Usuario Usuario { get; set; }
         public virtual TipoContratacao TipoContratacao { get; set; }
+        public virtual ParaContratacao Modalidade { get; set; }
         public virtual TipoProcesso TipoProcesso { get; set; }
         public virtual StatusProcesso StatusProcesso { get; set; }
 
