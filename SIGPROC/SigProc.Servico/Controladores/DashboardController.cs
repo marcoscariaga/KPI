@@ -243,7 +243,7 @@ namespace SigProc.Servico.Controladores
         }
 
         //Total por prioridade
-        [HttpGet("TotalPorPrioridade")]
+        [HttpGet("TotalPorPrioridadde")]
         public IActionResult TotalPorPrioridade()
         {
             try
