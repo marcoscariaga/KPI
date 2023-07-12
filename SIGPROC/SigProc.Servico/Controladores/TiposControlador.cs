@@ -35,7 +35,7 @@ namespace SisAgenda.Servico.Controladores
         [HttpPost("CadastrarTipoContratacao")]
             public IActionResult PostTipoContratacao([FromBody] TipoContratacaoModelo tipoContratacao)
             {
-                //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
+                
                 try
                 {
                     var cadastro = _tipoContratacaoServico.Inserir(_mapper.Map<TipoContratacao>(tipoContratacao));
@@ -140,7 +140,7 @@ namespace SisAgenda.Servico.Controladores
         [HttpPost("CadastrarTipoProcesso")]
         public IActionResult PostTipoProcesso([FromBody] TipoProcessoModelo tipoProcesso)
         {
-            //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
+            
             try
             {
                 var cadastro = _tipoProcessoServico.Inserir(_mapper.Map<TipoProcesso>(tipoProcesso));

@@ -26,7 +26,7 @@ namespace SisAgenda.Servico.Controladores
         [HttpPost("Cadastrar")]
         public IActionResult Post([FromBody] ProcessoModelo processoModelo)
         {
-            //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
+            
             try
             {
                 processoModelo.IdStatusProcesso = 1;

@@ -26,15 +26,6 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<GerenciaUsuario> ListarGerenciaPorIdUsuario(int idUsuario)
         {
-            //var resultado = contexto.GerenciaUsuario.Include(a => a.Gerencia).Include(a => a.TipoUsuarioGerencia).Include(a => a.UsuarioGerencia).Include(a => a.UsuarioCadastro).Where(a => a.Status == true).ToList()
-            //        .Where(x => x.IdUsuarioGerencia == idUsuario)
-            //        .Join(contexto.ProcessoTramitacao.Where(pt => pt.DataEnvio == null),
-            //              gu => gu.IdGerencia,
-            //              pt => pt.IdOrgaoDestino,
-            //              (gu, pt) => new { GerenciaUsuario = gu, ProcessoTramitacao = pt })
-            //        .ToList();
-
-
             var resultado = contexto.GerenciaUsuario.Include(a => a.Gerencia).Include(a => a.TipoUsuarioGerencia).Include(a => a.UsuarioGerencia).Include(a => a.UsuarioCadastro).Where(a => a.Status == true).ToList()
 
             .Where(x => x.IdUsuarioGerencia == idUsuario)
