@@ -20,7 +20,7 @@ namespace SigProc.infra.dados.Repositorios
         }
         public ICollection<ParaContratacao> ListarAtivos()
         {
-            return contexto.ParaContratacao.Where(a => a.Status == true).ToList();
+            
         }
     }
 }
