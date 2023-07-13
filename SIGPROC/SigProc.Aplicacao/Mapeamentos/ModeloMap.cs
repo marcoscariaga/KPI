@@ -31,8 +31,11 @@ namespace SigProc.Aplicacao.Mapeamentos
             CreateMap<ProcessoUpdateModelo, Processo>();
             CreateMap<MensagemModelo, Mensagem>();
             CreateMap<TipoContratacaoModelo, TipoContratacao>();
+<<<<<<< HEAD
             CreateMap<ParaContratacaoModelo, ParaContratacao>();
             CreateMap<InstrumentosAuxiliaresModelo, InstrumentosAuxiliares>();
+=======
+>>>>>>> parent of c480f34 (Alteração conforme documento)
             CreateMap<TipoProcessoModelo, TipoProcesso>();
             CreateMap<EtapaProcessoModelo, EtapaProcesso>();
             CreateMap<StatusProcessoModelo, StatusProcesso>();

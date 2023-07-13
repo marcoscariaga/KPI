@@ -23,8 +23,11 @@ namespace SigProc.infra.dados.Contextos
         public DbSet<Processo> Processo { get; set; }
         public DbSet<ProcessoTramitacao> ProcessoTramitacao { get; set; }
         public DbSet<TipoContratacao> TipoContratacao { get; set; }
+<<<<<<< HEAD
         public DbSet<ParaContratacao> ParaContratacao { get; set; }
         public DbSet<InstrumentosAuxiliares> InstrumentosAuxiliares { get; set; }
+=======
+>>>>>>> parent of c480f34 (Alteração conforme documento)
         public DbSet<TipoProcesso> TipoProcesso { get; set; }
         public DbSet<EtapaProcesso> EtapaProcesso { get; set; }
         public DbSet<StatusProcesso> StatusProcesso { get; set; }
@@ -45,7 +48,6 @@ namespace SigProc.infra.dados.Contextos
             modelBuilder.ApplyConfiguration(new ProcessoMap());
             modelBuilder.ApplyConfiguration(new ProcessoTramitacaoMap());
             modelBuilder.ApplyConfiguration(new TipoContratacaoMap());
-            modelBuilder.ApplyConfiguration(new ParaContratacaoMap());
             modelBuilder.ApplyConfiguration(new TipoProcessoMap());
             modelBuilder.ApplyConfiguration(new StatusProcessoMap());
             modelBuilder.ApplyConfiguration(new TipoPrazoMap());

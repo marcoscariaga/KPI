@@ -19,8 +19,11 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<IProcessoDominioServico, ProcessoDominioServico>();
             builder.Services.AddTransient<IProcessoTramitacaoDominioServico, ProcessoTramitacaoDominioServico>();
             builder.Services.AddTransient<ITipoContratacaoDominioServico, TipoContratacaoDominioServico>();
+<<<<<<< HEAD
             builder.Services.AddTransient<IParaContratacaoDominioServico, ParaContratacaoDominioServico>();
             builder.Services.AddTransient<IInstrumentosAuxiliaresDominioServico, InstrumentosAuxiliaresDominioServico>();
+=======
+>>>>>>> parent of c480f34 (Alteração conforme documento)
             builder.Services.AddTransient<ITipoProcessoDominioServico, TipoProcessoDominioServico>();
             builder.Services.AddTransient<IEtapaProcessoDominioServico, EtapaProcessoDominioServico>();
             builder.Services.AddTransient<IStatusProcessoDominioServico, StatusProcessoDominioServico>();
