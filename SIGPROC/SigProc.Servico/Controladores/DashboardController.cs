@@ -229,6 +229,117 @@ namespace SigProc.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
             }
         }
+
+        //Total por prioridade Alta
+        [HttpGet("TotalDashboardAlta/{idUsuario}")]
+        public IActionResult TotaDashboardAlta(int idUsuario)
+        {
+            try
+            {
+                var listagemTramitacao = new List<TotalDashboardModelo>();
+                var quantidadeAlta = 0;
+                var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.DataEnvio == null)
+                    .GroupBy(pt => pt.IdProcesso)
+                    .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
+                    .FirstOrDefault())
+                    .ToList();
+                foreach (var tramitacao in tramitacoesPorGerencia)
+                {
+                    if (tramitacao.Processo.Prioridade == "alta")
+                    {
+                        quantidadeAlta += 1;
+                    }
+                }
+                var model = new Prazo()
+                {
+                    Alta = quantidadeAlta,
+                    Total = quantidadeAlta
+                };
+                return StatusCode(200, model);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
+            }
+        }
+
+        //Total por prioridade Media
+        [HttpGet("TotalDashboardMedia/{idUsuario}")]
+        public IActionResult TotaDashboardMedia(int idUsuario)
+        {
+            try
+            {
+                var listagemTramitacao = new List<TotalDashboardModelo>();
+                var quantidadeMedia = 0;
+                var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.DataEnvio == null)
+                    .GroupBy(pt => pt.IdProcesso)
+                    .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
+                    .FirstOrDefault())
+                    .ToList();
+                foreach (var tramitacao in tramitacoesPorGerencia)
+                {
+                    if (tramitacao.Processo.Prioridade == "media")
+                    {
+                        quantidadeMedia += 1;
+                    }
+                }
+                var model = new Prazo()
+                {
+                    Media = quantidadeMedia,
+                    Total = quantidadeMedia
+                };
+                return StatusCode(200, model);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
+            }
+        }
+
+        //Total por prioridade Baixa
+        [HttpGet("TotalDashboardBaixa/{idUsuario}")]
+        public IActionResult TotaDashboardBaixa(int idUsuario)
+        {
+            try
+            {
+                var listagemTramitacao = new List<TotalDashboardModelo>();
+                var quantidadeBaixa = 0;
+                var tramitacoesPorGerencia = _tramitacaoServico.ListarAtivos().Where(pt => pt.DataEnvio == null)
+                    .GroupBy(pt => pt.IdProcesso)
+                    .Select(g => g.OrderByDescending(pt => pt.DataTramitacao)
+                    .FirstOrDefault())
+                    .ToList();
+                foreach (var tramitacao in tramitacoesPorGerencia)
+                {
+                    if (tramitacao.Processo.Prioridade == "baixa")
+                    {
+                        quantidadeBaixa += 1;
+                    }
+                }
+                var model = new Prazo()
+                {
+                    Baixa = quantidadeBaixa,
+                    Total = quantidadeBaixa,
+                };
+                return StatusCode(200, model);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
+            }
+        }
     }
 }
 
