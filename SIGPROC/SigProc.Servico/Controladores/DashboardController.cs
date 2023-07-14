@@ -339,10 +339,6 @@ namespace SigProc.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
             }
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> 9d980a5d0749c914deb14be62fbd9e5b6db9c188
     }
 }
 
