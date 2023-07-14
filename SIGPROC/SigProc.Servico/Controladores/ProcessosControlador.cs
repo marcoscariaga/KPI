@@ -24,13 +24,13 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpPost("Cadastrar")]
-        public IActionResult Post([FromBody] ProcessoModelo processo)
+        public IActionResult Post([FromBody] ProcessoModelo processoModelo)
         {
-            //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
+            
             try
             {
-                processo.IdStatusProcesso = 1;
-                var cadastro = _processoServico.Inserir(_mapper.Map<Processo>(processo));
+                processoModelo.IdStatusProcesso = 1;
+                var cadastro = _processoServico.Inserir(_mapper.Map<Processo>(processoModelo));
                 
 
                 //Log.ForContext("Action", $"CadastrarU").Information($"O usuário: {sUsuario}, cadastrou o usuário: {usuario.Nome}.");
@@ -54,11 +54,11 @@ namespace SisAgenda.Servico.Controladores
         }
 
         [HttpPut("Editar")]
-        public IActionResult Editar([FromBody] Processo processo)
+        public IActionResult Editar([FromBody] ProcessoUpdateModelo processoModelo)
         {
             try
             {
-                var contato = _processoServico.Atualizar(_mapper.Map<Processo>(processo));
+                var contato = _processoServico.Atualizar(_mapper.Map<Processo>(processoModelo));
                 return StatusCode(200, new { contato, mensagem = "Processo editada com sucesso!" });
             }
             catch (ArgumentException ex)

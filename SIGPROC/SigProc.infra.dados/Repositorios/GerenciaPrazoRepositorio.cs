@@ -61,10 +61,6 @@ namespace SigProc.infra.dados.Repositorios
                 }
             }
 
-            //var tipoProcesso = contexto.GerenciaPrazo.AsNoTracking().FirstOrDefault(x => x.IdTipoProcesso.Equals(objeto.IdTipoProcesso) && x.IdGerencia.Equals(objeto.IdGerencia));
-            //if (tipoProcesso != null)
-            //    throw new ArgumentException("Tipo de processo já cadastrado nessa gerência!");
-
             using var trans = _ctx.Database.BeginTransaction();
             try
             {

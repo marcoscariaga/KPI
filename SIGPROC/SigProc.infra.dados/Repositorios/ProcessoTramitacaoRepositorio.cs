@@ -72,6 +72,8 @@ namespace SigProc.infra.dados.Repositorios
             var ultimasTramitacoes = contexto.ProcessoTramitacao
         .Include(pt => pt.Processo).Include(a => a.Processo.StatusProcesso).Include(x => x.GerenciaOrigem).Include(x => x.GerenciaDestino).Include(a => a.EtapaProcesso)
         .Where(pt => pt.DataEnvio.Equals(null))
+        .GroupBy(pt => pt.IdProcesso)
+        .Select(g => g.OrderByDescending(pt => pt.DataTramitacao).FirstOrDefault())
         .ToList();
 
             return ultimasTramitacoes;

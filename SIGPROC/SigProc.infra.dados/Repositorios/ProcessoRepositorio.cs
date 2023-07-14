@@ -30,20 +30,6 @@ namespace SigProc.infra.dados.Repositorios
         {
             var processo = contexto.Processo.Where(a => a.Status == true).ToList();
 
-        // var lista = new List<Processo>();
-            //foreach (var item in processo)
-            //{
-            //    var gerenciaOrigem = contexto.ProcessoTramitacao.OrderByDescending(x => x.DataCriacao).Include(a => a.GerenciaOrigem).AsNoTracking()
-            //                        .FirstOrDefault(x => x.NumeroProcesso.Equals(item.NumProcesso));
-            //    var model = new Processo();
-
-            //    model.Id = item.Id;
-            //    model.NumProcesso = item.NumProcesso;
-            //    model.Requerente = item.Requerente;
-            //    model.Assunto= item.Assunto;
-            //    model.OrgaoOrigem = gerenciaOrigem.GerenciaOrigem.Sigla;
-            //    lista.Add(model);
-            //}
             return processo;
         }
         public Processo RetornaPorId(int id)

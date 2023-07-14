@@ -21,6 +21,7 @@ namespace SigProc.Aplicacao.Servicos
             {
                 new TimeSpan(02, 30, 0), // 02:00
                 new TimeSpan(06, 0, 0), // 06:00
+                new TimeSpan(16, 0, 0), // 16:00
             };
 
             foreach (var horario in horarios)

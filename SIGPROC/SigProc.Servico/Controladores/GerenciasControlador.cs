@@ -19,17 +19,20 @@ namespace SisAgenda.Servico.Controladores
     public class GerenciasController : ControllerBase
     {
         private readonly IGerenciaServico _gerenciaServico;
+        private readonly IUsuarioServico _usuarioServico;
         private IMapper _mapper;
-        public GerenciasController(IGerenciaServico gerenciaServico, IMapper mapper)
+
+        public GerenciasController(IGerenciaServico gerenciaServico, IUsuarioServico usuarioServico, IMapper mapper)
         {
             _gerenciaServico = gerenciaServico;
+            _usuarioServico = usuarioServico;
             _mapper = mapper;
         }
 
         [HttpPost("Cadastrar")]
         public IActionResult Post([FromBody] GerenciaModelo[] gerencia)
         {
-            //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
+            
             try
             {
                 var cadastro = _gerenciaServico.Inserir(_mapper.Map<Gerencia>(gerencia));
@@ -72,31 +75,6 @@ namespace SisAgenda.Servico.Controladores
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao editar gerência!" });
             }
         }
-
-
-        //[HttpPut("Editar")]
-        //public IActionResult Editar([FromBody] GerenciaUpdateModelo gerenciaUpdate)
-        //{
-        //    try
-        //    {
-        //        if (gerenciaUpdate.Prazo <= 0)
-        //            return StatusCode(400, new { mensagem = "Informe o prazo da gerência!" });
-
-        //        var gerenciaAtualizar = _gerenciaServico.Atualizar(gerenciaUpdate);
-        //        return StatusCode(200, new { gerenciaAtualizar, mensagem = "Gerência editada com sucesso!" });
-
-        //      //  var contato = _gerenciaServico.Atualizar(_mapper.Map<Gerencia>(gerencia));
-        //      //  return StatusCode(200, new { contato, mensagem = "Gerência editada com sucesso!" });
-        //    }
-        //    catch (ArgumentException ex)
-        //    {
-        //        return StatusCode(400, new { ex.Message, mensagem = "Erro ao editar gerência!" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, new { ex.Message, mensagem = "Erro ao editar gerência!" });
-        //    }
-        //}
 
         [HttpDelete("Excluir/{id}")]
         public IActionResult Delete(int id)
@@ -144,6 +122,28 @@ namespace SisAgenda.Servico.Controladores
             try
             {
                 var gerencia = _gerenciaServico.RetornaPorId(id);
+                if (gerencia == null)
+                    return NoContent();
+
+                return StatusCode(200, gerencia);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
+            }
+        }
+
+        [HttpGet("BuscarPorIDUsuario/{id}")]
+        public IActionResult GetByIdUsuario(int id)
+        {
+            try
+            {
+                var gerencia = _gerenciaServico.ListarTudo().Where(a => a.IdUsuarioResp == id);
                 if (gerencia == null)
                     return NoContent();
 

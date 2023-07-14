@@ -15,6 +15,11 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<IProcessoServico, ProcessoServico>();
             builder.Services.AddTransient<IProcessoTramitacaoServico, ProcessoTramitacaoServico>();
             builder.Services.AddTransient<ITipoContratacaoServico, TipoContratacaoServico>();
+<<<<<<< HEAD
+            builder.Services.AddTransient<IParaContratacaoServico, ParaContratacaoServico>();
+            builder.Services.AddTransient<IInstrumentosAuxiliaresServico, InstrumentosAuxiliaresServico>();
+=======
+>>>>>>> parent of c480f34 (Alteração conforme documento)
             builder.Services.AddTransient<ITipoProcessoServico, TipoProcessoServico>();
             builder.Services.AddTransient<IEtapaProcessoServico, EtapaProcessoServico>();
             builder.Services.AddTransient<IStatusProcessoServico, StatusProcessoServico>();

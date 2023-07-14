@@ -26,8 +26,7 @@ namespace SigProc.Servico.Controladores
         [HttpPost("Cadastrar")]
         public IActionResult Post([FromBody] GerenciaUsuarioModelo gerenciaUsuario)
         {
-            //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
-
+            
             try
             {
                 var cadastro = _gerenciaUsuario.Inserir(_mapper.Map<GerenciaUsuario>(gerenciaUsuario));
@@ -152,6 +151,28 @@ namespace SigProc.Servico.Controladores
             {
 
                 return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar Prazo!" });
+            }
+        }
+
+        [HttpGet("BuscarPorIdGerenciaUsuario/{id}")]
+        public IActionResult GetByIdUsuario(int id)
+        {
+            try
+            {
+                var gerencia = _gerenciaUsuario.ListarTudo().Where(a => a.IdUsuarioGerencia == id);
+                if (gerencia == null)
+                    return NoContent();
+
+                return StatusCode(200, gerencia);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar gerência!" });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar gerencia!" });
             }
         }
     }

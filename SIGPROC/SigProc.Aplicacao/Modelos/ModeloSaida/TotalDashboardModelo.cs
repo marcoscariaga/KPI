@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SigProc.Dominio.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace SigProc.Aplicacao.Modelos.ModeloSaida
         public string Prioridade { get; set; }
         public string Gerencia { get; set; }
         public int Quantidade { get; set; }
+        public List<ProcessoTramitacao> Processos { get; set; }
     }
 
     public class TotalProcessoPorGerencia

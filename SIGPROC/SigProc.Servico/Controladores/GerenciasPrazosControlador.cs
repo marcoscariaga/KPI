@@ -27,8 +27,7 @@ namespace SisAgenda.Servico.Controladores
         [HttpPost("Cadastrar")]
         public IActionResult Post([FromBody] GerenciaPrazoModelo gerenciaPrazo)
         {
-            //var sUsuario = _usuarioServico.BuscarPorEmail(User.Identity.Name);
-
+            
             try
             {
                 if (gerenciaPrazo.Prazo <= 0)
