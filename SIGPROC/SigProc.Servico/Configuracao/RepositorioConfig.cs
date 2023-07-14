@@ -20,11 +20,6 @@ namespace SigProc.Servico.Configuracao
             builder.Services.AddTransient<IProcessoRepositorio, ProcessoRepositorio>();
             builder.Services.AddTransient<IProcessoTramitacaoRepositorio, ProcessoTramitacaoRepositorio>();
             builder.Services.AddTransient<ITipoContratacaoRepositorio, TipoContratacaoRepositorio>();
-<<<<<<< HEAD
-            builder.Services.AddTransient<IParaContratacaoRepositorio, ParaContratacaoRepositorio>();
-            builder.Services.AddTransient<IInstrumentosAuxiliaresRepositorio, InstrumentosAuxiliaresRepositorio>();
-=======
->>>>>>> parent of c480f34 (Alteração conforme documento)
             builder.Services.AddTransient<ITipoProcessoRepositorio, TipoProcessoRepositorio>();
             builder.Services.AddTransient<IEtapaProcessoRepositorio, EtapaProcessoRepositorio>();
             builder.Services.AddTransient<IStatusProcessoRepositorio, StatusProcessoRepositorio>();
