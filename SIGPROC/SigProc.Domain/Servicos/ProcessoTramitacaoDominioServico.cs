@@ -60,9 +60,15 @@ namespace SigProc.Dominio.Servicos
             var tramitacaoConvertida = ConverteTramitacao(tramitacoes);
 
             var desc = tramitacaoConvertida.ItensTramitacao.OrderBy(x => x.Sequencia).ToList();
+            // fazer uma condição para tratar se a primeira data for null
+
             int lastIndex = desc.Count - 1;
             for (var i = 0; i < desc.Count; i++)
             {
+                if (desc[0].DataRecebimento == string.Empty)
+                {
+                    desc[0].DataRecebimento = "01/01/0001";
+                }
                 var item = desc[i];
 
                 var prazoTramitacaoSicop = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(item.OrgaoDeOrigem)).OrderByDescending(x => x.Prazo).FirstOrDefault();
