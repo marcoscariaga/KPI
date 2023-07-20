@@ -149,6 +149,15 @@ namespace SigProc.Servico.Controladores
             }
         }
 
+        //Inicio metodo UltimaEtapaProcesso
+
+
+
+        //Fim metodo UltimaEtapaProcesso
+
+
+
+
         [HttpPost("AtualizaTramitacoesEtapaProcesso")]
         public IActionResult AtualizaTramitacoesEtapaProcesso(TramitacaoEtapaProcesso tramitacaoEtapa)
         {
