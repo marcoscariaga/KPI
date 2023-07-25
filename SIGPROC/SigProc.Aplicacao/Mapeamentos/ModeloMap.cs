@@ -33,6 +33,8 @@ namespace SigProc.Aplicacao.Mapeamentos
             CreateMap<TipoContratacaoModelo, TipoContratacao>();
             CreateMap<TipoProcessoModelo, TipoProcesso>();
             CreateMap<EtapaProcessoModelo, EtapaProcesso>();
+            CreateMap<ParaContratacaoModelo, ParaContratacao>();
+            CreateMap<InstrumentosAuxiliaresModelo, InstrumentosAuxiliares>();  
             CreateMap<StatusProcessoModelo, StatusProcesso>();
             CreateMap<TipoPrazoModelo, TipoPrazo>(); ;
             CreateMap<TipoUsuarioGerenciaModelo, TipoUsuarioGerencia>(); ;

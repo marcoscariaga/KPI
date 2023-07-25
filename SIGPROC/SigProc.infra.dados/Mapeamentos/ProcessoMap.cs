@@ -40,6 +40,12 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.HasOne<Usuario>(c => c.Usuario)
                 .WithMany()
                 .HasForeignKey(c => c.IdUsuarioCadastro);
+            builder.HasOne<InstrumentosAuxiliares>(c => c.InstrumentosAuxiliares)
+                .WithMany()
+                .HasForeignKey(c => c.IdInstrumentosAuxiliares);
+            builder.HasOne<ParaContratacao>(c => c.ParaContratacao)
+                .WithMany()
+                .HasForeignKey(c => c.IdParaContratacao);
             builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.DataCriacao);
             builder.Property(c => c.DataExclusao);
