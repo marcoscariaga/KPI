@@ -151,7 +151,47 @@ namespace SigProc.Servico.Controladores
 
         //Inicio metodo UltimaEtapaProcesso
 
+        [HttpGet("UltimaEtapaProcesso")]
+        public IActionResult UltimaEtapaProcesso(TramitacaoEtapaProcesso tramitacaoEtapa)
+        {
+            try
+            {
+                // Buscar a última tramitação do processo
+                var ultimaTramitacao = _processoTramitacaoServico
+                    .ListarAtivos()
+                    .Where(x => x.IdProcesso.Equals(tramitacaoEtapa.IdEtapa))
+                    .OrderByDescending(x => x.DataCriacao) // Substitua "DataCriacao" pelo nome da propriedade relevante
+                    .FirstOrDefault();
 
+                // Verificar se foi encontrada alguma tramitação para o processo
+                if (ultimaTramitacao == null)
+                {
+                    return NoContent();
+                }
+
+                // Buscar a última etapa da tramitação
+                var ultimaEtapa = _gerenciaPrazoServico
+                    .ListarAtivos()
+                    .FirstOrDefault(x => x.IdEtapaProcesso.Equals(ultimaTramitacao.IdEtapaProcesso) && x.IdGerencia.Equals(ultimaTramitacao.IdOrgaoDestino));
+
+                // Verificar se foi encontrada alguma etapa
+                if (ultimaEtapa == null)
+                {
+                    return NoContent();
+                }
+
+                // Retornar a última etapa encontrada
+                return StatusCode(200, ultimaEtapa);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { ex.Message, mensagem = $"Erro ao buscar Etapa do processo!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar Etapa do processo!" });
+            }
+        }
 
         //Fim metodo UltimaEtapaProcesso
 
