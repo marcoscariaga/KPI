@@ -30,10 +30,11 @@ namespace SigProc.Dominio.Servicos
         private readonly IFeriadoRepositorio _feriadoRepositorio;
         private readonly IDespachoRepositorio _despachoRepositorio;
         private readonly IDadosDeTramitacaoSicopDominioServico _dadosDoProcessodominioServico;
+        private readonly IProcessoRepositorio _processoRepositorio;
 
         public ProcessoTramitacaoDominioServico(IProcessoTramitacaoRepositorio repository, IGerenciaPrazoRepositorio gerenciaPrazo,
             IGerenciaUsuarioRepositorio gerenciaUsuario, IGerenciaRepositorio gerencia, IFeriadoRepositorio feriadoRepositorio,
-            IDespachoRepositorio despachoRepositorio, IDadosDeTramitacaoSicopDominioServico dadosDoProcessodominioServico) : base(repository)
+            IDespachoRepositorio despachoRepositorio, IDadosDeTramitacaoSicopDominioServico dadosDoProcessodominioServico, IProcessoRepositorio processoRepositorio) : base(repository)
         {
             _repositorio = repository;
             _gerenciaPrazo = gerenciaPrazo;
@@ -42,6 +43,7 @@ namespace SigProc.Dominio.Servicos
             _feriadoRepositorio = feriadoRepositorio;
             _despachoRepositorio = despachoRepositorio;
             _dadosDoProcessodominioServico = dadosDoProcessodominioServico;
+            _processoRepositorio = processoRepositorio;
         }
 
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
@@ -66,9 +68,15 @@ namespace SigProc.Dominio.Servicos
             for (var i = 0; i < desc.Count; i++)
             {
                 if (desc[0].DataRecebimento == string.Empty)
-                {
                     desc[0].DataRecebimento = "01/01/0001";
+
+                if (desc[0].OrgaoDeOrigem == null)
+                {
+                    var processo = _processoRepositorio.BuscarPorNumeroProcesso(processoTramitacao.NumeroProcesso);
+                    int idGerencia = VerificaGerencia(processo.OrgaoCadastro);
+                    desc[0].OrgaoDeOrigem = idGerencia;
                 }
+
                 var item = desc[i];
 
                 var prazoTramitacaoSicop = _gerenciaPrazo.ListarTudo().Where(x => x.IdGerencia.Equals(item.OrgaoDeOrigem)).OrderByDescending(x => x.Prazo).FirstOrDefault();
