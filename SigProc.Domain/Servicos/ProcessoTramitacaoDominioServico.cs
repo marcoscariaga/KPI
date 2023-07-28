@@ -30,11 +30,10 @@ namespace SigProc.Dominio.Servicos
         private readonly IFeriadoRepositorio _feriadoRepositorio;
         private readonly IDespachoRepositorio _despachoRepositorio;
         private readonly IDadosDeTramitacaoSicopDominioServico _dadosDoProcessodominioServico;
-        private readonly IProcessoRepositorio _processoRepositorio;
 
         public ProcessoTramitacaoDominioServico(IProcessoTramitacaoRepositorio repository, IGerenciaPrazoRepositorio gerenciaPrazo,
             IGerenciaUsuarioRepositorio gerenciaUsuario, IGerenciaRepositorio gerencia, IFeriadoRepositorio feriadoRepositorio,
-            IDespachoRepositorio despachoRepositorio, IDadosDeTramitacaoSicopDominioServico dadosDoProcessodominioServico, IProcessoRepositorio processoRepositorio) : base(repository)
+            IDespachoRepositorio despachoRepositorio, IDadosDeTramitacaoSicopDominioServico dadosDoProcessodominioServico) : base(repository)
         {
             _repositorio = repository;
             _gerenciaPrazo = gerenciaPrazo;
@@ -43,7 +42,6 @@ namespace SigProc.Dominio.Servicos
             _feriadoRepositorio = feriadoRepositorio;
             _despachoRepositorio = despachoRepositorio;
             _dadosDoProcessodominioServico = dadosDoProcessodominioServico;
-            _processoRepositorio = processoRepositorio;
         }
 
         public ProcessoTramitacao BuscarUltimaTramitacaoPorNumeroProcesso(string numeroProcesso)
@@ -57,13 +55,12 @@ namespace SigProc.Dominio.Servicos
         }
         public ProcessoTramitacao Inserir(ProcessoTramitacao processoTramitacao)
         {
-            var processo = _processoRepositorio.BuscarPorNumeroProcesso(processoTramitacao.NumeroProcesso);
             var tramitacoes = _dadosDoProcessodominioServico.ConsultarProcesso(processoTramitacao.NumeroProcesso);
             var ultimaTramitacao = _repositorio.BuscarUltimaTramitacaoPorNumeroProcesso(processoTramitacao.NumeroProcesso);
             var tramitacaoConvertida = ConverteTramitacao(tramitacoes);
 
             var desc = tramitacaoConvertida.ItensTramitacao.OrderBy(x => x.Sequencia).ToList();
-            // condição para tratar se a primeira data for null
+            // fazer uma condição para tratar se a primeira data for null
 
             int lastIndex = desc.Count - 1;
             for (var i = 0; i < desc.Count; i++)
@@ -71,7 +68,6 @@ namespace SigProc.Dominio.Servicos
                 if (desc[0].DataRecebimento == string.Empty)
                 {
                     desc[0].DataRecebimento = "01/01/0001";
-                    //desc[0].OrgaoDeOrigem = VerificaGerencia(processo.OrgaoCadastro);
                 }
                 var item = desc[i];
 

@@ -8,7 +8,6 @@ namespace SigProc.Aplicacao.Modelos
 {
     public class ProcessoModelo
     {
-        public int? Id { get; set; }
         public string NumProcesso { get; set; }
         public string Requerente { get; set; }
         public string Assunto { get; set; }
