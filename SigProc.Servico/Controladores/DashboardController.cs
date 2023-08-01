@@ -230,8 +230,8 @@ namespace SigProc.Servico.Controladores
             }
         }
         //Total por prioridade Alta
-        [HttpGet("TotalDashboardAlta/{idUsuario}")]
-        public IActionResult TotaDashboardAlta(int idUsuario)
+        [HttpGet("TotalDashboardAlta")]
+        public IActionResult TotaDashboardAlta(int IdPioridade)
         {
             try
             {
@@ -267,8 +267,8 @@ namespace SigProc.Servico.Controladores
         }
 
         //Total por prioridade Media
-        [HttpGet("TotalDashboardMedia/{idUsuario}")]
-        public IActionResult TotaDashboardMedia(int idUsuario)
+        [HttpGet("TotalDashboardMedia")]
+        public IActionResult TotaDashboardMedia(int idPrioridade)
         {
             try
             {
@@ -304,8 +304,8 @@ namespace SigProc.Servico.Controladores
         }
 
         //Total por prioridade Baixa
-        [HttpGet("TotalDashboardBaixa/{idUsuario}")]
-        public IActionResult TotaDashboardBaixa(int idUsuario)
+        [HttpGet("TotalDashboardBaixa")]
+        public IActionResult TotaDashboardBaixa(int idPrioridade)
         {
             try
             {
