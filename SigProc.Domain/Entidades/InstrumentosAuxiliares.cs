@@ -9,6 +9,6 @@ namespace SigProc.Dominio.Entidades
 {
     public class InstrumentosAuxiliares : Base
     {
-        public  string Descricao { get; set; }
+        public string Descricao { get; set; }
     }
 }

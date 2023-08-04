@@ -9,5 +9,6 @@ namespace SigProc.Aplicacao.Modelos
     public class ParaContratacaoModelo
     {
         public string Descricao { get; set; }
+        public bool status { get; set; }
     }
 }

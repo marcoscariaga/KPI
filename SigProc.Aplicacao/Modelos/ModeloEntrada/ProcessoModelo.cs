@@ -27,6 +27,8 @@ namespace SigProc.Aplicacao.Modelos
         public int IdUsuarioCadastro { get; set; }
         public bool Status { get; set; }
         public int IdStatusProcesso { get; set; }
+        public int IdInstrumentosAuxiliares { get; set; }
+        public int IdParaContratacao { get; set; }
     }
 }
 

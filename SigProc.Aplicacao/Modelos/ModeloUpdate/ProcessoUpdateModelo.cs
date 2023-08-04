@@ -24,6 +24,8 @@ namespace SigProc.Aplicacao.Modelos
         public string InfoComplementar { get; set; }
         public string Prioridade { get; set; }
         public int IdTipoContratacao { get; set; }
+        public int IdInstrumentosAuxiliares { get; set; }
+        public int IdParaContratacao { get; set; }
         public int IdTipoProcesso { get; set; }
         public string Observacao { get; set; }
         public int IdUsuarioCadastro { get; set; }
@@ -38,3 +40,4 @@ namespace SigProc.Aplicacao.Modelos
 
     }
 }
+

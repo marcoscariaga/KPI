@@ -266,36 +266,6 @@ namespace SigProc.Servico.Controladores
             }
         }
 
-        //Todos os processos com prioridade Alta
-        [HttpGet("TodosPrioridadeAlta")]
-        public IActionResult TodosPrioridadeAlta(string Prioridade)
-        {
-            try
-            {
-                // Obter a lista de processos com prioridade "alta"
-                var processosAlta = _tramitacaoServico.ListarAtivos()
-                    .Where(pt => pt.DataEnvio == null && pt.Processo.Prioridade == "alta")
-                    .ToList();
-
-                // Você pode optar por retornar apenas os IDs dos processos ou outras informações necessárias
-                // Neste exemplo, vamos retornar a lista completa de processos com prioridade "alta"
-                var model = new
-                {
-                    PrioridadeAlta = processosAlta,
-                    TotalAlta = processosAlta.Count
-                };
-
-                return StatusCode(200, model);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar os processos de prioridade alta!" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar os processos de prioridade alta!" });
-            }
-        }
 
         //Total por prioridade Media
         [HttpGet("TotalDashboardMedia")]
@@ -334,36 +304,6 @@ namespace SigProc.Servico.Controladores
             }
         }
 
-        //Todos os processos com prioridade Alta
-        [HttpGet("TodosPrioridadeMedia")]
-        public IActionResult TodosPrioridadeMedia(string Prioridade)
-        {
-            try
-            {
-                // Obter a lista de processos com prioridade "alta"
-                var processosMedia = _tramitacaoServico.ListarAtivos()
-                    .Where(pt => pt.DataEnvio == null && pt.Processo.Prioridade == "media")
-                    .ToList();
-
-                // Você pode optar por retornar apenas os IDs dos processos ou outras informações necessárias
-                // Neste exemplo, vamos retornar a lista completa de processos com prioridade "alta"
-                var model = new
-                {
-                    PrioridadeAlta = processosMedia,
-                    TotalAlta = processosMedia.Count
-                };
-
-                return StatusCode(200, model);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao buscar os processos de prioridade media!" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao buscar os processos de prioridade media!" });
-            }
-        }
 
         //Total por prioridade Baixa
         [HttpGet("TotalDashboardBaixa")]
@@ -403,22 +343,19 @@ namespace SigProc.Servico.Controladores
         }
 
         //Todos os processos com prioridade Alta
-        [HttpGet("TodosPrioridadeBaixa")]
-        public IActionResult TodosPrioridadeBaixa(string Prioridade)
+        [HttpGet("TodosPrioridade")]
+        public IActionResult TodosPrioridade(string Prioridade)
         {
             try
             {
                 // Obter a lista de processos com prioridade "alta"
-                var processosBaixa = _tramitacaoServico.ListarAtivos()
-                    .Where(pt => pt.DataEnvio == null && pt.Processo.Prioridade == "baixa")
+                var processosAlta = _tramitacaoServico.ListarAtivos()
+                    .Where(pt => pt.DataEnvio == null && pt.Processo.Prioridade == "alta")
                     .ToList();
-
-                // Você pode optar por retornar apenas os IDs dos processos ou outras informações necessárias
-                // Neste exemplo, vamos retornar a lista completa de processos com prioridade "alta"
                 var model = new
                 {
-                    PrioridadeAlta = processosBaixa,
-                    TotalAlta = processosBaixa.Count
+                    PrioridadeAlta = processosAlta,
+                    TotalAlta = processosAlta.Count
                 };
 
                 return StatusCode(200, model);
