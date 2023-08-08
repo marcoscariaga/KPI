@@ -34,7 +34,7 @@ namespace SigProc.infra.dados.Repositorios
         }
         public Processo RetornaPorId(int id)
         {
-            return contexto.Processo.Include(a => a.TipoContratacao).Include(a => a.TipoProcesso).Include(a=>a.StatusProcesso).Where(x => x.Id.Equals(id)).FirstOrDefault();
+            return contexto.Processo.Include(a => a.TipoContratacao).Include(a => a.InstrumentosAuxiliares).Include(a => a.ParaContratacao).Include(a => a.TipoProcesso).Include(a=>a.StatusProcesso).Where(x => x.Id.Equals(id)).FirstOrDefault();
         }
         public ICollection<Processo> ListarTudo()
         {
