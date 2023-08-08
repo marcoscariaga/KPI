@@ -15,7 +15,7 @@ namespace SigProc.infra.dados.Mapeamentos
         {
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Descricao).IsRequired();
-            builder.Property(c => c.Status);
+            builder.Property(c => c.Status).IsRequired();
             builder.Property(c => c.DataCriacao);
             builder.Property(c => c.DataExclusao);
             builder.Property(c => c.DataEdicao);
