@@ -22,11 +22,15 @@ namespace SigProc.infra.dados.Contextos
         public DbSet<GerenciaUsuario> GerenciaUsuario { get; set; }
         public DbSet<Processo> Processo { get; set; }
         public DbSet<ProcessoTramitacao> ProcessoTramitacao { get; set; }
+
+        //Alterar o nome TipoContratacao para TipoModalidade
         public DbSet<TipoContratacao> TipoContratacao { get; set; }
         public DbSet<TipoProcesso> TipoProcesso { get; set; }
         public DbSet<EtapaProcesso> EtapaProcesso { get; set; }
         public DbSet<ParaContratacao> ParaContratacao { get; set; }
         public DbSet<InstrumentosAuxiliares> InstrumentosAuxiliares { get; set; }   
+
+        //Alterar o nome StatusProcesso para EstadoProcesso
         public DbSet<StatusProcesso> StatusProcesso { get; set; }
         public DbSet<TipoPrazo> TipoPrazo { get; set; }
         public DbSet<DadosDoProcessoSicop> DadosDoProcessoSicop { get; set; }
@@ -44,8 +48,12 @@ namespace SigProc.infra.dados.Contextos
             modelBuilder.ApplyConfiguration(new GerenciaUsuarioMap());
             modelBuilder.ApplyConfiguration(new ProcessoMap());
             modelBuilder.ApplyConfiguration(new ProcessoTramitacaoMap());
+
+            //Alterar o nome TipoContratacaoMap para TipoModalidadeMap
             modelBuilder.ApplyConfiguration(new TipoContratacaoMap());
             modelBuilder.ApplyConfiguration(new TipoProcessoMap());
+
+            //Alterar o nome StatusProcesso para EstadoProcesso
             modelBuilder.ApplyConfiguration(new StatusProcessoMap());
             modelBuilder.ApplyConfiguration(new TipoPrazoMap());
             modelBuilder.ApplyConfiguration(new TipoUsuarioGerenciaMap());

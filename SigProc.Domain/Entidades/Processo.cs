@@ -22,17 +22,25 @@ namespace SigProc.Dominio.Entidades
         public string OrgaoDestino { get; set; }
         public string InfoComplementar { get; set; }
         public string Prioridade { get; set; }
+
+        //Alterar o nome IdTipoContratacao para IdTipoModalidade
         public int IdTipoContratacao { get; set; }
         public int IdTipoProcesso { get; set; }
         public string Observacao { get; set; }
         public int IdUsuarioCadastro { get; set; }
+
+        //Alterar o nome IdStatusProcesso para IdEstadoProcesso
         public int IdStatusProcesso { get; set; }
         public int? IdInstrumentosAuxiliares { get; set; }
         public int? IdParaContratacao { get; set; }
 
         public virtual Usuario Usuario { get; set; }
+
+        //Alterar o nome TipoContratacao para TipoModalidade
         public virtual TipoContratacao TipoContratacao { get; set; }
         public virtual TipoProcesso TipoProcesso { get; set; }
+
+        //Alterar o nome StatusProcesso para EstadoProcesso
         public virtual StatusProcesso StatusProcesso { get; set; }
         public virtual InstrumentosAuxiliares InstrumentosAuxiliares { get; set; }
         public virtual ParaContratacao ParaContratacao { get; set; }

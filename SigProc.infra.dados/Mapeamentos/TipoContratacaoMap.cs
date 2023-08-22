@@ -11,6 +11,7 @@ namespace SigProc.infra.dados.Mapeamentos
 {
     public class TipoContratacaoMap : IEntityTypeConfiguration<TipoContratacao>
     {
+        //Alterar o nome da classe para TipoModalidade
         public void Configure(EntityTypeBuilder<TipoContratacao> builder)
         {
             builder.HasKey(c => c.Id);

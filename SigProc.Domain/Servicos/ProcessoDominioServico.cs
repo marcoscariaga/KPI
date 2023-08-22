@@ -31,7 +31,8 @@ namespace SigProc.Dominio.Servicos
         public Processo Inserir(Processo processo)
         {
             #region Validação para cadastrar o processo
-            processo.IdStatusProcesso = 1;
+            //processo.IdInstrumentosAuxiliares = 1;
+            
             var consultaProcesso = _repositorio.BuscarPorNumeroProcesso(processo.NumProcesso);
             if (consultaProcesso != null)
                 throw new ArgumentException($"O processo {processo.NumProcesso} já está cadastrado no sistema.");

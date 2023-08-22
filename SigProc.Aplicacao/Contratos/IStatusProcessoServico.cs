@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SigProc.Aplicacao.Contratos
 {
+    //Alterar o nome da classe para IEstadoProcesso
     public interface IStatusProcessoServico : IBaseDominioServico<StatusProcesso>
     {
         public ICollection<StatusProcesso> ListarAtivos();

@@ -23,12 +23,16 @@ namespace SigProc.Aplicacao.Modelos
         public string OrgaoDestino { get; set; }
         public string InfoComplementar { get; set; }
         public string Prioridade { get; set; }
+
+        //Alterar o nome IdTipoContratacao para IdTipoModalidade
         public int IdTipoContratacao { get; set; }
         public int IdInstrumentosAuxiliares { get; set; }
         public int IdParaContratacao { get; set; }
         public int IdTipoProcesso { get; set; }
         public string Observacao { get; set; }
         public int IdUsuarioCadastro { get; set; }
+
+        //Alterar o nome IdStatusProcesso para IdEstadoProcesso
         public int IdStatusProcesso { get; set; }
         public bool Status { get; set; }
         

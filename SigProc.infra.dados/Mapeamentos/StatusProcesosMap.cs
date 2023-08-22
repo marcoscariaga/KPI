@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SigProc.infra.dados.Mapeamentos
 {
+    //Alterar o nome da classe para EstadoProcesso
     public class StatusProcessoMap : IEntityTypeConfiguration<StatusProcesso>
     {
         public void Configure(EntityTypeBuilder<StatusProcesso> builder)

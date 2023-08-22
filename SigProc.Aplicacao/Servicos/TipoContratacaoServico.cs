@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace SigProc.Aplicacao.Servicos
 {
+
+    //Alterar o nome TipoContratacao para TipoModalidade
     public class TipoContratacaoServico : BaseServico<TipoContratacao>, ITipoContratacaoServico
     {
         private readonly ITipoContratacaoDominioServico tipoContratacaoDomainService;

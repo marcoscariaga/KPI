@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace SigProc.Aplicacao.Servicos
 {
+
+    //Alterar o nome StatusProcesso para EstadoProcesso
     public class StatusProcessoServico : BaseServico<StatusProcesso>, IStatusProcessoServico
     {
         private readonly IStatusProcessoDominioServico statusProcessoDomainService;

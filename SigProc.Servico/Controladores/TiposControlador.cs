@@ -16,6 +16,7 @@ namespace SisAgenda.Servico.Controladores
     [ApiController]
     public class TiposController : ControllerBase
         {
+        //Alterar todos os nomes de TipoContratacao para TipoModalidade e StatusProcesso para EstadoProcesso
             private readonly ITipoContratacaoServico _tipoContratacaoServico;
             private readonly ITipoProcessoServico _tipoProcessoServico;
             private readonly ITipoPrazoServico _tipoPrazoServico;

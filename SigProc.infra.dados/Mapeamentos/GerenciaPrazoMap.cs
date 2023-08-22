@@ -21,6 +21,7 @@ namespace SigProc.infra.dados.Mapeamentos
             builder.HasOne<TipoPrazo>(c => c.TipoPrazo)
                 .WithMany()
                 .HasForeignKey(c => c.IdTipoPrazo).IsRequired();
+            //Alterar o nome de TipoContratacao para TipoModalidade
             builder.HasOne<TipoContratacao>(c => c.TipoContratacao)
                 .WithMany()
                 .HasForeignKey(c => c.IdTipoContratacao);

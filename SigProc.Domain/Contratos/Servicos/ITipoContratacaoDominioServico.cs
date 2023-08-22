@@ -6,6 +6,7 @@ namespace SigProc.Dominio.Contratos.Servicos
 {
     public interface ITipoContratacaoDominioServico : IBaseDominioServico<TipoContratacao>
     {
+        //Alterar o nome da classe de ITipoContratacaoDominioServico para ITipoModalidadeDominiServico
         public ICollection<TipoContratacao> ListarAtivos();
     }
 }

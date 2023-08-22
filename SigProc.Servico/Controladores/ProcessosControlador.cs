@@ -29,7 +29,8 @@ namespace SisAgenda.Servico.Controladores
             
             try
             {
-                processoModelo.IdStatusProcesso = 1;
+                //Alterar o nome IdStatusProcesso para IdEstadoProcesso
+                //processoModelo.IdStatusProcesso = 1;
                 var cadastro = _processoServico.Inserir(_mapper.Map<Processo>(processoModelo));
                 
 

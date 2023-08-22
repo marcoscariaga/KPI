@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using SigProc.Domain.Contratos.Servicos;
 using SigProc.Domain.Entidades;
 using SigProc.Domimio.Contratos.Dados;
@@ -16,6 +17,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Xml.Schema;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SigProc.Dominio.Servicos
@@ -61,12 +63,17 @@ namespace SigProc.Dominio.Servicos
             var ultimaTramitacao = _repositorio.BuscarUltimaTramitacaoPorNumeroProcesso(processoTramitacao.NumeroProcesso);
             var tramitacaoConvertida = ConverteTramitacao(tramitacoes);
 
+
             var desc = tramitacaoConvertida.ItensTramitacao.OrderBy(x => x.Sequencia).ToList();
-            // fazer uma condição para tratar se a primeira data for null
 
             int lastIndex = desc.Count - 1;
             for (var i = 0; i < desc.Count; i++)
             {
+                if (processoTramitacao.MatriculaDigitador == "TRAM.AU")
+                {
+                    throw new ArgumentException($"Erro ao cadastrar a tramitação, entre em contato com a ATI. Código TRAM.AU");
+                }
+
                 if (desc[0].DataRecebimento == string.Empty)
                     desc[0].DataRecebimento = "01/01/0001";
 
@@ -335,11 +342,17 @@ namespace SigProc.Dominio.Servicos
                 throw new ArgumentException($"A gerência {textoGerencia}, não está cadastrada no sistema.");
 
             Match numeroGerencia = Regex.Match(textoGerencia, @"\d{8}");
-            string codigoGerencia = Convert.ToInt32(numeroGerencia.Value).ToString();
+            //string codigoGerencia = Convert.ToInt32(numeroGerencia.Value).ToString();
+            var codigoGerencia = numeroGerencia.Value.TrimStart('0').Trim();
 
-            var gerencia = _gerencia.ListarTudo().Where(x => x.Codigo.Equals(codigoGerencia.Trim())).FirstOrDefault();
+            //var gerencia = _gerencia.ListarTudo().Where(x => x.Codigo.Equals(codigoGerencia.Trim())).FirstOrDefault();
+            var gerencia = _gerencia.ListarTudo().Where(x => x.Codigo.Equals(codigoGerencia)).FirstOrDefault();
+
             if (gerencia == null)
-                throw new ArgumentException($"A gerência {gerencia}, não está cadastrada no sistema.");
+            {
+                Log.ForContext("Acao", $"VerificaGerencia").Warning($"Erro ao cadastrar a tramitação, a gerência não está cadastrada no sistema.");
+                throw new ArgumentException($"A gerência {gerencia}, não está cadastrada no sistema");
+            }
 
             return gerencia.Id;
         }
@@ -354,6 +367,7 @@ namespace SigProc.Dominio.Servicos
 
             return despacho.Descricao;
         }
+        
         public DadosDeTramitacao ConverteTramitacao(DadosDeTramitacaoSicop dados)
         {
 
@@ -369,6 +383,10 @@ namespace SigProc.Dominio.Servicos
 
             for (int i = 1; i <= 12; i++)
             {
+                if((string)dados.GetType().GetProperty($"MatDig_{i:D2}").GetValue(dados) == "TRAM.AU")
+                {
+                    throw new ArgumentException($"Erro ao cadastrar a Gerencia. Favor entrar em contato com a ATI. ERRO: TRAM.AU");
+                }
                 if ((string)dados.GetType().GetProperty($"Item_{i:D2}").GetValue(dados) != "")
                 {
                     string orgaoDestinoAtual = (string)dados.GetType().GetProperty($"OrgaoDeDestino_{i:D2}").GetValue(dados);
@@ -384,8 +402,12 @@ namespace SigProc.Dominio.Servicos
                         DataRecebimento = (string)dados.GetType().GetProperty($"DataDoDespacho_{i + 1:D2}").GetValue(dados),
                         Sequencia = (string)dados.GetType().GetProperty($"Sequencia_{i:D2}").GetValue(dados),
                         Guia = (string)dados.GetType().GetProperty($"Guia_{i:D2}").GetValue(dados),
-                        Despacho = (string)dados.GetType().GetProperty($"Despacho_{i:D2}").GetValue(dados)
-                    };
+
+                        //if(MatDig = (string)dados.GetType().GetProperty($"MatDig_{i:D2}").GetValue(dados.Equals = "TRAM.AU"))
+                        //{
+                        //    throw new ArgumentException($"Erro ao cadastrar a Gerencia. Favor entrar em contato com a ATI");
+                        //}
+                };
 
                     dadosTramitacao.ItensTramitacao.Add(item);
                 }

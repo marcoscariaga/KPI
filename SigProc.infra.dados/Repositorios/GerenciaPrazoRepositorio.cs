@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace SigProc.infra.dados.Repositorios
 {
+
+    //Alterar TipoContratacao para TipoModalidade e StatusProcesso para EstadoProcesso onde houver
     public class GerenciaPrazoRepositorio : BaseRepositorio<GerenciaPrazo>, IGerenciaPrazoRepositorio
     {
         private readonly SqlServidorContexto contexto;

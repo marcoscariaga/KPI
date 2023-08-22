@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SigProc.Aplicacao.Contratos
 {
+    //Alterar o nome da classe para ITipoModalidadeServico
     public interface ITipoContratacaoServico : IBaseDominioServico<TipoContratacao>
     {
         public ICollection<TipoContratacao> ListarAtivos();

@@ -5,7 +5,7 @@ using SigProc.Dominio.Entidades;
 
 namespace SigProc.Dominio.Servicos
 {
-
+    //Alterar o nome da classe para TipoModalidadeDominioServico
     public class TipoContratacaoDominioServico : BaseDominioServico<TipoContratacao>, ITipoContratacaoDominioServico
     {
         private readonly ITipoContratacaoRepositorio _repositorio;

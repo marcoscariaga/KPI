@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SigProc.Aplicacao.Modelos
 {
+    //Alterar o nome da classe de StatusProcessoModelo para EstadoProcessoModelo
     public class StatusProcessoModelo
     {
         public string Descricao { get; set; }

@@ -9,11 +9,16 @@ using SigProc.Aplicacao.Contratos;
 using SigProc.Aplicacao.Modelos;
 using SigProc.Aplicacao.Servicos;
 
+
+//Alterar o nome da Classe para EstadoProcessoController
+
 namespace SisAgenda.Servico.Controladores
 
 {  //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
+
+    //Alterar todos os nomes StatusProcesso para EstadoProcesso
     public class StatusProcessoController : ControllerBase
     {
         private readonly IStatusProcessoServico _statusProcessoServico;
