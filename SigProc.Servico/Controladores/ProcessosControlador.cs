@@ -40,17 +40,17 @@ namespace SisAgenda.Servico.Controladores
             catch (ValidationException ex)
             {
                 //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
-                return StatusCode(400, new { ex.Errors, mensagem = "Erro ao cadastrar processo!" });
+                return StatusCode(400, new { ex.Errors, mensagem = "Erro ao cadastrar processo! Entrar em contato com a ATI. Erro: TRAM.AU" });
             }
             catch (ArgumentException ex)
             {
                 //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
-                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar processo!" });
+                return StatusCode(400, new { ex.Message, mensagem = "Erro ao cadastrar processo! Entrar em contato com a ATI. Erro: TRAM.AU" });
             }
             catch (Exception ex)
             {
                 //Log.ForContext("Action", $"Catalogos.Get").Information($"{sUsuario}, erro ao cadastrar a usuário {usuario.Nome}. - {ex.Message}");
-                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar processo!" });
+                return StatusCode(500, new { ex.Message, mensagem = "Erro ao cadastrar processo! Entrar em contato com a ATI. Erro: TRAM.AU" });
             }
         }
 
