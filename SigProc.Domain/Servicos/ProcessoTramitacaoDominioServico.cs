@@ -386,6 +386,7 @@ namespace SigProc.Dominio.Servicos
                 if((string)dados.GetType().GetProperty($"MatDig_{i:D2}").GetValue(dados) == "TRAM.AU")
                 {
                     throw new ArgumentException($"Erro ao cadastrar a Gerencia. Favor entrar em contato com a ATI. ERRO: TRAM.AU");
+                    break;
                 }
                 if ((string)dados.GetType().GetProperty($"Item_{i:D2}").GetValue(dados) != "")
                 {
