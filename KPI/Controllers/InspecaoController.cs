@@ -31,6 +31,7 @@ namespace KPI.Controllers
 //               .OrderBy(p => p.Month)
                .ToList();
 
+
            return View();
         }
     }

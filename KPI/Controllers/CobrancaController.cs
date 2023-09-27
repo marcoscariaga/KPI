@@ -20,7 +20,7 @@ namespace KPI.Controllers
 
             var result = _context.CobrancaSisvisas
                .Where(p => p.Situacao != 2 && p.Situacao != 3)
-               .Where(p => new[] { 2019, 2020, 2021, 2022, 2023 }.Contains(p.DtVencto1.Year)) // YEAR(DT_VENCTO_1) IN (2019,2020,2021,2022,2023)
+               //.Where(p => new[] { 2019, 2020, 2021, 2022, 2023 }.Contains(p.DtVencto1.Year)) // YEAR(DT_VENCTO_1) IN (2019,2020,2021,2022,2023)
                .Where(p => new[] { 5207, 5223, 5231, 5274 }.Contains(p.CdReceita)) // CD_RECEITA in (5207,5223,5231,5274)
                .GroupBy(p => new { p.CdReceita, Year = p.DtCompetencia.Year }) // GROUP BY CD_RECEITA, YEAR(DT_COMPETENCIA)
                .Select(group => new
@@ -36,10 +36,10 @@ namespace KPI.Controllers
             List<decimal> cd5223Values = new List<decimal>();
             List<decimal> cd5231Values = new List<decimal>();
             List<decimal> cd5274Values = new List<decimal>();
-            List<ColumnSeriesData> cd5207Data = new List<ColumnSeriesData>();
-            List<ColumnSeriesData> cd5223Data = new List<ColumnSeriesData>();
-            List<ColumnSeriesData> cd5231Data = new List<ColumnSeriesData>();
-            List<ColumnSeriesData> cd5274Data = new List<ColumnSeriesData>();
+            List<LineSeriesData> cd5207Data = new List<LineSeriesData>();
+            List<LineSeriesData> cd5223Data = new List<LineSeriesData>();
+            List<LineSeriesData> cd5231Data = new List<LineSeriesData>();
+            List<LineSeriesData> cd5274Data = new List<LineSeriesData>();
 
             foreach (var item in result)
             {
@@ -53,39 +53,39 @@ namespace KPI.Controllers
                 else if (item.CdReceita == 5223)
                 {
                     if (item.VlPrincipal >= 1000000)
-                        cd5223Values.Add(item.VlPrincipal / 1000);
+                        cd5223Values.Add(item.VlPrincipal / 100);
                     else
                         cd5223Values.Add(item.VlPrincipal);
                 }
                 else if (item.CdReceita == 5231)
                 {
                     if (item.VlPrincipal >= 1000000)
-                        cd5231Values.Add(item.VlPrincipal / 1000);
+                        cd5231Values.Add(item.VlPrincipal / 100);
                     else
                         cd5231Values.Add(item.VlPrincipal);
                 }
                 else if (item.CdReceita == 5274)
                 {
                     if (item.VlPrincipal >= 1000000)
-                        cd5274Values.Add(item.VlPrincipal / 1000);
+                        cd5274Values.Add(item.VlPrincipal / 100);
                     else
                         cd5274Values.Add(item.VlPrincipal);
                 }
             }
 
-            cd5207Values.ForEach(p => cd5207Data.Add(new ColumnSeriesData
+            cd5207Values.ForEach(p => cd5207Data.Add(new LineSeriesData
             {
                 Y = ((double)p)
             }));
-            cd5223Values.ForEach(p => cd5223Data.Add(new ColumnSeriesData
+            cd5223Values.ForEach(p => cd5223Data.Add(new LineSeriesData
             {
                 Y = ((double)p)
             }));
-            cd5231Values.ForEach(p => cd5231Data.Add(new ColumnSeriesData
+            cd5231Values.ForEach(p => cd5231Data.Add(new LineSeriesData
             {
                 Y = ((double)p)
             }));
-            cd5274Values.ForEach(p => cd5274Data.Add(new ColumnSeriesData
+            cd5274Values.ForEach(p => cd5274Data.Add(new LineSeriesData
             {
                 Y = ((double)p)
             }));
