@@ -31,8 +31,8 @@
       },
         Tooltip = new Tooltip
         {
-            HeaderFormat = "<span style='font-size:10px'>{point.key}</span><br><table style='font-size:12px'>",
-            PointFormat = "R$ {point.y:.2f}"
+            HeaderFormat = "<span style='font-size:10px'>{point.key}</span><br>",
+                    PointFormat = "<span style='color:{point.color}'><b>⦿</b></span> <table style='font-size:12px'>{series.name} - R$ {point.y:.2f}</table>"
         },
         Legend = new Legend
         {
@@ -43,10 +43,10 @@
             BorderWidth = 0
         },
         Series = new List<Series> {
-        new LineSeries { Name = "5207 (x100)", Data = (List<LineSeriesData>)ViewData["cd5207Data"] },
-        new LineSeries { Name = "5223", Data = (List<LineSeriesData>)ViewData["cd5223Data"] },
-        new LineSeries { Name = "5231", Data = (List<LineSeriesData>)ViewData["cd5231Data"] },
-        new LineSeries { Name = "5274", Data = (List<LineSeriesData>)ViewData["cd5274Data"] }
+        new LineSeries { Name = "5207 (x100)", Data = (List<LineSeriesData>)ViewData["cd5207Data"], LineWidth = 2 },
+        new LineSeries { Name = "5223", Data = (List<LineSeriesData>)ViewData["cd5223Data"], LineWidth = 2 },
+        new LineSeries { Name = "5231", Data = (List<LineSeriesData>)ViewData["cd5231Data"], LineWidth = 2 },
+        new LineSeries { Name = "5274", Data = (List<LineSeriesData>)ViewData["cd5274Data"], LineWidth = 2 }
       }
     };
 

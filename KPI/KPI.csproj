@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Spinner\**" />
+    <Content Remove="Views\Spinner\**" />
+    <EmbeddedResource Remove="Views\Spinner\**" />
+    <None Remove="Views\Spinner\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\Inspecao.cs" />
+    <Compile Remove="Controllers\SpinnerController.cs" />
   </ItemGroup>
 
   <ItemGroup>

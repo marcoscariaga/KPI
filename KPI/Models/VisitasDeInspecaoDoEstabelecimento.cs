@@ -16,7 +16,11 @@ public partial class VisitasDeInspecaoDoEstabelecimento
     [Column(TypeName = "datetime")]
     public DateTime DataVisita { get; set; }
 
+    public int MesVisita { get; set; }
+
     public int AnoVisita { get; set; }
+
+    public int Total { get; set; }
 
     public bool PrimeiraVisitaAnual { get; set; }
 
