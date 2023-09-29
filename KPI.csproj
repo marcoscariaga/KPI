@@ -7,13 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\**" />
     <Compile Remove="Views\Spinner\**" />
-    <Content Remove="Services\**" />
     <Content Remove="Views\Spinner\**" />
-    <EmbeddedResource Remove="Services\**" />
     <EmbeddedResource Remove="Views\Spinner\**" />
-    <None Remove="Services\**" />
     <None Remove="Views\Spinner\**" />
   </ItemGroup>
 
@@ -30,6 +26,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
