@@ -2,6 +2,7 @@
 using KPI.Data;
 using KPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Controller = Microsoft.AspNetCore.Mvc.Controller;
@@ -17,11 +18,11 @@ namespace KPI.Controllers
             _context = context;
         }
 
-        public IActionResult Index(string ano)
+        public async Task<IActionResult> Index(string ano)
         {
             #region Chart
 
-            var result = _context.VisitasDeInspecaoDoEstabelecimentos
+            var result = await _context.VisitasDeInspecaoDoEstabelecimentos
                .Where(p => new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }.Contains(p.DataVisita.Month))
                .GroupBy(p => new { p.DataVisita.Month, p.DataVisita.Year })
                .Select(group => new
@@ -32,7 +33,7 @@ namespace KPI.Controllers
                })
                .OrderBy(p => p.Year)
                .OrderBy(p => p.Month)
-               .ToList();
+               .ToListAsync();
 
             List<LineSeriesData> ano2016Data = new List<LineSeriesData>();
             List<LineSeriesData> ano2017Data = new List<LineSeriesData>();
@@ -82,7 +83,7 @@ namespace KPI.Controllers
             if (ano == string.Empty || ano == null)
                 ano = DateTime.Now.Year.ToString();
 
-            visitasDeInspecaoDoEstabelecimento = _context.VisitasDeInspecaoDoEstabelecimentos
+            visitasDeInspecaoDoEstabelecimento = await _context.VisitasDeInspecaoDoEstabelecimentos
                .Where(p => new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }.Contains(p.DataVisita.Month))
                .Where(p => p.DataVisita.Year == Convert.ToInt32(ano))
                .GroupBy(p => new { p.DataVisita.Month, p.DataVisita.Year })
@@ -94,7 +95,7 @@ namespace KPI.Controllers
                })
                .OrderBy(p => p.AnoVisita)
                .OrderBy(p => p.MesVisita)
-               .ToList();
+               .ToListAsync();
 
             total = visitasDeInspecaoDoEstabelecimento.Sum(item => item.Total);
 
