@@ -19,10 +19,12 @@ namespace KPI.Controllers
         {
             #region Chart
 
+            var codigoReceita = new[] { 5207, 5223, 5231, 5274 };
+
             var result = await _context.CobrancaSisvisas
                .Where(p => p.Situacao != 2 && p.Situacao != 3)
-               .Where(p => new[] { 5207, 5223, 5231, 5274 }.Contains(p.CdReceita)) // CD_RECEITA in (5207,5223,5231,5274)
-               .GroupBy(p => new { p.CdReceita, Year = p.DtCompetencia.Year }) // GROUP BY CD_RECEITA, YEAR(DT_COMPETENCIA)
+               .Where(p => codigoReceita.Contains(p.CdReceita))
+               .GroupBy(p => new { p.CdReceita, Year = p.DtCompetencia.Year })
                .Select(group => new
                {
                    CdReceita = group.Key.CdReceita,
@@ -87,7 +89,7 @@ namespace KPI.Controllers
             cobrancaSisvisa = await _context.CobrancaSisvisas
                 .Where(p => p.DtVencto1.Year == Convert.ToInt32(ano))
                 .Where(p => p.Situacao != 2 && p.Situacao != 3)
-                .Where(p => p.CdReceita == 5207 || p.CdReceita == 5223 || p.CdReceita == 5231 || p.CdReceita == 5274)
+                .Where(p => codigoReceita.Contains(p.CdReceita))
                 .GroupBy(p => p.CdReceita)
                 .Select(group => new CobrancaSisvisa
                 {
