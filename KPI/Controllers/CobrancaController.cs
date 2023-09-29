@@ -2,6 +2,7 @@
 using KPI.Data;
 using KPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Controller = Microsoft.AspNetCore.Mvc.Controller;
 
 namespace KPI.Controllers
@@ -14,11 +15,11 @@ namespace KPI.Controllers
         {
                 _context = context;
         }
-        public IActionResult Index(string ano)
+        public async Task<IActionResult> Index(string ano)
         {
             #region Chart
 
-            var result = _context.CobrancaSisvisas
+            var result = await _context.CobrancaSisvisas
                .Where(p => p.Situacao != 2 && p.Situacao != 3)
                .Where(p => new[] { 5207, 5223, 5231, 5274 }.Contains(p.CdReceita)) // CD_RECEITA in (5207,5223,5231,5274)
                .GroupBy(p => new { p.CdReceita, Year = p.DtCompetencia.Year }) // GROUP BY CD_RECEITA, YEAR(DT_COMPETENCIA)
@@ -29,7 +30,7 @@ namespace KPI.Controllers
                    VlPrincipal = group.Sum(p => p.VlPrincipal)
                })
                .OrderBy(p => p.Year)
-               .ToList();
+               .ToListAsync();
 
             List<LineSeriesData> cd5207Data = new List<LineSeriesData>();
             List<LineSeriesData> cd5223Data = new List<LineSeriesData>();
@@ -83,7 +84,7 @@ namespace KPI.Controllers
             if (ano == string.Empty || ano == null)
                 ano = DateTime.Now.Year.ToString();
 
-            cobrancaSisvisa = _context.CobrancaSisvisas
+            cobrancaSisvisa = await _context.CobrancaSisvisas
                 .Where(p => p.DtVencto1.Year == Convert.ToInt32(ano))
                 .Where(p => p.Situacao != 2 && p.Situacao != 3)
                 .Where(p => p.CdReceita == 5207 || p.CdReceita == 5223 || p.CdReceita == 5231 || p.CdReceita == 5274)
@@ -94,7 +95,7 @@ namespace KPI.Controllers
                     VlPrincipal = group.Sum(p => p.VlPrincipal)
                 })
                 .OrderByDescending(p => p.VlPrincipal)
-                .ToList();
+                .ToListAsync();
 
             total = cobrancaSisvisa.Sum(item => item.VlPrincipal);
 
