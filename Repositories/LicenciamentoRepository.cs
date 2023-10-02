@@ -46,7 +46,8 @@ namespace KPI.Repositories
                             and req.VeiculoId is not null
                             and  req.situacaoId = @situacao
                             union all 
-                            select 'Total' as 'Licencas', count(e.inscricaomunicipal) as 'Total' from Estabelecimento e";
+                            select 'Total' as 'Licencas', count(e.inscricaomunicipal) as 'Total' from Estabelecimento e
+                            order by 'Total'";
 
                 var result = await connection.QueryAsync<DashboardLicenciamentoModel>(sql, new { ano, situacao });
                 return result.ToList();

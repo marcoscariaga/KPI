@@ -29,7 +29,7 @@
         <thead>
             <tr>
                 <th>Licenças</th>
-                <th>Total</th>
+                <th>Estabelecimentos</th>
                 <th></th>
             </tr>
         </thead>
@@ -37,8 +37,21 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Licencas</td>
-                <td>@item.Total</td>
+                @if (item.Licencas == "Total")
+                {
+                    <td><b>@item.Licencas</b></td>
+                }
+                else
+                {
+                    <td>@item.Licencas</td>
+                }
+                @if(item.Licencas == "Total")
+                {
+                    <td><b>@item.Total</b></td>
+                }else
+                {
+                    <td>@item.Total</td>
+                }
                 <td></td>
             </tr>
         }
@@ -69,7 +82,7 @@
     <script>
         new Highcharts.Chart({
             chart: {
-                type: 'pyramid',
+                type: 'funnel',
                 renderTo: 'chart'
             },
             title: {
@@ -80,7 +93,8 @@
                     innerSize: '60%',
                     dataLabels: {
                         enable: true,
-                        format: '<b>{point.name}</b> ({point.y:,.0f})'
+                        format: '<b>{point.name}</b><br>({point.y:,.0f})',
+                        softConnector: true
                     },
                     center: ['50%', '50%'],
                     neckWidth: '30%',
@@ -94,7 +108,7 @@
             },
             series: [
                 {
-                    name: 'Licenciamentos',
+                    name: 'Estabelecimentos',
                     data: dadosGrafico
                 }
             ],
