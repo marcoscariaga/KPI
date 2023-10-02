@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Total Licenças Deferidas";
+}
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/funnel.js"></script>
+<script src="https://code.highcharts.com/modules/pyramid.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+@using Highsoft.Web.Mvc.Charts
+@using Highsoft.Web.Mvc.Charts.Rendering
+
+@model List<KPI.Models.DashboardLicenciamentoModel>
+
+@{
+    var chartOptions = new Highcharts
+            {
+                Chart = new Chart
+                {
+                    Type = ChartType.Funnel
+                },
+                Title = new Title
+                {
+                    Text = "Licenças Deferidas X Estabelecimentos"
+                },
+                PlotOptions = new PlotOptions
+                {
+                    Series = new PlotOptionsSeries
+                    {
+                        DataLabels = new PlotOptionsSeriesDataLabels
+                        {
+                            Enabled = true,
+                            Format = "<b>{point.name}</b> ({point.y:,.0f})"
+                        }
+                    },
+                    Funnel = new PlotOptionsFunnel
+                    {
+                        NeckWidth = "30%",
+                        NeckHeight = "25%",
+                        Width = "80%"
+                    }
+                },
+                Legend = new Legend
+                {
+                    Enabled = false
+                },
+                //Series = new List<Series>
+                //{
+                //    new FunnelSeries
+                //    {
+                //        Name = "Licenciamento",
+                //        Data = new List<FunnelSeriesData> {
+                //            new FunnelSeriesData{ Name = "Total", Y = Convert.ToDouble(ViewData["total"]) },
+                //            new FunnelSeriesData{ Name = "Deferidas", Y = Convert.ToDouble(ViewData["deferidas"]) },
+                //            new FunnelSeriesData{ Name = "Veículos", Y = Convert.ToDouble(ViewData["veiculos"]) }
+                //        }
+                //    },
+                //}
+            };
+
+    chartOptions.ID = "chart";
+    var renderer = new HighchartsRenderer(chartOptions);
+}
+
+<div class="card">
+    <div class="card-body">
+        <div id="grafico"></div>
+    </div>
+</div>
+</br>
+
+<div class="card">
+    <div class="card-body">
+        <h2>Total de Licenças Deferidas X Estabelecimentos em @ViewBag.Ano</h2>
+        <p></p>
+                <table class="table">
+        <thead>
+            <tr>
+                <th>Licenças</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Licencas</td>
+                <td>@item.Total</td>
+                <td></td>
+            </tr>
+        }
+        </tbody>
+        </table>        
+    </div>
+</div>
+<div class="loader"></div>
+
+@section scripts {
+
+    <!-- referencia para a biblioteca do JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <!-- referencia para a biblioteca do HighCharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script>
+        var dadosGrafico = []; //array em javascript
+    </script>
+
+    @foreach (var item in Model)
+    {
+        <script>
+            dadosGrafico.push(['@item.Licencas', @item.Total]);
+        </script>
+    }
+
+    <script>
+        new Highcharts.Chart({
+            chart: {
+                type: 'funnel',
+                renderTo: 'grafico'
+            },
+            title: {
+                text: ''
+            },
+            plotOptions: {
+                pyramid: {
+                    innerSize: '60%',
+                    dataLabels: {
+                        enable: true
+                    },
+                    showInLegend: false
+                }
+            },
+            series: [
+                {
+                    data: dadosGrafico
+                }
+            ]
+        });
+    </script>
+    }

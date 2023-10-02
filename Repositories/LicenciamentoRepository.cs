@@ -7,43 +7,48 @@ namespace KPI.Repositories
 {
     public class LicenciamentoRepository
     {
-        public async Task<List<DashboardLicenciamentoModel>> GetTotalLicenciados(int ano, List<int> codigoAtividade, int idSegmento, bool licenciada)
+        public async Task<List<DashboardLicenciamentoModel>> GetTotalLicenciados(int ano, int[] codigoAtividade, int idSegmento, int licenciada)
         {
+            string codigoAtividadeString = string.Join(",", codigoAtividade);
+
+            var sql = @"SELECT A.Codigo, A.Descricao, COUNT(AE.EstabelecimentoId) AS 'TotalLicenciados'
+                        FROM Estabelecimento E
+                        JOIN AtividadesDoEstabelecimento AE ON AE.EstabelecimentoId = E.Id
+                        JOIN Atividade A ON A.Codigo = AE.Codigo
+                        JOIN HistoricoDeLicenca H ON H.EstabelecimentoId = E.Id AND H.NumeroDaLicenca = E.NumeroLicenca
+                        WHERE A.SegmentoId = @idSegmento
+                        AND A.Grupo = 2
+                        AND AE.Licenciada = @licenciada
+                        AND A.Codigo IN (" + codigoAtividadeString + @")
+                        AND E.Ativo <> 0
+                        AND E.SituacaoDoAlvara = '01 - ATIVO'
+                        AND YEAR(H.DataDeValidade) = @ano
+                        GROUP BY A.Codigo, A.Descricao";
+
             using (var connection = new SqlConnection(SqlServerConfiguration.GetConnectionString()))
             {
-                var sql = @"SELECT A.Codigo, A.Descricao, COUNT(AE.EstabelecimentoId) AS 'TOTAL LICENCIADOS'
-                            FROM Estabelecimento E
-                            JOIN AtividadesDoEstabelecimento AE ON AE.EstabelecimentoId = E.Id
-                            JOIN Atividade A ON A.Codigo = AE.Codigo
-                            JOIN HistoricoDeLicenca H ON H.EstabelecimentoId = E.Id AND H.NumeroDaLicenca = E.NumeroLicenca
-                            WHERE A.SegmentoId = 5
-                            AND A.Grupo = 2
-                            AND AE.Licenciada = 1
-                            AND A.Codigo IN(229067, 225746, 225053, 225738)
-                            AND E.Ativo<> 0
-                            AND E.SituacaoDoAlvara = '01 - ATIVO'
-                            AND YEAR(H.DataDeValidade) = '2024'
-                            GROUP BY A.Codigo, A.Descricao";
-
-                var result = await connection.QueryAsync<DashboardLicenciamentoModel>(sql);
+                var result = await connection.QueryAsync<DashboardLicenciamentoModel>(sql, new { idSegmento, codigoAtividade, licenciada, ano });
                 return result.ToList();
             }
         }
 
-        public async Task<List<DashboardLicenciamentoModel>> GetTotalLicencasDeferidas()
+
+        public async Task<List<DashboardLicenciamentoModel>> GetTotalLicencasDeferidas(int ano, int situacao)
         {
             using (var connection = new SqlConnection(SqlServerConfiguration.GetConnectionString()))
             {
-                var sql = @"select 'Deferidas' as 'Licenças', count(req.id) as 'Total' from RequerimentoAutodeclaracao req
-                            where year(req.DataInicio) = 2023
-                            and req.situacaoId = 7 
+                var sql = @"select 'Deferidas' as 'Licencas', count(req.id) as 'Total' from RequerimentoAutodeclaracao req
+                            where year(req.DataInicio) = @ano
+                            and req.situacaoId = @situacao
                             union all
-                            select 'Veículos' as 'Licenças', count(req.id) as 'Total' from RequerimentoAdministrativo req
-                            where year(req.DataDeEnvio) = 2023
+                            select 'Veículos' as 'Licencas', count(req.id) as 'Total' from RequerimentoAdministrativo req
+                            where year(req.DataDeEnvio) = @ano
                             and req.VeiculoId is not null
-                            and  req.situacaoId = 7 ";
+                            and  req.situacaoId = @situacao
+                            union all 
+                            select 'Total' as 'Licencas', count(e.inscricaomunicipal) as 'Total' from Estabelecimento e";
 
-                var result = await connection.QueryAsync<DashboardLicenciamentoModel>(sql);
+                var result = await connection.QueryAsync<DashboardLicenciamentoModel>(sql, new { ano, situacao });
                 return result.ToList();
             }
         }

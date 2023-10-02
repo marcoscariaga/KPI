@@ -1,10 +1,12 @@
 using KPI.Data;
+using KPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SisvisaContext>();
+builder.Services.AddTransient<LicenciamentoRepository>();
 
 var app = builder.Build();
 

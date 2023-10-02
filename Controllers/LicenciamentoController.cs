@@ -1,5 +1,8 @@
-﻿using KPI.Repositories;
+﻿using Highsoft.Web.Mvc.Charts;
+using KPI.Models;
+using KPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KPI.Controllers
 {
@@ -12,18 +15,27 @@ namespace KPI.Controllers
             _licenciamentoRepository = licenciamentoRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var totalLicenciados = _licenciamentoRepository.GetTotalLicenciados(2023,new List<int>(225053),5,true);
+            var ano = 2023;
+            var listaCodigosSegmento = new[] { 229067, 225053, 225738, 225746 };
+            var idSegmento = 5;
+            var atividadeLicenciada = 1;
 
-            return View();
+            var totalLicenciados = await _licenciamentoRepository.GetTotalLicenciados(ano, listaCodigosSegmento, idSegmento, atividadeLicenciada);
+
+            return View(totalLicenciados);
         }
 
-        public IActionResult LicencasDeferidas()
+        public async Task<ActionResult<DashboardLicenciamentoModel>> LicencasDeferidas()
         {
-            var licencasDeferidas = _licenciamentoRepository.GetTotalLicencasDeferidas();
+            int ano = 2023;
+            int situacao = 7;
+            ViewBag.Ano = ano;
 
-            return View();
+            var result = await _licenciamentoRepository.GetTotalLicencasDeferidas(ano, situacao);
+
+            return View(result);
         }
     }
 }

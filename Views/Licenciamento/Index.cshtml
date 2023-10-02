@@ -1,5 +1,95 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Total de Estabelecimentos Veterinários Licenciados";
 }
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+
+@using Highsoft.Web.Mvc.Charts
+@using Highsoft.Web.Mvc.Charts.Rendering
+
+@model List<KPI.Models.DashboardLicenciamentoModel>
+
+<div class="card">
+    <div class="card-body text-center">
+
+        <h4>Total de Estabelecimentos Veterinários Licenciados</h4>
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6">
+                <div id="grafico"></div>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th>Licenciados</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Codigo</td>
+                                <td>@item.Descricao</td>
+                                <td>@item.TotalLicenciados</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@** Inserindo conteudo JavaScript na página de Layout *@
+@section scripts {
+
+    <!-- referencia para a biblioteca do JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <!-- referencia para a biblioteca do HighCharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script>
+        var dadosGrafico = []; //array em javascript
+    </script>
+
+    @foreach (var item in Model)
+    {
+        <script>
+            dadosGrafico.push(['@item.Descricao', @item.TotalLicenciados]);
+        </script>
+    }
+
+    <script>
+        new Highcharts.Chart({
+            chart: {
+                type: 'pie',
+                renderTo: 'grafico'
+            },
+            title: {
+                text: ''
+            },
+            plotOptions: {
+                pie: {
+                    innerSize: '60%',
+                    dataLabels: {
+                        enable: true
+                    },
+                    showInLegend: false
+                }
+            },
+            series: [
+                {
+                    data: dadosGrafico
+                }
+            ]
+        });
+    </script>
+    }
+
+
