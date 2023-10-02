@@ -14,59 +14,9 @@
 
 @model List<KPI.Models.DashboardLicenciamentoModel>
 
-@{
-    var chartOptions = new Highcharts
-            {
-                Chart = new Chart
-                {
-                    Type = ChartType.Funnel
-                },
-                Title = new Title
-                {
-                    Text = "Licenças Deferidas X Estabelecimentos"
-                },
-                PlotOptions = new PlotOptions
-                {
-                    Series = new PlotOptionsSeries
-                    {
-                        DataLabels = new PlotOptionsSeriesDataLabels
-                        {
-                            Enabled = true,
-                            Format = "<b>{point.name}</b> ({point.y:,.0f})"
-                        }
-                    },
-                    Funnel = new PlotOptionsFunnel
-                    {
-                        NeckWidth = "30%",
-                        NeckHeight = "25%",
-                        Width = "80%"
-                    }
-                },
-                Legend = new Legend
-                {
-                    Enabled = false
-                },
-                //Series = new List<Series>
-                //{
-                //    new FunnelSeries
-                //    {
-                //        Name = "Licenciamento",
-                //        Data = new List<FunnelSeriesData> {
-                //            new FunnelSeriesData{ Name = "Total", Y = Convert.ToDouble(ViewData["total"]) },
-                //            new FunnelSeriesData{ Name = "Deferidas", Y = Convert.ToDouble(ViewData["deferidas"]) },
-                //            new FunnelSeriesData{ Name = "Veículos", Y = Convert.ToDouble(ViewData["veiculos"]) }
-                //        }
-                //    },
-                //}
-            };
-
-    chartOptions.ID = "chart";
-    var renderer = new HighchartsRenderer(chartOptions);
-}
-
 <div class="card">
     <div class="card-body">
-        <div id="grafico"></div>
+        <div id="chart"></div>
     </div>
 </div>
 </br>
@@ -119,26 +69,53 @@
     <script>
         new Highcharts.Chart({
             chart: {
-                type: 'funnel',
-                renderTo: 'grafico'
+                type: 'pyramid',
+                renderTo: 'chart'
             },
             title: {
-                text: ''
+                text: 'Total de Licenças Deferidas X Estabelecimentos'
             },
             plotOptions: {
-                pyramid: {
+                series: {
                     innerSize: '60%',
                     dataLabels: {
-                        enable: true
+                        enable: true,
+                        format: '<b>{point.name}</b> ({point.y:,.0f})'
                     },
+                    center: ['50%', '50%'],
+                    neckWidth: '30%',
+                    neckHeight: '25%',
+                    width: '80%',
                     showInLegend: false
                 }
             },
+            legend: {
+                enabled: false
+            },
             series: [
                 {
+                    name: 'Licenciamentos',
                     data: dadosGrafico
                 }
-            ]
+            ],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        plotOptions: {
+                            series: {
+                                dataLabels: {
+                                    inside: true
+                                },
+                                center: ['50%', '50%'],
+                                width: '100%'
+                            }
+                        }
+                    }
+                }]
+            }
         });
     </script>
     }
