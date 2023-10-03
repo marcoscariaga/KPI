@@ -35,10 +35,19 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-archive-fill"></i> Licenciamento</a>
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-archive-fill"></i> Licenciamentos</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-controller="Licenciamento" asp-action="LicencasDeferidas"><i class="bi bi-clipboard-check-fill"></i> Total Licenças Deferidas</a>
-                                <a class="dropdown-item" asp-controller="Licenciamento" asp-action="Index"><i class="bi bi-briefcase-fill"></i> Total Veterinário Licenciados</a>
+                                <a class="dropdown-item" asp-controller="Licenciamentos" asp-action="LicencasDeferidas"><i class="bi bi-clipboard-check-fill"></i> Total Licenças Deferidas</a>
+                                <a class="dropdown-item" asp-controller="Licenciamentos" asp-action="Index"><i class="bi bi-briefcase-fill"></i> Total Veterinário Licenciados</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-archive-fill"></i> Eventos</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-controller="Eventos" asp-action="EventoOrganizador"><i class="bi bi-clipboard-check-fill"></i> Organizador</a>
+                                <a class="dropdown-item" asp-controller="Eventos" asp-action="EventoFornecedor"><i class="bi bi-briefcase-fill"></i> Fornecedor</a>
+                                <a class="dropdown-item" asp-controller="Eventos" asp-action="EventoSemLSAT"><i class="bi bi-briefcase-fill"></i> Sem LSAT</a>
                             </div>
                         </li>
                     </ul>

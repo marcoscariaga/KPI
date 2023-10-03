@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SisvisaContext>();
 builder.Services.AddTransient<LicenciamentoRepository>();
+builder.Services.AddTransient<EventoRepository>();
 
 var app = builder.Build();
 

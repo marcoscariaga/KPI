@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Relatório de Eventos - Organizador";
+}
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+@using Highsoft.Web.Mvc.Charts
+@using Highsoft.Web.Mvc.Charts.Rendering
+
+@model List<KPI.Models.DashboardEventoModel>
+
+<div>
+    <div>
+
+        <h4>Relatório de Eventos - Organizador</h4>
+        <hr />
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>CPE</th>
+                            <th>DataDaSolicitacao</th>
+                            <th>Processo</th>
+                            <th>Requerente</th>
+                            <th>DataDoEvento</th>
+                            <th>DataFimEvento</th>
+                            <th>Status</th>
+                            <th>LocalDoEvento</th>
+                            <th>NomeDoEvento</th>
+                            <th>Organizador</th>
+                            <th>PublicoEstimadoDeclaradoCPE</th>
+                            <th>Area</th>
+                            <th>DataPagamento</th>
+                            <th>ValorPagamento</th>
+                            <th>AtividadesExercidas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.CPE</td>
+                                <td>@item.DataDaSolicitacao.ToShortDateString()</td>
+                                <td>@item.Processo</td>
+                                <td>@item.Requerente</td>
+                                <td>@item.DataDoEvento.ToShortDateString()</td>
+                                <td>@item.DataFimEvento.ToShortDateString()</td>
+                                <td>@item.Status</td>
+                                <td>@item.LocalDoEvento</td>
+                                <td>@item.NomeDoEvento</td>
+                                <td>@item.Organizador</td>
+                                <td>@item.PublicoEstimadoDeclaradoCPE</td>
+                                <td>@item.Area</td>
+                                <td>@item.DataPagamento.ToShortDateString()</td>
+                                <td>@item.ValorPagamento.ToString("C")</td>
+                                <td>@item.AtividadesExercidas</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@*<link href="~/datatables/css/jquery.datatables.css" rel="stylesheet" />
+<link href="~/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+
+@section Scripts{
+    <script src="~/datatables/js/jquery.datatables.js"></script>
+    <script src="~/datatables/js/jquery.datatables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('dataTable').DataTable();
+        });
+    </script>
+}*@

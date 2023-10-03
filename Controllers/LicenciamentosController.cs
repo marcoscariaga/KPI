@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KPI.Controllers
 {
-    public class LicenciamentoController : Controller
+    public class LicenciamentosController : Controller
     {
         private readonly LicenciamentoRepository _licenciamentoRepository;
 
-        public LicenciamentoController(LicenciamentoRepository licenciamentoRepository)
+        public LicenciamentosController(LicenciamentoRepository licenciamentoRepository)
         {
             _licenciamentoRepository = licenciamentoRepository;
         }
