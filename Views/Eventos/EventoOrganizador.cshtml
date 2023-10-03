@@ -2,23 +2,28 @@
     ViewData["Title"] = "Relatório de Eventos - Organizador";
 }
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-
 @using Highsoft.Web.Mvc.Charts
 @using Highsoft.Web.Mvc.Charts.Rendering
 
 @model List<KPI.Models.DashboardEventoModel>
 
+@section Scripts{
+    <script>
+        
+        var table = new DataTable('#dataTable', {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json',
+            },
+        });
+    </script>
+}
 <div>
     <div>
-
         <h4>Relatório de Eventos - Organizador</h4>
         <hr />
-
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-sm table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>CPE</th>
@@ -65,16 +70,3 @@
         </div>
     </div>
 </div>
-@*<link href="~/datatables/css/jquery.datatables.css" rel="stylesheet" />
-<link href="~/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
-
-@section Scripts{
-    <script src="~/datatables/js/jquery.datatables.js"></script>
-    <script src="~/datatables/js/jquery.datatables.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $('dataTable').DataTable();
-        });
-    </script>
-}*@
