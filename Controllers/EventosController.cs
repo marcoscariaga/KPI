@@ -29,5 +29,26 @@ namespace KPI.Controllers
 
             return View(result);
         }
+
+        public async Task<ActionResult<DashboardEventoModel>> EventoFornecedor(DateTime? ano)
+        {
+            if (ano == null)
+                ano = DateTime.Now;
+
+            var result = await _eventoRepository.GetEventoFornecedor(ano);
+
+            return View(result);
+        }
+
+        public async Task<ActionResult<DashboardEventoModel>> EventoSemLSAT(DateTime? ano)
+        {
+            if (ano == null)
+                ano = DateTime.Now;
+
+            var result = await _eventoRepository.GetEventoSemLSAT(ano);
+
+            return View(result);
+        }
+
     }
 }

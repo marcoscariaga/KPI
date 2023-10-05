@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Relatório de Eventos - Organizador";
+    ViewData["Title"] = "Relatório de Eventos - Fornecedor";
 }
 @model List<KPI.Models.DashboardEventoModel>
 @section Scripts{
@@ -17,8 +17,8 @@
         });
     </script>
 }
-<div>
-    <h4>Relatório de Eventos - Organizador</h4>
+<div class="card">
+    <h4>Relatório de Eventos - Fornecedor</h4>
     <hr />
     <div class="card-body">
         <div class="table-responsive">
@@ -50,7 +50,7 @@
                             <td>@item.DataDaSolicitacao.ToShortDateString()</td>
                             <td>@item.Processo</td>
                             <td>@item.Requerente</td>
-                            <td>@item.DataDoEvento.ToShortDateString()</td>
+                            <td>@item.DataInicioEvento.ToShortDateString()</td>
                             <td>@item.DataFimEvento.ToShortDateString()</td>
                             <td>@item.Status</td>
                             <td>@item.LocalDoEvento</td>

@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Relatório de Eventos - Sem LSAT";
+}
+@using System.Globalization;
+@model List<KPI.Models.DashboardEventoModel>
+@section Scripts{
+    <script>        
+        var table = new DataTable('#dataTable', {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json',
+            },
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'excelHtml5',
+                autoFilter: true,
+                sheetName: 'Sem LSAT - Exportado KPI'
+            }]
+        });
+    </script>
+}
+<div>
+    <h4>Relatório de Eventos - Sem LSAT</h4>
+    <hr />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>CPE</th>
+                        <th>Nome Evento</th>
+                        <th>Nome Requerente</th>
+                        <th>E-mail</th>
+                        <th>CNPJ</th>
+                        <th>CPF</th>
+                        <th>Inscrição Municipal</th>
+                        <th>Data Solicitação</th>
+                        <th>Data Evento</th>
+                        <th>Alvará Liberado</th>
+                        <th>Endereço Evento</th>
+                        <th>Descrição Evento</th>
+                        <th>Data Início Evento</th>
+                        <th>Data Fim Evento</th>
+                        <th>Data Início Montagem</th>
+                        <th>Data Fim Montagem</th>
+                        <th>Área Ocupada</th>
+                        <th>Alteração Local</th>
+                        <th>Estimativa Público</th>
+                        <th>Manipulação Alimento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.CPE</td>
+                            <td>@item.NomeDoEvento</td>
+                            <td>@item.Requerente</td>
+                            <td>@item.Email</td>
+                            <td>@item.CNPJ</td>
+                            <td>@item.CPF</td>
+                            <td>@item.InscricaoMunicipal</td>
+                            <td>@item.DataDaSolicitacao.ToShortDateString()</td>
+                            <td>@item.DataDoEvento.ToShortDateString()</td>
+                            <td>@item.AlvaraLiberado</td>
+                            <td>@item.EnderecoEvento</td>
+                            <td>@item.DescricaoEvento</td>
+                            <td>@item.DataInicioEvento.ToShortDateString()</td>
+                            <td>@item.DataFimEvento.ToShortDateString()</td>
+                            <td>@item.DataInicioMontagem</td>
+                            <td>@item.DataFimMontagem</td>
+                            <td>@item.Area</td>
+                            <td>@item.AlteracaoLocal</td>
+                            <td>@item.EstimativaPublico</td>
+                            <td>@item.ManipulacaoAlimento</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="loader"></div>

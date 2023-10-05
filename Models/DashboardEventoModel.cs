@@ -35,6 +35,32 @@ namespace KPI.Models
         public string? AtividadesExercidas { get; set; }
 
         public DateTime DataFiltro { get; set; }
+
+		public string? Email { get; set; }
+
+        public string? CNPJ { get; set;}
+
+        public string? CPF { get; set; }
+
+        public string? InscricaoMunicipal { get; set; }
+
+        public string? AlvaraLiberado { get; set; }
+
+        public string? EnderecoEvento { get; set; }
+
+        public string? DescricaoEvento { get; set; }
+
+        public DateTime DataInicioEvento { get; set; }
+
+        public DateTime DataInicioMontagem { get; set; }
+
+        public DateTime DataFimMontagem { get; set; }
+
+        public string? AlteracaoLocal { get; set; }
+
+        public string? EstimativaPublico { get; set; }
+
+        public string? ManipulacaoAlimento { get; set; }
     }
 }
 
