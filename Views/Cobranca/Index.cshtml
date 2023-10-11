@@ -26,12 +26,23 @@
         new YAxis {
             Title = new YAxisTitle { Text = "Valores" },
             PlotLines = new List<YAxisPlotLines> { new YAxisPlotLines { Value = 0, Width = 1, Color = "#808080" } }
-        }
-      },
+            }
+        },
         Tooltip = new Tooltip
         {
-            HeaderFormat = "<span style='font-size:10px'>{point.key}</span><br>",
-                    PointFormat = "<span style='color:{point.color}'><b>⦿</b></span> <table style='font-size:12px'>{series.name} - R$ {point.y:.2f}</table>"
+            Enabled = true,
+            //Shared = true,
+            HeaderFormat = "<span style='color:{point.color}'><b>⦿</b></span> <span style='font-size:14px'><b>{point.key}</b></span><br>",
+            PointFormat = "<table style='font-size:12px'><tr><td>{series.name}</td><td> - R${point.y:.2f}</td></tr></table>",
+            //Formatter = @"function() { return '<b>' + this.x + '</b><br/>' + 'Total: R$ ' + this.y; }",
+            //BackgroundColor = "rgba(255, 255, 255, 0.85)",
+            //BorderColor = "rgba(0, 0, 0, 0.5)",
+            //BorderWidth = 2,
+            //FollowPointer = true,
+            UseHTML = true,
+            //Distance = 10, // Set the distance from point to tooltip
+            //Padding = 8, // Set padding inside the tooltip
+            //HideDelay = 200 // Set the delay before the tooltip disappears
         },
         Legend = new Legend
         {
