@@ -74,9 +74,18 @@
 
     @foreach (var item in Model)
     {
-        <script>
-            dadosGrafico.push(['@item.Licencas', @item.Total]);
-        </script>
+        if (item.Licencas != "Veículos")
+        {
+            <script>
+                dadosGrafico.push(['@item.Licencas', @item.Total]);
+            </script>
+        }
+        else
+        {
+            <script>
+                dadosGrafico.push(['Veículos', @item.Total]);
+            </script>
+        }
     }
 
     <script>
@@ -92,9 +101,7 @@
                 series: {
                     innerSize: '60%',
                     dataLabels: {
-                        enable: true,
-                        format: '<b>{point.name}</b><br>({point.y:,.0f})',
-                        softConnector: true
+                        enable: true
                     },
                     center: ['50%', '50%'],
                     neckWidth: '30%',
@@ -103,15 +110,6 @@
                     showInLegend: false
                 }
             },
-            //tooltip: {
-            //    style: {
-            //        pointerEvents: 'all'
-            //    },
-            //    useHTML: true,
-            //    pointFormatter() {
-            //        return "<a href='https://highcharts.com' target='_blank'>Click Me</a>"
-            //    }
-            //},
             legend: {
                 enabled: false
             },

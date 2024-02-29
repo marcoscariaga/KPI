@@ -34,8 +34,11 @@
                 },
                 Tooltip = new Tooltip
                 {
-                    HeaderFormat = "<span style='font-size:10px'>Mês: {point.key}</span><br><table style='font-size:12px'>",
-                    PointFormat = "{point.y}"
+                    Enabled = true,
+                    HeaderFormat = "<span style='color:{point.color}'><b>⦿</b></span> <span style='font-size:14px'><b>Mês: {point.key}</b></span><br>",
+                    PointFormat = "<table style='font-size:12px'><tr><td>{series.name}</td><td> - {point.y}</td></tr></table>",
+                    UseHTML = true
+
                 },
                 Legend = new Legend
                 {
@@ -53,7 +56,8 @@
                     new LineSeries { Name = "2020", Data = (List<LineSeriesData>)ViewData["ano2020Data"] },
                     new LineSeries { Name = "2021", Data = (List<LineSeriesData>)ViewData["ano2021Data"] },
                     new LineSeries { Name = "2022", Data = (List<LineSeriesData>)ViewData["ano2022Data"] },
-                    new LineSeries { Name = "2023", Data = (List<LineSeriesData>)ViewData["ano2023Data"] }
+                    new LineSeries { Name = "2023", Data = (List<LineSeriesData>)ViewData["ano2023Data"] },
+                    new LineSeries { Name = "2024", Data = (List<LineSeriesData>)ViewData["ano2024Data"] }
                 }
             };
 

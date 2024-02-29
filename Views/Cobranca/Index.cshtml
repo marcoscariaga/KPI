@@ -19,7 +19,7 @@
         },
         XAxis = new List<XAxis> {
         new XAxis {
-                Categories = new List <string> {"2019","2020","2021","2022","2023"}
+                Categories = new List <string> {"2019","2020","2021","2022","2023","2024"}
             }
         },
         YAxis = new List<YAxis> {
@@ -32,14 +32,14 @@
         {
             Enabled = true,
             //Shared = true,
-            HeaderFormat = "<span style='color:{point.color}'><b>⦿</b></span> <span style='font-size:14px'><b>{point.key}</b></span><br>",
+            HeaderFormat = "<span style='color:{point.color}'><b>⦿</b></span> <span style='font-size:14px'><b>Ano: {point.key}</b></span><br>",
             PointFormat = "<table style='font-size:12px'><tr><td>{series.name}</td><td> - R${point.y:.2f}</td></tr></table>",
             //Formatter = @"function() { return '<b>' + this.x + '</b><br/>' + 'Total: R$ ' + this.y; }",
             //BackgroundColor = "rgba(255, 255, 255, 0.85)",
             //BorderColor = "rgba(0, 0, 0, 0.5)",
             //BorderWidth = 2,
             //FollowPointer = true,
-            UseHTML = true,
+            UseHTML = true
             //Distance = 10, // Set the distance from point to tooltip
             //Padding = 8, // Set padding inside the tooltip
             //HideDelay = 200 // Set the delay before the tooltip disappears
@@ -87,11 +87,30 @@
         </tr>
     </thead>
     <tbody>
+
         @foreach (var item in Model)
         {
+            string text = string.Empty;
+            string code = item.CdReceita.ToString();
+            if (code == "5207")
+            {
+                text = "LSF";
+            }
+            else if (code == "5223")
+            {
+                text = "Eventos";
+            }
+            else if (code == "5231")
+            {
+                text = "LSAT Outros (Obras)";
+            }
+            else if (code == "5274")
+            {
+                text = "Aprovação de Produto Dispensado de Registro";
+            }
             <tr>
                 <td>
-                    @item.CdReceita
+                    @item.CdReceita - @text
                 </td>
                 <td>
                     @item.VlPrincipal.ToString("C")

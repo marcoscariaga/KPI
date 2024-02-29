@@ -43,6 +43,7 @@ namespace KPI.Controllers
             List<LineSeriesData> ano2021Data = new List<LineSeriesData>();
             List<LineSeriesData> ano2022Data = new List<LineSeriesData>();
             List<LineSeriesData> ano2023Data = new List<LineSeriesData>();
+            List<LineSeriesData> ano2024Data = new List<LineSeriesData>();
 
             foreach (var item in result)
             {
@@ -62,6 +63,8 @@ namespace KPI.Controllers
                     ano2022Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
                 else if (item.Year == 2023)
                     ano2023Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                else if (item.Year == 2024)
+                    ano2024Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
             }
                        
             ViewData["ano2016Data"] = ano2016Data; 
@@ -72,6 +75,7 @@ namespace KPI.Controllers
             ViewData["ano2021Data"] = ano2021Data;
             ViewData["ano2022Data"] = ano2022Data;
             ViewData["ano2023Data"] = ano2023Data;
+            ViewData["ano2024Data"] = ano2024Data;
 
             #endregion
 
@@ -79,9 +83,9 @@ namespace KPI.Controllers
 
             var visitasDeInspecaoDoEstabelecimento = new List<VisitasDeInspecaoDoEstabelecimento>();
             decimal total = decimal.MinValue;
-            
+
             if (ano == string.Empty || ano == null)
-                ano = DateTime.Now.Year.ToString();
+                ano = "2021"; DateTime.Now.Year.ToString();
 
             visitasDeInspecaoDoEstabelecimento = await _context.VisitasDeInspecaoDoEstabelecimentos
                .Where(p => new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }.Contains(p.DataVisita.Month))

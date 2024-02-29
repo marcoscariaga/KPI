@@ -17,7 +17,7 @@ namespace KPI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var ano = 2023;
+            var ano = 2024;
             var listaCodigosSegmento = new[] { 229067, 225053, 225738, 225746 };
             var idSegmento = 5;
             var atividadeLicenciada = 1;
@@ -29,7 +29,7 @@ namespace KPI.Controllers
 
         public async Task<ActionResult<DashboardLicenciamentoModel>> LicencasDeferidas()
         {
-            int ano = 2023;
+            int ano = 2024;
             int situacao = 7;
             ViewBag.Ano = ano;
 

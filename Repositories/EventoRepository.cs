@@ -101,7 +101,7 @@ namespace KPI.Repositories
 							OR CONVERT(DATE, e.DataFimEvento, 103) > CONVERT(DATE, GETDATE() + 3, 103)
 							AND CONVERT(DATE, e.DataInicioEvento, 103) < CONVERT(DATE, GETDATE(), 103)
 							)
-					ORDER BY E.DataInicioEvento";
+					ORDER BY E.DataInicioEvento DESC";
 
                 var result = await connection.QueryAsync<DashboardEventoModel>(sql, new { dataEvento });
                 return result.ToList();
@@ -192,7 +192,7 @@ namespace KPI.Repositories
 										AND CONVERT(DATE, GETDATE() + 3, 103)
 									OR CONVERT(DATE, e.DataFimEvento, 103) > CONVERT(DATE, GETDATE() + 3, 103)
 									AND CONVERT(DATE, e.DataInicioEvento, 103) < CONVERT(DATE, GETDATE(), 103))
-							ORDER BY E.DataInicioEvento";
+							ORDER BY E.DataInicioEvento DESC";
 
                 var result = await connection.QueryAsync<DashboardEventoModel>(sql, new { dataEvento });
                 return result.ToList();
@@ -241,7 +241,7 @@ namespace KPI.Repositories
 								AND RIO.nomeevento NOT LIKE '%gala%'
 								AND RIO.nomeevento NOT LIKE '%colação%'
 								AND cast(RIO.CPE AS INT) NOT IN (SELECT cast(CPE AS INT) FROM #tempEven)
-							ORDER BY RIO.DataInicioEvento";
+							ORDER BY RIO.DataInicioEvento DESC";
 
                 var reader = await connection.QueryAsync<DashboardEventoModel>(sql, new { dataEvento });
 				return reader.ToList();

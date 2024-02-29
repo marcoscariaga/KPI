@@ -41,13 +41,21 @@ namespace KPI.Repositories
                             where year(req.DataInicio) = @ano
                             and req.situacaoId = @situacao
                             union all
-                            select 'Veículos' as 'Licencas', count(req.id) as 'Total' from RequerimentoAdministrativo req
+                            select cast('Veículos' as varchar) as 'Licencas', count(req.id) as 'Total' from RequerimentoAdministrativo req
                             where year(req.DataDeEnvio) = @ano
                             and req.VeiculoId is not null
                             and  req.situacaoId = @situacao
                             union all 
-                            select 'Total' as 'Licencas', count(e.inscricaomunicipal) as 'Total' from Estabelecimento e
-                            order by 'Total'";
+                            SELECT Licencas, SUM(Valor) FROM (
+	                        select 'Total' as 'Licencas', count(req.id) as 'Valor' from RequerimentoAutodeclaracao req
+	                        where year(req.DataInicio) = 2024
+	                        and req.situacaoId = 7
+	                        union all
+	                        select 'Total' as 'Licencas', count(req.id) as 'Valor' from RequerimentoAdministrativo req
+	                        where year(req.DataDeEnvio) = 2024
+	                        and req.VeiculoId is not null
+	                        and  req.situacaoId = 7) A
+	                        group by Licencas";
 
                 var result = await connection.QueryAsync<DashboardLicenciamentoModel>(sql, new { ano, situacao });
                 return result.ToList();

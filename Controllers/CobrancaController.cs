@@ -24,7 +24,7 @@ namespace KPI.Controllers
             var result = await _context.CobrancaSisvisas
                .Where(p => p.Situacao != 2 && p.Situacao != 3)
                .Where(p => codigoReceita.Contains(p.CdReceita))
-               .GroupBy(p => new { p.CdReceita, Year = p.DtCompetencia.Year })
+               .GroupBy(p => new { p.CdReceita, Year = p.DtVencto1.Year })
                .Select(group => new
                {
                    CdReceita = group.Key.CdReceita,
