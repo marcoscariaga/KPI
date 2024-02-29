@@ -85,7 +85,7 @@ namespace KPI.Controllers
             decimal total = decimal.MinValue;
 
             if (ano == string.Empty || ano == null)
-                ano = "2021"; DateTime.Now.Year.ToString();
+                ano = DateTime.Now.Year.ToString(); //"2021";
 
             visitasDeInspecaoDoEstabelecimento = await _context.VisitasDeInspecaoDoEstabelecimentos
                .Where(p => new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }.Contains(p.DataVisita.Month))
