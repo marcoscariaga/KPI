@@ -45,19 +45,19 @@
                     Layout = LegendLayout.Vertical,
                     Align = LegendAlign.Right,
                     VerticalAlign = LegendVerticalAlign.Middle,
-                    Title = new LegendTitle { Text = "Ano:" },
+                    Title = new LegendTitle { Text = "Ano (Total):" },
                     BorderWidth = 0
                 },
                 Series = new List<Series> {
-                    new LineSeries { Name = "2016", Data = (List<LineSeriesData>)ViewData["ano2016Data"] },
-                    new LineSeries { Name = "2017", Data = (List<LineSeriesData>)ViewData["ano2017Data"] },
-                    new LineSeries { Name = "2018", Data = (List<LineSeriesData>)ViewData["ano2018Data"] },
-                    new LineSeries { Name = "2019", Data = (List<LineSeriesData>)ViewData["ano2019Data"] },
-                    new LineSeries { Name = "2020", Data = (List<LineSeriesData>)ViewData["ano2020Data"] },
-                    new LineSeries { Name = "2021", Data = (List<LineSeriesData>)ViewData["ano2021Data"] },
-                    new LineSeries { Name = "2022", Data = (List<LineSeriesData>)ViewData["ano2022Data"] },
-                    new LineSeries { Name = "2023", Data = (List<LineSeriesData>)ViewData["ano2023Data"] },
-                    new LineSeries { Name = "2024", Data = (List<LineSeriesData>)ViewData["ano2024Data"] }
+                    new LineSeries { Name = "2016 (" + ViewData["total2016Data"] + ")", Data = (List<LineSeriesData>)ViewData["ano2016Data"] },
+                    new LineSeries { Name = "2017 (" + ViewData["total2017Data"] + ")", Data = (List<LineSeriesData>)ViewData["ano2017Data"] },
+                    new LineSeries { Name = "2018 (" + ViewData["total2018Data"] + ")", Data = (List<LineSeriesData>)ViewData["ano2018Data"] },
+                    new LineSeries { Name = "2019 (" + ViewData["total2019Data"] + ")", Data = (List<LineSeriesData>)ViewData["ano2019Data"] },
+                    new LineSeries { Name = "2020 (" + ViewData["total2020Data"] + ")", Data = (List<LineSeriesData>)ViewData["ano2020Data"] },
+                    new LineSeries { Name = "2021 (" + ViewData["total2021Data"] + ")", Data = (List<LineSeriesData>)ViewData["ano2021Data"] },
+                    new LineSeries { Name = "2022 (" + ViewData["total2022Data"] + ")", Data = (List<LineSeriesData>)ViewData["ano2022Data"] },
+                    new LineSeries { Name = "2023 (" + ViewData["total2023Data"] + ")", Data = (List<LineSeriesData>)ViewData["ano2023Data"] },
+                    new LineSeries { Name = "2024 (" + ViewData["total2024Data"] + ")", Data = (List<LineSeriesData>)ViewData["ano2024Data"] }
                 }
             };
 
@@ -73,7 +73,7 @@
 </br>
 <div class="card">
     <div class="card-body">
-        <h2>Total de inspeções em @ViewBag.Year</h2>
+        <h2>Total de inspeções em @ViewBag.Year</h2><h6>Em @DateTime.Now</h6>
         <p></p>
         <table class="table">
             <thead>

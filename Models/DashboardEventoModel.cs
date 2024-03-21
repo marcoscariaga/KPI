@@ -12,6 +12,8 @@ namespace KPI.Models
 
         public string? Requerente { get; set; }
 
+        public string? RazaoSocial { get; set; }
+
         public DateTime DataDoEvento { get; set; }
 
         public DateTime DataFimEvento { get; set; }

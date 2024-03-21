@@ -24,6 +24,7 @@ namespace KPI.Controllers
             var result = await _context.CobrancaSisvisas
                .Where(p => p.Situacao != 2 && p.Situacao != 3)
                .Where(p => codigoReceita.Contains(p.CdReceita))
+               .Where(p => p.DtPagamento != null)
                .GroupBy(p => new { p.CdReceita, Year = p.DtVencto1.Year })
                .Select(group => new
                {
@@ -87,6 +88,7 @@ namespace KPI.Controllers
                 ano = DateTime.Now.Year.ToString();
 
             cobrancaSisvisa = await _context.CobrancaSisvisas
+                .Where(p => p.DtPagamento != null)
                 .Where(p => p.DtVencto1.Year == Convert.ToInt32(ano))
                 .Where(p => p.Situacao != 2 && p.Situacao != 3)
                 .Where(p => codigoReceita.Contains(p.CdReceita))

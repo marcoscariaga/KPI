@@ -120,7 +120,7 @@ namespace KPI.Repositories
 								(CONVERT(DATE, e.DataFimEvento, 103)) AS 'DataFimEvento',
 								e.EnderecoEvento AS 'LocalDoEvento/Endereço',
 								e.NomeEvento AS 'NomeDoEvento',
-								fe.RazaoSocial 'Empresa Solicitante',
+								fe.RazaoSocial 'RazaoSocial',
 								fe.CpfCnpj,
 								ISNULL(fe.InscricaoMunicipal, 'NÃO INFORMADO') AS 'InscricaoMunicipal',
 								fe.endereco AS 'EnderecoEmpresa',

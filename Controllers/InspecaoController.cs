@@ -45,26 +45,63 @@ namespace KPI.Controllers
             List<LineSeriesData> ano2023Data = new List<LineSeriesData>();
             List<LineSeriesData> ano2024Data = new List<LineSeriesData>();
 
+            var total2016 = 0;
+            var total2017 = 0;
+            var total2018 = 0;
+            var total2019 = 0;
+            var total2020 = 0;
+            var total2021 = 0;
+            var total2022 = 0;
+            var total2023 = 0;
+            var total2024 = 0;
+
             foreach (var item in result)
             {
                 if (item.Year == 2016)
+                {
                     ano2016Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                    total2016 += item.Total;
+                }
                 else if (item.Year == 2017)
+                {
                     ano2017Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                    total2017 += item.Total;
+                }
                 else if (item.Year == 2018)
+                {
                     ano2018Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                    total2018 += item.Total;
+                }
                 else if (item.Year == 2019)
+                {
                     ano2019Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                    total2019 += item.Total;
+                }
                 else if (item.Year == 2020)
+                {
                     ano2020Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                    total2020 += item.Total;
+                }
                 else if (item.Year == 2021)
+                {
                     ano2021Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                    total2021 += item.Total;
+                }
                 else if (item.Year == 2022)
+                {
                     ano2022Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                    total2022 += item.Total;
+                }
                 else if (item.Year == 2023)
+                {
                     ano2023Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                    total2023 += item.Total;
+                }
                 else if (item.Year == 2024)
+                {
                     ano2024Data.Add(new LineSeriesData { X = item.Month - 1, Y = item.Total });
+                    total2024 += item.Total;
+                }
             }
                        
             ViewData["ano2016Data"] = ano2016Data; 
@@ -76,6 +113,16 @@ namespace KPI.Controllers
             ViewData["ano2022Data"] = ano2022Data;
             ViewData["ano2023Data"] = ano2023Data;
             ViewData["ano2024Data"] = ano2024Data;
+
+            ViewData["total2016Data"] = total2016;
+            ViewData["total2017Data"] = total2017;
+            ViewData["total2018Data"] = total2018;
+            ViewData["total2019Data"] = total2019;
+            ViewData["total2020Data"] = total2020;
+            ViewData["total2021Data"] = total2021;
+            ViewData["total2022Data"] = total2022;
+            ViewData["total2023Data"] = total2023;
+            ViewData["total2024Data"] = total2024;
 
             #endregion
 

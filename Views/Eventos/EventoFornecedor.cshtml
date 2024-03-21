@@ -11,6 +11,8 @@
             dom: '<"top"Bf>rt<"bottom"lip><"clear">',
             buttons: [{
                 extend: 'excelHtml5',
+                text: 'Salvar no Excel',
+                title: '',              
                 autoFilter: true,
                 sheetName: 'Fornecedor - Exportado KPI'
             }]
@@ -18,7 +20,7 @@
     </script>
 }
 <div class="card">
-    <h4>Relatório de Eventos - Fornecedor</h4>
+    <h4>Relatório de Eventos - Fornecedor</h4><h6>Em @DateTime.Now</h6>
     <hr />
     <div class="card-body">
         <div class="table-responsive">
@@ -28,14 +30,11 @@
                         <th>CPE</th>
                         <th>Data Solicitação</th>
                         <th>Processo</th>
-                        <th>Requerente</th>
                         <th>Data Evento</th>
                         <th>Data Fim Evento</th>
                         <th>Status</th>
-                        <th>Local Evento</th>
                         <th>Nome Evento</th>
-                        <th>Organizador</th>
-                        <th>Público Estimado Declarado CPE</th>
+                        <th>Empresa Solicitante</th>
                         <th>Área</th>
                         <th>Data Pagamento</th>
                         <th>Valor Pagamento</th>
@@ -49,14 +48,11 @@
                             <td>@item.CPE</td>
                             <td>@item.DataDaSolicitacao.ToShortDateString()</td>
                             <td>@item.Processo</td>
-                            <td>@item.Requerente</td>
                             <td>@item.DataInicioEvento.ToShortDateString()</td>
                             <td>@item.DataFimEvento.ToShortDateString()</td>
                             <td>@item.Status</td>
-                            <td>@item.LocalDoEvento</td>
                             <td>@item.NomeDoEvento</td>
-                            <td>@item.Organizador</td>
-                            <td>@item.PublicoEstimadoDeclaradoCPE</td>
+                            <td>@item.RazaoSocial</td>
                             <td>@item.Area</td>
                             <td>@item.DataPagamento.ToShortDateString()</td>
                             <td>@item.ValorPagamento.ToString("C")</td>
