@@ -30,12 +30,26 @@ namespace KPI.Controllers
             return View(result);
         }
 
+        public async Task<ActionResult<DashboardEventoModel>> EventoOrganizadorPeriodo()
+        {
+            var result = await _eventoRepository.GetEventoOrganizadorPeriodo();
+
+            return View(result);
+        }
+
         public async Task<ActionResult<DashboardEventoModel>> EventoFornecedor(DateTime? ano)
         {
             if (ano == null)
                 ano = DateTime.Now;
 
             var result = await _eventoRepository.GetEventoFornecedor(ano);
+
+            return View(result);
+        }
+
+        public async Task<ActionResult<DashboardEventoModel>> EventoFornecedorPeriodo()
+        {
+            var result = await _eventoRepository.GetEventoFornecedorPeriodo();
 
             return View(result);
         }
@@ -50,5 +64,11 @@ namespace KPI.Controllers
             return View(result);
         }
 
+        public async Task<ActionResult<DashboardEventoModel>> EventoSemLSATPeriodo()
+        {
+            var result = await _eventoRepository.GetEventoSemLSATPeriodo();
+
+            return View(result);
+        }
     }
 }

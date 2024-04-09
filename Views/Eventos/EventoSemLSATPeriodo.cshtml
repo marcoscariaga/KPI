@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Relatório de Eventos - Sem LSAT";
+    ViewData["Title"] = "Relatório de Eventos Por Período - Sem LSAT";
 }
 @using System.Globalization;
 @model List<KPI.Models.DashboardEventoModel>
@@ -13,18 +13,68 @@
             buttons: [{
                 extend: 'excelHtml5',
                 text: 'Salvar no Excel',
-                title: 'Relatório de Eventos - Sem LSAT',
+                title: 'Relatório de Eventos Por Período - Sem LSAT',
                 autoFilter: true,
                 sheetName: 'Sem LSAT - Exportado KPI'
             }]
         });
+
+        let minDate, maxDate;
+
+        // Custom filtering function which will search data in column NINE between TWO values
+        DataTable.ext.search.push(function (settings, data, dataIndex) {
+            let min = minDate.val();
+            let max = maxDate.val();
+            let date = new Date(data[8]);
+
+            if (
+                (min === null && max === null) ||
+                (min === null && date <= max) ||
+                (min <= date && max === null) ||
+                (min <= date && date <= max)
+            ) {
+                return true;
+            }
+            return false;
+        });
+
+        // Create date inputs
+        minDate = new DateTime('#min', {
+            format: 'DD/MM/YYYY'
+        });
+        maxDate = new DateTime('#max', {
+            format: 'DD/MM/YYYY'
+        });
+
+        // DataTables initialisation
+        //let table = new DataTable('#example');
+
+        // Refilter the table
+        document.querySelectorAll('#min, #max').forEach((el) => {
+            el.addEventListener('change', () => table.draw());
+            el.setAttribute('placeholder', 'DD/MM/AAAA');
+        });
+
+        //display nowrap
     </script>
 }
 <div>
-    <h4>Relatório de Eventos - Sem LSAT</h4><h6>Em @DateTime.Now</h6>
+    <h4>Relatório de Eventos Por Período - Sem LSAT</h4><h6>Em @DateTime.Now</h6>
     <hr />
     <div class="card-body">
         <div class="table-responsive">
+            <table border="0" cellspacing="0" align="right">
+                <tbody>
+                    <tr>
+                        <td align ="right">Data Inicial</td>
+                        <td><input type="text" id="min" name="min"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Data Final</td>
+                        <td><input type="text" id="max" name="max"></td>
+                    </tr>
+                </tbody>
+            </table>
             <table class="table table-sm table-hover" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
