@@ -7,16 +7,9 @@
     <script>
         var table = new DataTable('#dataTable', {
             language: {
-                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json',
+                url: '/js/pt-BR.json',
             },
-            layout: {
-                topStart: {
-                    buttons: ['excelHtml5']
-                }
-            },
-            //dom: 'Bfrtip',
-            //dom: '<lf<t>ip>',
-            dom: '<"top"Bf>rt<"bottom"lip><"clear">',
+            dom: 'Bfrtip',
             buttons: [{
                 extend: 'excelHtml5',
                 text: 'Salvar no Excel',
@@ -61,8 +54,6 @@
             el.addEventListener('change', () => table.draw());
             el.setAttribute('placeholder', 'DD/MM/AAAA');
         });
-
-        //display nowrap
     </script>
 }
 <div>
@@ -70,18 +61,23 @@
     <hr />
     <div class="card-body">
         <div class="table-responsive">
-            <table border="0" cellspacing="0" align="right">
+            <table border="0" cellspacing="5" cellpadding="5">
                 <tbody>
                     <tr>
-                        <td align="right">Data Inicial</td>
+                        <td>Filtro por data:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Data Inicial</td>
                         <td><input type="text" id="min" name="min"></td>
                     </tr>
                     <tr>
-                        <td align="right">Data Final</td>
+                        <td>Data Final</td>
                         <td><input type="text" id="max" name="max"></td>
                     </tr>
                 </tbody>
             </table>
+            <br />
             <table class="table table-sm table-hover" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
