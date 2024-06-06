@@ -91,7 +91,7 @@ namespace KPI.Repositories
 					INNER JOIN Evento e ON e.CPE = r.CodigoDaCPE
 					INNER JOIN AtividadeDoRequerimentoTransitorio ON AtividadeDoRequerimentoTransitorio.IdDoRequerimentoTransitorio = r.Id
 					INNER JOIN AtividadeParaRequerimentoTransitorio ART ON ART.Codigo = AtividadeDoRequerimentoTransitorio.CodigoDaAtividadeDoRequerimentoTransitorio
-					LEFT JOIN CobrancaSisvisa c ON c.ID_REQUERIMENTO = r.id
+					LEFT JOIN CobrancaSisvisa c ON c.ID_REQUERIMENTO = r.id and c.CD_RECEITA = 5223
 					WHERE r.Tipo = 1
 						AND r.Situacao NOT IN (0)
 						AND SUBSTRING(CONVERT(VARCHAR, e.DataEvento, 101), 7, 10) = YEAR(GETDATE())
@@ -172,7 +172,7 @@ namespace KPI.Repositories
 							WHEN r.CodigoDaArea = 2.00000
 								THEN 'Acima de 50m2 e até 100m2'
 							WHEN r.CodigoDaArea = 3.00000
-								THEN 'Acima de 100m2 e até 200m2 '
+								THEN 'Acima de 100m2 e até 200m2'
 							WHEN r.CodigoDaArea = 4.00000
 								THEN 'Acima de 200m2 e até 400m2'
 							WHEN r.CodigoDaArea = 5.00000
@@ -191,7 +191,7 @@ namespace KPI.Repositories
 					INNER JOIN Evento e ON e.CPE = r.CodigoDaCPE
 					INNER JOIN AtividadeDoRequerimentoTransitorio ON AtividadeDoRequerimentoTransitorio.IdDoRequerimentoTransitorio = r.Id
 					INNER JOIN AtividadeParaRequerimentoTransitorio ART ON ART.Codigo = AtividadeDoRequerimentoTransitorio.CodigoDaAtividadeDoRequerimentoTransitorio
-					LEFT JOIN CobrancaSisvisa c ON c.ID_REQUERIMENTO = r.id
+					LEFT JOIN CobrancaSisvisa c ON c.ID_REQUERIMENTO = r.id and c.CD_RECEITA = 5223
 					WHERE r.Tipo = 1
 						AND r.Situacao NOT IN (0)
 						AND YEAR(SUBSTRING(CONVERT(VARCHAR, e.DataEvento, 101), 7, 10)) >= YEAR(GETDATE()) - 1
@@ -275,7 +275,8 @@ namespace KPI.Repositories
 							INNER JOIN AtividadeDoRequerimentoTransitorio ON AtividadeDoRequerimentoTransitorio.IdDoRequerimentoTransitorio = r.Id
 							INNER JOIN AtividadeParaRequerimentoTransitorio ART ON ART.Codigo = AtividadeDoRequerimentoTransitorio.CodigoDaAtividadeDoRequerimentoTransitorio
 							INNER JOIN FornecedorDoEvento fe ON fe.IdDoRequerimentoTransitorio = r.Id
-							LEFT JOIN CobrancaSisvisa c ON c.ID_REQUERIMENTO = r.id
+							LEFT JOIN CobrancaSisvisa c ON c.ID_REQUERIMENTO = r.id and c.CD_RECEITA = 5223
+							JOIN pagamentoSisvisa p on p.NR_GUIA = c.NR_GUIA
 							LEFT JOIN RequerimentoTransitorioFornecedorAlimentos al ON al.IdDoRequerimentoTransitorio = r.Id
 							LEFT JOIN Veterinario vet ON vet.IdDoRequerimentoTransitorio = r.Id
 							LEFT JOIN RequerimentoTransitorioFornecedorSaude sa ON sa.IdDoRequerimentoTransitorio = r.Id
@@ -366,7 +367,8 @@ namespace KPI.Repositories
 							INNER JOIN AtividadeDoRequerimentoTransitorio ON AtividadeDoRequerimentoTransitorio.IdDoRequerimentoTransitorio = r.Id
 							INNER JOIN AtividadeParaRequerimentoTransitorio ART ON ART.Codigo = AtividadeDoRequerimentoTransitorio.CodigoDaAtividadeDoRequerimentoTransitorio
 							INNER JOIN FornecedorDoEvento fe ON fe.IdDoRequerimentoTransitorio = r.Id
-							LEFT JOIN CobrancaSisvisa c ON c.ID_REQUERIMENTO = r.id
+							LEFT JOIN CobrancaSisvisa c ON c.ID_REQUERIMENTO = r.id and c.CD_RECEITA = 5223
+							JOIN pagamentoSisvisa p on p.NR_GUIA = c.NR_GUIA
 							LEFT JOIN RequerimentoTransitorioFornecedorAlimentos al ON al.IdDoRequerimentoTransitorio = r.Id
 							LEFT JOIN Veterinario vet ON vet.IdDoRequerimentoTransitorio = r.Id
 							LEFT JOIN RequerimentoTransitorioFornecedorSaude sa ON sa.IdDoRequerimentoTransitorio = r.Id
