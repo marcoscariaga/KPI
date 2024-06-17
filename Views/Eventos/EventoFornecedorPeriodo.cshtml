@@ -85,12 +85,17 @@
                         <th>CPE</th>
                         <th>Data Solicitação</th>
                         <th>Processo</th>
-                        <th>Data Evento</th>
+                        <th>Data Início Evento</th>
                         <th>Data Fim Evento</th>
-                        <th>Status</th>
-                        <th>Nome Evento</th>
+                        <th>Endereço Evento</th>
+                        <th>Nome do Evento</th>
                         <th>Empresa Solicitante</th>
+                        <th>CNPJ</th>
+                        <th>Inscrição Municipal</th>
+                        <th>Endereço Empresa</th>
                         <th>Área</th>
+                        <th>Status</th>
+                        <th>Organizador/Fornecedor</th>
                         <th>Data Pagamento</th>
                         <th>Valor Pagamento</th>
                         <th>Atividades Exercidas</th>
@@ -105,10 +110,15 @@
                             <td>@item.Processo</td>
                             <td>@item.DataInicioEvento.ToShortDateString()</td>
                             <td>@item.DataFimEvento.ToShortDateString()</td>
-                            <td>@item.Status</td>
+                            <td>@item.EnderecoEvento</td>
                             <td>@item.NomeDoEvento</td>
                             <td>@item.RazaoSocial</td>
+                            <td>@item.CNPJ</td>
+                            <td>@item.InscricaoMunicipal</td>
+                            <td>@item.EnderecoEmpresa</td>
                             <td>@item.Area</td>
+                            <td>@item.Status</td>
+                            <td>@item.Fornecedor</td>
                             <td>@item.DataPagamento.ToShortDateString()</td>
                             <td>@item.ValorPagamento.ToString("C")</td>
                             <td>@item.AtividadesExercidas</td>

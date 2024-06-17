@@ -35,7 +35,7 @@ namespace KPI.Repositories
 							WHEN r.Situacao = 8
 								THEN 'LICENÇA CANCELADA'
 							END AS 'Status',
-						e.EnderecoEvento AS 'LocalDoEvento',
+						e.EnderecoEvento AS 'EnderecoEvento',
 						e.NomeEvento AS 'NomeDoEvento',
 						CASE 
 							WHEN r.Tipo = 0
@@ -64,7 +64,7 @@ namespace KPI.Repositories
 								THEN 'Entre 20.000 e 50.000 pessoas/dia'
 							WHEN r.CodigoDeQuantidadeDePessoas = 5
 								THEN 'Acima de 50.000 pessoas/dia'
-							END AS 'Público Estimado Declarado',
+							END AS 'PublicoEstimadoDeclarado',
 						E.estimativaPublico AS 'PublicoEstimadoDeclaradoCPE',
 						CASE 
 							WHEN r.CodigoDaArea = 1.00000
@@ -135,7 +135,7 @@ namespace KPI.Repositories
 							WHEN r.Situacao = 8
 								THEN 'LICENÇA CANCELADA'
 							END AS 'Status',
-						e.EnderecoEvento AS 'LocalDoEvento',
+						e.EnderecoEvento AS 'EnderecoEvento',
 						e.NomeEvento AS 'NomeDoEvento',
 						CASE 
 							WHEN r.Tipo = 0
@@ -164,7 +164,7 @@ namespace KPI.Repositories
 								THEN 'Entre 20.000 e 50.000 pessoas/dia'
 							WHEN r.CodigoDeQuantidadeDePessoas = 5
 								THEN 'Acima de 50.000 pessoas/dia'
-							END AS 'Público Estimado Declarado',
+							END AS 'PublicoEstimadoDeclarado',
 						E.estimativaPublico AS 'PublicoEstimadoDeclaradoCPE',
 						CASE 
 							WHEN r.CodigoDaArea = 1.00000
@@ -212,10 +212,10 @@ namespace KPI.Repositories
 								r.Protocolo AS 'Processo',
 								(CONVERT(DATE, e.DataInicioEvento, 103)) AS 'DataInicioEvento',
 								(CONVERT(DATE, e.DataFimEvento, 103)) AS 'DataFimEvento',
-								e.EnderecoEvento AS 'LocalDoEvento/Endereço',
+								e.EnderecoEvento AS 'EnderecoEvento',
 								e.NomeEvento AS 'NomeDoEvento',
-								fe.RazaoSocial 'RazaoSocial',
-								fe.CpfCnpj,
+								fe.RazaoSocial AS 'RazaoSocial',
+								fe.CpfCnpj AS 'CNPJ',
 								ISNULL(fe.InscricaoMunicipal, 'NÃO INFORMADO') AS 'InscricaoMunicipal',
 								fe.endereco AS 'EnderecoEmpresa',
 								CASE 
@@ -265,7 +265,7 @@ namespace KPI.Repositories
 										THEN 'OBRA'
 									WHEN r.Tipo = 6
 										THEN 'COZINHA DE OBRA'
-									END AS 'Organizador/Fornecedor',
+									END AS 'Fornecedor',
 								c.DT_PAGAMENTO AS 'DataPagamento',
 								c.VL_PRINCIPAL AS 'ValorPagamento',
 							(SELECT SUBSTRING(b.Descricao, 0, LEN(b.Descricao)+1) FROM AtividadeParaRequerimentoTransitorio b
@@ -304,10 +304,10 @@ namespace KPI.Repositories
 								r.Protocolo AS 'Processo',
 								(CONVERT(DATE, e.DataInicioEvento, 103)) AS 'DataInicioEvento',
 								(CONVERT(DATE, e.DataFimEvento, 103)) AS 'DataFimEvento',
-								e.EnderecoEvento AS 'LocalDoEvento/Endereço',
+								e.EnderecoEvento AS 'EnderecoEvento',
 								e.NomeEvento AS 'NomeDoEvento',
-								fe.RazaoSocial 'RazaoSocial',
-								fe.CpfCnpj,
+								fe.RazaoSocial AS 'RazaoSocial',
+								fe.CpfCnpj AS 'CNPJ',
 								ISNULL(fe.InscricaoMunicipal, 'NÃO INFORMADO') AS 'InscricaoMunicipal',
 								fe.endereco AS 'EnderecoEmpresa',
 								CASE 
@@ -357,7 +357,7 @@ namespace KPI.Repositories
 										THEN 'OBRA'
 									WHEN r.Tipo = 6
 										THEN 'COZINHA DE OBRA'
-									END AS 'Organizador/Fornecedor',
+									END AS 'Fornecedor',
 								c.DT_PAGAMENTO AS 'DataPagamento',
 								c.VL_PRINCIPAL AS 'ValorPagamento',
 							(SELECT SUBSTRING(b.Descricao, 0, LEN(b.Descricao)+1) FROM AtividadeParaRequerimentoTransitorio b

@@ -91,6 +91,7 @@
                         <th>Local Evento</th>
                         <th>Nome Evento</th>
                         <th>Organizador</th>
+                        <th>Público Estimado Declarado</th>
                         <th>Público Estimado Declarado CPE</th>
                         <th>Área</th>
                         <th>Data Pagamento</th>
@@ -109,9 +110,10 @@
                             <td>@item.DataDoEvento.ToShortDateString()</td>
                             <td>@item.DataFimEvento.ToShortDateString()</td>
                             <td>@item.Status</td>
-                            <td>@item.LocalDoEvento</td>
+                            <td>@item.EnderecoEvento</td>
                             <td>@item.NomeDoEvento</td>
                             <td>@item.Organizador</td>
+                            <td>@item.PublicoEstimadoDeclarado</td>
                             <td>@item.PublicoEstimadoDeclaradoCPE</td>
                             <td>@item.Area</td>
                             <td>@item.DataPagamento.ToShortDateString()</td>

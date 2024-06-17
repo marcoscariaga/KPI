@@ -20,11 +20,15 @@ namespace KPI.Models
 
         public string? Status { get; set; }
 
-        public string? LocalDoEvento { get; set; }
+        public string? EnderecoEmpresa { get; set; }
 
         public string? NomeDoEvento { get; set; }
 
         public string? Organizador { get; set; }
+
+        public string? Fornecedor { get; set; }
+
+        public string? PublicoEstimadoDeclarado { get; set; }
 
         public string? PublicoEstimadoDeclaradoCPE { get; set; }
 
