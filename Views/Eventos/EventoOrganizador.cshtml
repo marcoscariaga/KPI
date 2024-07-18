@@ -64,7 +64,7 @@
                             <td>@item.PublicoEstimadoDeclaradoCPE</td>
                             <td>@item.Area</td>
                             <td>@item.DataPagamento.ToShortDateString()</td>
-                            <td>@item.ValorPagamento.ToString("C")</td>
+                            <td>@item.ValorPagamento.ToString("N2", CultureInfo.InvariantCulture)</td>
                             <td>@item.AtividadesExercidas</td>
                         </tr>
                     }

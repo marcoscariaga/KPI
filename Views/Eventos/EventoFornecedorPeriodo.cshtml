@@ -119,7 +119,7 @@
                             <td>@item.Area</td>
                             <td>@item.Status</td>
                             <td>@item.Fornecedor</td>
-                            <td>@item.DataPagamento.ToShortDateString()</td>
+                            <td>@item.DataPagamento.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss'.'000")</td>
                             <td>@item.ValorPagamento.ToString("C")</td>
                             <td>@item.AtividadesExercidas</td>
                         </tr>
